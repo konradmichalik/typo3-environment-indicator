@@ -6,9 +6,9 @@
 
 [![Latest Stable Version](https://typo3-badges.dev/badge/typo3_environment_indicator/version/shields.svg)](https://extensions.typo3.org/extension/typo3_environment_indicator)
 [![Supported TYPO3 versions](https://typo3-badges.dev/badge/typo3_environment_indicator/typo3/shields.svg)](https://extensions.typo3.org/extension/typo3_environment_indicator)
-[![Coverage](https://img.shields.io/coverallsCoverage/github/jackd248/typo3-environment-indicator?logo=coveralls)](https://coveralls.io/github/jackd248/typo3-environment-indicator)
-[![CGL](https://img.shields.io/github/actions/workflow/status/jackd248/typo3-environment-indicator/cgl.yml?label=cgl&logo=github)](https://github.com/jackd248/typo3-environment-indicator/actions/workflows/cgl.yml)
-[![Tests](https://img.shields.io/github/actions/workflow/status/jackd248/typo3-environment-indicator/tests.yml?label=tests&logo=github)](https://github.com/jackd248/typo3-environment-indicator/actions/workflows/tests.yml)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/konradmichalik/typo3-environment-indicator?logo=coveralls)](https://coveralls.io/github/konradmichalik/typo3-environment-indicator)
+[![CGL](https://img.shields.io/github/actions/workflow/status/konradmichalik/typo3-environment-indicator/cgl.yml?label=cgl&logo=github)](https://github.com/konradmichalik/typo3-environment-indicator/actions/workflows/cgl.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/konradmichalik/typo3-environment-indicator/tests.yml?label=tests&logo=github)](https://github.com/konradmichalik/typo3-environment-indicator/actions/workflows/tests.yml)
 [![License](https://poser.pugx.org/konradmichalik/typo3-environment-indicator/license)](LICENSE.md)
 
 </div>

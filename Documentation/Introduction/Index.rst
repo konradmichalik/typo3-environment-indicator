@@ -81,7 +81,7 @@ Support
 
 There are several ways to get support for this extension:
 
-* GitHub: https://github.com/jackd248/typo3-environment-indicator/issues
+* GitHub: https://github.com/konradmichalik/typo3-environment-indicator/issues
 
 License
 =======

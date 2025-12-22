@@ -39,8 +39,8 @@ Implement your own image modifier by extending the :code:`AbstractModifier` clas
 
     View the sources on GitHub:
 
-    -   `AbstractModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/AbstractModifier.php>`__
-    -   `ModifierInterface <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ModifierInterface.php>`__
+    -   `AbstractModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/AbstractModifier.php>`__
+    -   `ModifierInterface <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ModifierInterface.php>`__
 
 See the `Intervention Image documentation <http://image.intervention.io/v3>`_ for more information about image
 manipulation.

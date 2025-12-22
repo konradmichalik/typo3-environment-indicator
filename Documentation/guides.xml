@@ -6,10 +6,10 @@
 >
     <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
             project-home="https://extensions.typo3.org/extension/typo3_environment_indicator"
-            project-repository="https://github.com/jackd248/typo3-environment-indicator"
-            project-issues="https://github.com/jackd248/typo3-environment-indicator/issues"
+            project-repository="https://github.com/konradmichalik/typo3-environment-indicator"
+            project-issues="https://github.com/konradmichalik/typo3-environment-indicator/issues"
             edit-on-github-branch="main"
-            edit-on-github="jackd248/typo3-environment-indicator"
+            edit-on-github="konradmichalik/typo3-environment-indicator"
             typo3-core-preferred="main"
     />
     <project title="Environment Indicator" release="3.0.0" copyright="since 2025 by Konrad Michalik"/>
