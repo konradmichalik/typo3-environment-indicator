@@ -30,7 +30,7 @@ The image path can be adjusted via the :code:`ImageViewHelper`:
 
     View the sources on GitHub:
 
-    -   `ImageViewHelper <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/ViewHelpers/ImageViewHelper.php>`__
+    -   `ImageViewHelper <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/ViewHelpers/ImageViewHelper.php>`__
 
 Modifiers
 **********

@@ -1262,7 +1262,7 @@
                 "load"
             ],
             "support": {
-                "source": "https://github.com/jackd248/php-ico-file-loader/tree/0.2.0"
+                "source": "https://github.com/konradmichalik/php-ico-file-loader/tree/0.2.0"
             },
             "time": "2025-12-12T11:30:28+00:00"
         },

@@ -39,7 +39,7 @@ or can be handled by your own fluid template via the :code:`FaviconViewHelper`:
 
     View the sources on GitHub:
 
-    -   `FaviconViewHelper <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/ViewHelpers/FaviconViewHelper.php>`__
+    -   `FaviconViewHelper <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/ViewHelpers/FaviconViewHelper.php>`__
 
 Backend
 **********
@@ -141,7 +141,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `TextModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/TextModifier.php>`__
+    -   `TextModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/TextModifier.php>`__
 
 TriangleModifier
 ===========
@@ -183,7 +183,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `TriangleModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/TriangleModifier.php>`__
+    -   `TriangleModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/TriangleModifier.php>`__
 
 CircleModifier
 ===========
@@ -225,7 +225,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `CircleModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/CircleModifier.php>`__
+    -   `CircleModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/CircleModifier.php>`__
 
 FrameModifier
 ===========
@@ -265,7 +265,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `FrameModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/FrameModifier.php>`__
+    -   `FrameModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/FrameModifier.php>`__
 
 ReplaceModifier
 ===========
@@ -300,7 +300,7 @@ Replace the original favicon with a custom one regarding the environment.
 
     View the sources on GitHub:
 
-    -   `ReplaceModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ReplaceModifier.php>`__
+    -   `ReplaceModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ReplaceModifier.php>`__
 
 OverlayModifier
 ===========
@@ -342,7 +342,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `OverlayModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/OverlayModifier.php>`__
+    -   `OverlayModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/OverlayModifier.php>`__
 
 ColorizeModifier
 ===========
@@ -387,7 +387,7 @@ Additional optional configuration keys:
 
     View the sources on GitHub:
 
-    -   `ColorizeModifier <https://github.com/jackd248/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ColorizeModifier.php>`__
+    -   `ColorizeModifier <https://github.com/konradmichalik/typo3-environment-indicator/blob/main/Classes/Image/Modifier/ColorizeModifier.php>`__
 
 ..  note::
     If you want to modify the image to your own need, implement a :ref:`custom modifier <custom-modifiers>` class and add it to the configuration.
