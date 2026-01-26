@@ -122,6 +122,25 @@ abstract class AbstractImageHandler
             return;
         }
 
+        $document = $svgImage->getDocument();
+        $width = (int) $document->getWidth();
+        $height = (int) $document->getHeight();
+
+        // Try to extract dimensions from viewBox if width/height are not set
+        if ($width <= 0 || $height <= 0) {
+            $viewBox = $document->getViewBox();
+            if (null !== $viewBox) {
+                $width = (int) $viewBox[2];
+                $height = (int) $viewBox[3];
+            }
+        }
+
+        // Fallback to default size if still invalid
+        if ($width <= 0 || $height <= 0) {
+            $width = 64;
+            $height = 64;
+        }
+
         $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
         if (!file_exists($basePath)) {
             GeneralUtility::mkdir_deep($basePath);
@@ -133,7 +152,7 @@ abstract class AbstractImageHandler
             return;
         }
 
-        $rasterImage = $svgImage->toRasterImage((int) $svgImage->getDocument()->getWidth(), (int) $svgImage->getDocument()->getHeight());
+        $rasterImage = $svgImage->toRasterImage($width, $height);
         imagepng($rasterImage, $path); // @phpstan-ignore-line
     }
 
