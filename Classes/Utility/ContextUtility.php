@@ -32,7 +32,7 @@ use function is_string;
  */
 class ContextUtility
 {
-    public function __construct(private readonly SiteFinder $siteFinder) {}
+    public function __construct(private readonly ?SiteFinder $siteFinder = null) {}
 
     #[AsAllowedCallable]
     public function getContext(): string
@@ -82,11 +82,14 @@ class ContextUtility
             return '';
         }
 
+        if (null === $this->siteFinder) {
+            return '';
+        }
+
         $pid = $routing->getPageId();
-        $siteFinder = $this->siteFinder;
 
         try {
-            $site = $siteFinder->getSiteByPageId($pid);
+            $site = $this->siteFinder->getSiteByPageId($pid);
         } catch (SiteNotFoundException) {
             return '';
         }
