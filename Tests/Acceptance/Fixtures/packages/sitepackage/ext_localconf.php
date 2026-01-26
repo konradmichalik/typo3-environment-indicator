@@ -267,7 +267,7 @@ Configuration\Handler::addIndicator(
     triggers: [
         new Trigger\ApplicationContext('Development/Custom'),
         new Trigger\Custom(
-            function () {
+            static function () {
                 return false;
             },
         ),

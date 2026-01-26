@@ -18,6 +18,7 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{Favicon, I
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service\{ConfigurationStorage, IndicatorResolver, TriggerEvaluator};
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\TriggerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 /**
@@ -137,7 +138,15 @@ final class IndicatorResolverTest extends TestCase
         $evaluator = $this->createStub(TriggerEvaluator::class);
         $evaluator->method('evaluateTriggers')->willReturn(true);
 
-        $resolver = new IndicatorResolver($storage, $evaluator);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('warning')
+            ->with(
+                'Indicator processing failed: {message}',
+                self::callback(static fn (array $context): bool => 'Test exception' === $context['message'] && $context['exception'] instanceof Exception),
+            );
+
+        $resolver = new IndicatorResolver($storage, $evaluator, $logger);
         $result = $resolver->resolveIndicators();
 
         self::assertEquals([], $result);

@@ -17,6 +17,7 @@ use Exception;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service\TriggerEvaluator;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\TriggerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 /**
@@ -65,10 +66,20 @@ class TriggerEvaluatorTest extends TestCase
 
     public function testEvaluateTriggersHandlesException(): void
     {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('warning')
+            ->with(
+                'Trigger evaluation failed: {message}',
+                self::callback(static fn (array $context): bool => 'Test exception' === $context['message'] && $context['exception'] instanceof Exception),
+            );
+
+        $triggerEvaluator = new TriggerEvaluator($logger);
+
         $trigger = $this->createMock(TriggerInterface::class);
         $trigger->expects(self::once())->method('check')->willThrowException(new Exception('Test exception'));
 
-        $result = $this->triggerEvaluator->evaluateTriggers([$trigger]);
+        $result = $triggerEvaluator->evaluateTriggers([$trigger]);
         self::assertFalse($result);
     }
 

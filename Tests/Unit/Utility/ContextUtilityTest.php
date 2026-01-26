@@ -16,6 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use PHPUnit\Framework\TestCase;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * ContextUtilityTest.
@@ -32,14 +33,16 @@ class ContextUtilityTest extends TestCase
 
     public function testGetColorReturnsTransparentWhenNoConfiguration(): void
     {
-        $contextUtility = new ContextUtility();
+        $siteFinder = $this->createStub(SiteFinder::class);
+        $contextUtility = new ContextUtility($siteFinder);
         $color = $contextUtility->getColor();
         self::assertEquals('transparent', $color);
     }
 
     public function testGetTextColorReturnsColorUtilityResult(): void
     {
-        $contextUtility = new ContextUtility();
+        $siteFinder = $this->createStub(SiteFinder::class);
+        $contextUtility = new ContextUtility($siteFinder);
         $textColor = $contextUtility->getTextColor();
         self::assertStringStartsWith('rgba(', $textColor);
     }
@@ -52,7 +55,8 @@ class ContextUtilityTest extends TestCase
             ],
         ];
 
-        $contextUtility = new ContextUtility();
+        $siteFinder = $this->createStub(SiteFinder::class);
+        $contextUtility = new ContextUtility($siteFinder);
         $positionX = $contextUtility->getPositionX();
         self::assertEquals('top:0', $positionX);
     }
@@ -65,7 +69,8 @@ class ContextUtilityTest extends TestCase
             ],
         ];
 
-        $contextUtility = new ContextUtility();
+        $siteFinder = $this->createStub(SiteFinder::class);
+        $contextUtility = new ContextUtility($siteFinder);
         $positionY = $contextUtility->getPositionY();
         self::assertEquals('left:0', $positionY);
     }

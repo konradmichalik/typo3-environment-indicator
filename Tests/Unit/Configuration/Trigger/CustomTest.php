@@ -27,7 +27,7 @@ class CustomTest extends TestCase
 {
     public function testConstructorAcceptsClosure(): void
     {
-        $closure = fn () => true;
+        $closure = static fn () => true;
         $trigger = new Custom($closure);
         self::assertInstanceOf(Custom::class, $trigger);
     }
@@ -50,7 +50,7 @@ class CustomTest extends TestCase
 
     public function testCheckReturnsTrueForTrueClosure(): void
     {
-        $closure = fn () => true;
+        $closure = static fn () => true;
         $trigger = new Custom($closure);
         $result = $trigger->check();
         self::assertTrue($result);
@@ -58,7 +58,7 @@ class CustomTest extends TestCase
 
     public function testCheckReturnsFalseForFalseClosure(): void
     {
-        $closure = fn () => false;
+        $closure = static fn () => false;
         $trigger = new Custom($closure);
         $result = $trigger->check();
         self::assertFalse($result);

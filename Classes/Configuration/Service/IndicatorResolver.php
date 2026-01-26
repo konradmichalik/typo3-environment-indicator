@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
+use Psr\Log\{LoggerInterface, NullLogger};
 use Throwable;
 
 /**
@@ -25,7 +26,7 @@ use Throwable;
  */
 class IndicatorResolver
 {
-    public function __construct(private readonly ConfigurationStorage $configurationStorage, private readonly TriggerEvaluator $triggerEvaluator) {}
+    public function __construct(private readonly ConfigurationStorage $configurationStorage, private readonly TriggerEvaluator $triggerEvaluator, private readonly LoggerInterface $logger = new NullLogger()) {}
 
     /**
      * Resolves all active indicators based on current configuration and triggers.
@@ -101,8 +102,10 @@ class IndicatorResolver
             // Merge with existing configuration or set new one
             $this->configurationStorage->mergeCurrentIndicator($indicatorClass, $configuration);
         } catch (Throwable $e) {
-            // Log error but don't break the entire resolution
-            error_log('Indicator processing failed: '.$e->getMessage());
+            $this->logger->warning('Indicator processing failed: {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
         }
     }
 }

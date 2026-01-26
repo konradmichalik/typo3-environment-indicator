@@ -60,7 +60,7 @@ class TextModifier extends AbstractModifier implements ModifierInterface
 
         $yPosition = ('top' === $position) ? $padding : $image->height() - $padding;
 
-        $image->text($wrappedText, (int) ($image->width() / 2), $yPosition, function (FontFactory $font) use ($fontSize, $configuration, $fontPath, $position): void {
+        $image->text($wrappedText, (int) ($image->width() / 2), $yPosition, static function (FontFactory $font) use ($fontSize, $configuration, $fontPath, $position): void {
             $font->filename($fontPath);
             $font->size($fontSize);
             $font->color($configuration['color']);

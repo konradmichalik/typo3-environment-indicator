@@ -17,6 +17,9 @@ services:
   KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\TopbarItem:
     public: true
 
+  KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility:
+    public: true
+
   dashboard.widget.EnvironmentIndicator:
     class: 'KonradMichalik\Typo3EnvironmentIndicator\Widgets\EnvironmentIndicatorWidget'
     tags:
