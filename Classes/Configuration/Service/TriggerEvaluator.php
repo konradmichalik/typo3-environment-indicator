@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\TriggerInterface;
+use Psr\Log\{LoggerInterface, NullLogger};
 use Throwable;
 
 /**
@@ -24,6 +25,8 @@ use Throwable;
  */
 class TriggerEvaluator
 {
+    public function __construct(private readonly LoggerInterface $logger = new NullLogger()) {}
+
     /**
      * Evaluates all triggers in a configuration.
      *
@@ -76,7 +79,10 @@ class TriggerEvaluator
         try {
             return $trigger->check();
         } catch (Throwable $e) {
-            error_log('Trigger evaluation failed: '.$e->getMessage());
+            $this->logger->warning('Trigger evaluation failed: {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
 
             return false;
         }

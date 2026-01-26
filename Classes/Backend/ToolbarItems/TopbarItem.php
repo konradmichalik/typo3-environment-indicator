@@ -33,7 +33,8 @@ use function sprintf;
 class TopbarItem implements ToolbarItemInterface
 {
     public function __construct(
-        protected readonly ExtensionConfiguration $extensionConfiguration,
+        private readonly ExtensionConfiguration $extensionConfiguration,
+        private readonly PageRenderer $pageRenderer,
     ) {}
 
     public function checkAccess(): bool
@@ -83,12 +84,9 @@ class TopbarItem implements ToolbarItemInterface
                     'subTextColor' => $subTextColor,
                 ],
             );
-
-            GeneralUtility::writeFile($absoluteCssFile, $fileContent);
         }
 
-        /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = $this->pageRenderer;
         $pageRenderer->addCssFile($relativeCssPath.$cssFileName);
 
         return '';

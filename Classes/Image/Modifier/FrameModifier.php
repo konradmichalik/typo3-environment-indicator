@@ -34,7 +34,7 @@ class FrameModifier extends AbstractModifier implements ModifierInterface
         $borderSize = $this->configuration['borderSize'] ?? 5;
         $borderColor = $this->configuration['color'] ?? 'black';
 
-        $image->drawRectangle(0, 0, function (RectangleFactory $rectangle) use ($width, $height, $borderSize, $borderColor): void {
+        $image->drawRectangle(0, 0, static function (RectangleFactory $rectangle) use ($width, $height, $borderSize, $borderColor): void {
             $rectangle->size($width, $height);
             $rectangle->border($borderColor, $borderSize);
         });

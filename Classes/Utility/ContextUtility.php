@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function array_key_exists;
 use function is_string;
@@ -33,6 +32,8 @@ use function is_string;
  */
 class ContextUtility
 {
+    public function __construct(private readonly ?SiteFinder $siteFinder = null) {}
+
     #[AsAllowedCallable]
     public function getContext(): string
     {
@@ -81,11 +82,14 @@ class ContextUtility
             return '';
         }
 
+        if (null === $this->siteFinder) {
+            return '';
+        }
+
         $pid = $routing->getPageId();
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 
         try {
-            $site = $siteFinder->getSiteByPageId($pid);
+            $site = $this->siteFinder->getSiteByPageId($pid);
         } catch (SiteNotFoundException) {
             return '';
         }

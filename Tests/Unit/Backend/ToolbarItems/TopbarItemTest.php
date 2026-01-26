@@ -18,6 +18,7 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * TopbarItemTest.
@@ -35,49 +36,56 @@ class TopbarItemTest extends TestCase
     public function testConstructorWithExtensionConfiguration(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertInstanceOf(TopbarItem::class, $topbarItem);
     }
 
     public function testCheckAccessReturnsTrue(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertTrue($topbarItem->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertFalse($topbarItem->hasDropDown());
     }
 
     public function testGetDropDownReturnsEmptyString(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertEquals('', $topbarItem->getDropDown());
     }
 
     public function testGetAdditionalAttributesReturnsEmptyArray(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertEquals([], $topbarItem->getAdditionalAttributes());
     }
 
     public function testGetIndexReturnsZero(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertEquals(0, $topbarItem->getIndex());
     }
 
     public function testImplementsToolbarItemInterface(): void
     {
         $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $topbarItem = new TopbarItem($extensionConfiguration);
+        $pageRenderer = $this->createStub(PageRenderer::class);
+        $topbarItem = new TopbarItem($extensionConfiguration, $pageRenderer);
         self::assertInstanceOf(ToolbarItemInterface::class, $topbarItem);
     }
 }
