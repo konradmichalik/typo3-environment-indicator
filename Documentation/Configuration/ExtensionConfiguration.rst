@@ -49,6 +49,14 @@ Frontend
 
     Enable the context frontend hint
 
+..  _extconf-frontend.image:
+
+..  confval:: frontend.image
+    :type: boolean
+    :Default: 1
+
+    Enable the image generation in frontend context
+
 Backend
 =======
 
