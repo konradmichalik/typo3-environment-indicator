@@ -36,7 +36,7 @@ You can adjust the color of the toolbar item in your :code:`ext_localconf.php`:
 
 Additional optional configuration keys:
 
-- :code:`text` (string): The text of the toolbar item. Default is the application context.
+- :code:`name` (string): The text of the toolbar item. Default is the application context.
 - :code:`icon` (string): The icon of the toolbar item. Default is :code:`information-application-context`.
 - :code:`index` (int): The positioning index of the toolbar item. Default is :code:`0`.
 
