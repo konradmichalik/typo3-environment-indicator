@@ -54,6 +54,7 @@ The following indicators are available:
     FrontendImage
     BackendToolbar
     BackendTopbar
+    BackendTheme
     Favicon
     BackendLogo
     DashboardWidget
