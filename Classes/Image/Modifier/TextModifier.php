@@ -46,7 +46,7 @@ class TextModifier extends AbstractModifier implements ModifierInterface
 
         $configuration = $this->configuration;
         $text = $configuration['text'];
-        $fontPath = GeneralUtility::getFileAbsFileName($configuration['font']);
+        $fontPath = isset($configuration['font']) ? GeneralUtility::getFileAbsFileName($configuration['font']) : '';
         $position = $configuration['position'] ?? 'bottom';
         $fontSize = self::INITIAL_FONT_SIZE;
 
@@ -61,7 +61,9 @@ class TextModifier extends AbstractModifier implements ModifierInterface
         $yPosition = ('top' === $position) ? $padding : $image->height() - $padding;
 
         $image->text($wrappedText, (int) ($image->width() / 2), $yPosition, static function (FontFactory $font) use ($fontSize, $configuration, $fontPath, $position): void {
-            $font->filename($fontPath);
+            if ('' !== $fontPath) {
+                $font->filename($fontPath);
+            }
             $font->size($fontSize);
             $font->color($configuration['color']);
             if (isset($configuration['stroke']['color'])) {
