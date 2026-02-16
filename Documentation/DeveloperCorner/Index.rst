@@ -14,5 +14,8 @@ into the generation process.
 ..  toctree::
     :maxdepth: 3
 
+    CustomTriggersAndIndicators
     CustomModifiers
+    ViewHelpers
+    TypoScript
     Example

@@ -22,4 +22,4 @@ The :code:`BackendUserGroup` trigger is used to show the indicators in the TYPO3
         ]
     );
 
-The configuration supports multiple group IDs, which are separated by a comma.
+The configuration supports multiple group IDs as separate arguments. The trigger passes if the current backend user is a member of **any** of the specified groups (OR logic).

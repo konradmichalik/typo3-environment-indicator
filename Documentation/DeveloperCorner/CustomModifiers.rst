@@ -26,12 +26,21 @@ Implement your own image modifier by extending the :code:`AbstractModifier` clas
 
         public function modify(ImageInterface &$image): void
         {
-            // Modify the image
+            // Modify the image using $this->configuration
         }
 
-        public function getRequiredConfigurationKeys(): array
+        public function validateConfigurationWithErrors(array $configuration): array
         {
-            // Return the required configuration keys
+            $errors = [];
+
+            if (!isset($configuration['myRequiredKey'])) {
+                $errors[] = 'Missing required configuration key: myRequiredKey';
+            }
+
+            return [
+                'valid' => [] === $errors,
+                'errors' => $errors,
+            ];
         }
     }
 

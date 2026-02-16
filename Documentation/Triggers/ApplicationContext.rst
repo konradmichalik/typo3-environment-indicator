@@ -22,4 +22,4 @@ The :code:`ApplicationContext` trigger is used to show the indicators in the TYP
         ]
     );
 
-The configuration supports multiple context names, which are separated by a comma. The context names can be prefixed with a wildcard `*` to match all contexts that start with the given name. For example, `Development*` will match all contexts that start with `Development`, such as `Development`, `Development/Local`, `Development/DDEV`, etc.
+The configuration supports multiple context names as separate arguments. The context names support glob-style wildcard patterns (using PHP's :code:`fnmatch()`). The :code:`*` wildcard matches any number of characters and the :code:`?` wildcard matches a single character. For example, :code:`Development*` will match all contexts that start with :code:`Development`, such as :code:`Development`, :code:`Development/Local`, :code:`Development/DDEV`, etc.

@@ -52,6 +52,46 @@ For the **backend**, the favicon will be fetched by the extension configuration 
 
     Favicon Examples
 
+..  _favicon-scope:
+
+Scope
+**********
+
+By default, the :code:`Favicon` indicator applies modifications to both frontend and backend. You can restrict it to a specific application type using the :code:`Scope` enum:
+
+..  code-block:: php
+    :caption: ext_localconf.php
+
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator;
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
+    use KonradMichalik\Typo3EnvironmentIndicator\Enum\Scope;
+    use KonradMichalik\Typo3EnvironmentIndicator\Image;
+
+    Handler::addIndicator(
+        triggers: [
+            new Trigger\ApplicationContext('Development*'),
+        ],
+        indicators: [
+            // Only modify the frontend favicon
+            new Indicator\Favicon(
+                configuration: [
+                    new Image\Modifier\TextModifier([
+                        'text' => 'DEV',
+                        'color' => '#bd593a',
+                    ]),
+                ],
+                scope: Scope::Frontend,
+            ),
+        ],
+    );
+
+Available scope values:
+
+- :code:`Scope::Global` (default): Apply to both frontend and backend.
+- :code:`Scope::Frontend`: Apply only to the frontend.
+- :code:`Scope::Backend`: Apply only to the backend.
+
 ..  _favicon-modifiers:
 
 Modifiers
@@ -135,7 +175,8 @@ This is the default modifier if no own configuration is set.
 Additional optional configuration keys:
 
 - :code:`font` (string): The font file path for the text. Default is :code:`EXT:typo3_environment_indicator/Resources/Public/Fonts/OpenSans-Bold.ttf`.
-- :code:`position` (string): The position of the text. Default is :code:`bottom`. Possible values are :code:`bottom`, :code:`top`.
+- :code:`position` (string): The position of the text. Default is :code:`top`. Possible values are :code:`bottom`, :code:`top`.
+- :code:`stroke` (array): Optional stroke configuration for the text outline. If set, it requires the sub-keys :code:`color` (string) and :code:`width` (numeric).
 
 ..  seealso::
 
@@ -218,7 +259,7 @@ Adds a circle indicator to the favicon.
 Additional optional configuration keys:
 
 - :code:`size` (float): The percentage size of the circle. Default is :code:`0.4`.
-- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`bottom left`, :code:`bottom right`, :code:`top left`, :code:`top right`.
+- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
 - :code:`padding` (float): The percentage padding of the circle. Default is :code:`0.1`.
 
 ..  seealso::
@@ -332,10 +373,10 @@ Overlay an additional image to the original favicon regarding the environment.
     :alt: Favicon OverlayModifier Example
 
 
-Additional optional configuration keys:
+Additional configuration keys (required by the modifier, but provided via default configuration):
 
 - :code:`size` (float): The percentage size of the overlay. Default is :code:`0.5`.
-- :code:`position` (string): The position of the overlay. Default is :code:`bottom right`. Possible values are :code:`bottom left`, :code:`bottom right`, :code:`top left`, :code:`top right`.
+- :code:`position` (string): The position of the overlay. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
 - :code:`padding` (float): The percentage padding of the overlay. Default is :code:`0.1`.
 
 ..  seealso::
@@ -347,7 +388,7 @@ Additional optional configuration keys:
 ColorizeModifier
 ===========
 
-Overlay an additional image to the original favicon regarding the environment.
+Colorize the original favicon with a specific color regarding the environment.
 
 ..  warning::
     This modifier is only available with "Imagick" image driver.

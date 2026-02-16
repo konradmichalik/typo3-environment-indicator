@@ -6,9 +6,9 @@
 Triggers
 ============
 
-Triggers acts like conditions and are used to define when environment indicators should be shown.
+Triggers act as conditions and are used to define when environment indicators should be shown.
 
-You can combine multiple different triggers to build up flexible conditions.
+You can combine multiple different triggers within a single :code:`Handler::addIndicator()` call. All triggers must return :code:`true` (AND logic) for the associated indicators to activate.
 
 ..  code-block:: php
     :caption: ext_localconf.php

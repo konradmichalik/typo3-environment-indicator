@@ -22,4 +22,4 @@ The :code:`FrontendUserGroup` trigger is used to show the indicators in the TYPO
         ]
     );
 
-The configuration supports multiple group IDs, which are separated by a comma.
+The configuration supports multiple group IDs as separate arguments. The trigger passes if the current frontend user is a member of **any** of the specified groups (OR logic). If no frontend user session is available, the trigger returns :code:`false`.
