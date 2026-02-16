@@ -373,7 +373,7 @@ Overlay an additional image to the original favicon regarding the environment.
     :alt: Favicon OverlayModifier Example
 
 
-Additional optional configuration keys:
+Additional configuration keys (required by the modifier, but provided via default configuration):
 
 - :code:`size` (float): The percentage size of the overlay. Default is :code:`0.5`.
 - :code:`position` (string): The position of the overlay. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
