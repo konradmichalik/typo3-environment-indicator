@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
+use Exception;
 use Intervention\Image\Interfaces\ImageManagerInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
@@ -67,8 +68,12 @@ class GeneralHelper
 
     public static function isExtensionFeatureEnabled(string $path): bool
     {
-        return (bool) GeneralUtility::makeInstance(ExtensionConfiguration::class)
-            ->get(Configuration::EXT_KEY, $path);
+        try {
+            return (bool) GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                ->get(Configuration::EXT_KEY, $path);
+        } catch (Exception) {
+            return false;
+        }
     }
 
     public static function isMinimumTypo3Version(int $version): bool

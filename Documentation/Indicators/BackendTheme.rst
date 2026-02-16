@@ -6,15 +6,24 @@
 Backend theme
 =======================
 
-..  versionadded:: 3.x
+..  versionadded:: 3.1
 
     This indicator requires TYPO3 v14 or later.
 
+..  warning::
+    This feature is **experimental**. The TYPO3 backend CSS framework is
+    currently considered internal API. While the overridden CSS custom properties
+    are stable within TYPO3 v14, they may change in future major versions.
+
+..  figure:: /Images/theme.jpg
+    :alt: Backend theme indicator preview
+
 The backend theme indicator colors the entire TYPO3 backend by overriding
-CSS custom properties introduced with the TYPO3 v14 theming system. Instead of
-modifying individual elements, it sets the primary accent color and scaffold
-variables, which automatically cascade through the backend UI - including the
-topbar, sidebar, buttons, active states, and focus rings.
+CSS custom properties introduced with the
+`TYPO3 v14 Fresh theme <https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Feature-108240-IntroduceFreshTheme.html>`__.
+Instead of modifying individual elements, it sets the primary accent color and
+scaffold variables, which automatically cascade through the backend UI -
+including the topbar, sidebar, buttons, active states, and focus rings.
 
 This works with all TYPO3 backend themes (Fresh, Modern, Classic) and supports
 both light and dark mode.
@@ -69,9 +78,12 @@ Configuration keys:
 
 ..  note::
     This indicator requires TYPO3 v14 or later. On TYPO3 v13 and below, the
-    indicator is silently ignored. The TYPO3 backend CSS framework is currently
-    considered internal API. While the overridden CSS custom properties are
-    stable within TYPO3 v14, they may change in future major versions.
+    indicator is silently ignored.
+
+..  important::
+    When this indicator is active, the user's theme selection in
+    :guilabel:`User Settings > Theme` is overridden by the environment color.
+    An info box is displayed in the User Settings to inform the user.
 
 ..  note::
     The backend theme indicator can be combined with other backend indicators
