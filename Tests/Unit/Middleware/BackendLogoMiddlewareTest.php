@@ -32,7 +32,6 @@ final class BackendLogoMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['backend' => ['logo' => false]]);
 
         $middleware = new BackendLogoMiddleware($extensionConfig);
@@ -54,7 +53,6 @@ final class BackendLogoMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['backend' => []]);
 
         $middleware = new BackendLogoMiddleware($extensionConfig);

@@ -32,7 +32,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => ['favicon' => false]]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -54,7 +53,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => []]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -76,7 +74,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn([]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -98,7 +95,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => ['favicon' => true]]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);

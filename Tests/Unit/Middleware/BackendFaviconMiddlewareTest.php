@@ -32,7 +32,6 @@ final class BackendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['backend' => ['favicon' => false]]);
 
         $middleware = new BackendFaviconMiddleware($extensionConfig);
@@ -54,7 +53,6 @@ final class BackendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['backend' => []]);
 
         $middleware = new BackendFaviconMiddleware($extensionConfig);
