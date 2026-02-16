@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
+use Exception;
 use Intervention\Image\Interfaces\ImageManagerInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function array_key_exists;
@@ -61,6 +64,21 @@ class GeneralHelper
             $indicatorClass,
             self::getIndicatorConfiguration(),
         );
+    }
+
+    public static function isExtensionFeatureEnabled(string $path): bool
+    {
+        try {
+            return (bool) GeneralUtility::makeInstance(ExtensionConfiguration::class)
+                ->get(Configuration::EXT_KEY, $path);
+        } catch (Exception) {
+            return false;
+        }
+    }
+
+    public static function isMinimumTypo3Version(int $version): bool
+    {
+        return GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= $version;
     }
 
     public static function supportFormat(ImageManagerInterface $manager, string $format): bool

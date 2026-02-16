@@ -63,6 +63,11 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
     Indicator\Frontend\Hint::class => [
         'position' => 'top left',
     ],
+    Indicator\Backend\Theme::class => [
+        'scaffoldHeader' => true,
+        'scaffoldSidebar' => true,
+        'neutralMix' => '15%',
+    ],
 ];
 
 // Presets
@@ -101,6 +106,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Widget([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Backend\Theme([
+                'color' => '#bd593a',
+            ]),
         ],
     );
 
@@ -135,6 +143,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Toolbar([
                 'color' => '#f39c12',
             ]),
+            new Indicator\Backend\Theme([
+                'color' => '#f39c12',
+            ]),
         ],
     );
 
@@ -167,6 +178,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
                 'color' => '#2f9c91',
             ]),
             new Indicator\Backend\Toolbar([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\Backend\Theme([
                 'color' => '#2f9c91',
             ]),
         ],

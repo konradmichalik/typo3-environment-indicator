@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\{ContextItem, TopbarItem};
+use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\{ContextItem, ThemeItem, TopbarItem};
 
 /**
  * Configuration.
@@ -31,5 +31,6 @@ class Configuration
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392103] = ContextItem::class;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392104] = TopbarItem::class;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392105] = ThemeItem::class;
     }
 }

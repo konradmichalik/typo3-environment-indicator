@@ -73,6 +73,11 @@ Combine :ref:`trigger <triggers>` and :ref:`indicator <indicators>` classes to s
       - :ref:`Modified frontend image <frontend-image>`: Modifies the frontend image based on the original image, current environment and your configuration.
       - ✔️
       -
+    * - .. figure:: /Images/theme.jpg
+          :alt: Backend Theme Preview
+      - :ref:`Backend theme <backend-theme>` *(experimental)*: Colors the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
+      -
+      - ✔️
 
 ..  _support:
 
