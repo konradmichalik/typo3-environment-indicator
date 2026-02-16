@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendFaviconMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -32,7 +31,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => ['favicon' => false]]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -54,7 +52,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => []]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -76,7 +73,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn([]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
@@ -98,7 +94,6 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $extensionConfig = $this->createStub(ExtensionConfiguration::class);
         $extensionConfig->method('get')
-            ->with(Configuration::EXT_KEY)
             ->willReturn(['frontend' => ['favicon' => true]]);
 
         $middleware = new FrontendFaviconMiddleware($extensionConfig);
