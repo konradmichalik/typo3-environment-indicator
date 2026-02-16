@@ -52,6 +52,46 @@ For the **backend**, the favicon will be fetched by the extension configuration 
 
     Favicon Examples
 
+..  _favicon-scope:
+
+Scope
+**********
+
+By default, the :code:`Favicon` indicator applies modifications to both frontend and backend. You can restrict it to a specific application type using the :code:`Scope` enum:
+
+..  code-block:: php
+    :caption: ext_localconf.php
+
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator;
+    use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
+    use KonradMichalik\Typo3EnvironmentIndicator\Enum\Scope;
+    use KonradMichalik\Typo3EnvironmentIndicator\Image;
+
+    Handler::addIndicator(
+        triggers: [
+            new Trigger\ApplicationContext('Development*'),
+        ],
+        indicators: [
+            // Only modify the frontend favicon
+            new Indicator\Favicon(
+                configuration: [
+                    new Image\Modifier\TextModifier([
+                        'text' => 'DEV',
+                        'color' => '#bd593a',
+                    ]),
+                ],
+                scope: Scope::Frontend,
+            ),
+        ],
+    );
+
+Available scope values:
+
+- :code:`Scope::Global` (default): Apply to both frontend and backend.
+- :code:`Scope::Frontend`: Apply only to the frontend.
+- :code:`Scope::Backend`: Apply only to the backend.
+
 ..  _favicon-modifiers:
 
 Modifiers
