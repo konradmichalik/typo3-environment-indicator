@@ -63,7 +63,7 @@ class ContextItem implements ToolbarItemInterface
             values: [
                 'context' => [
                     'icon' => $toolbarConfig['icon']['context'] ?? 'information-application-context',
-                    'name' => $toolbarConfig['name'] ?? $contextName,
+                    'text' => $toolbarConfig['text'] ?? $contextName,
                     'color' => $contextColor,
                     'textColor' => ColorUtility::getOptimalTextColor($contextColor),
                 ],

@@ -1,7 +1,7 @@
 <f:if condition="{context}">
-    <div class="environment-indicator-widget" data-context="{context.name}" style="background-color:{context.color};color:{context.textColor};font-size:{context.textSize};">
+    <div class="environment-indicator-widget" data-context="{context.text}" style="background-color:{context.color};color:{context.textColor};font-size:{context.textSize};">
         <core:icon identifier="{context.icon}" size="medium" />
-        <div class="environment-indicator-widget__text">{context.name}</div>
+        <div class="environment-indicator-widget__text">{context.text}</div>
         <div class="environment-indicator-widget__help"><f:translate key="widgets.environmentIndicator.title" extensionName="typo3_environment_indicator" /></div>
     </div>
 </f:if>
