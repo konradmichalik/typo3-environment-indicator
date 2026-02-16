@@ -9,6 +9,9 @@
             <trans-unit id="widgets.environmentIndicator.description">
                 <source>Shows the current environment regarding the indicator configuration.</source>
             </trans-unit>
+            <trans-unit id="userSettings.themeInfo">
+                <source>The backend theme colors are currently managed by the Environment Indicator extension. Changes to the theme selection may have limited visual effect.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
