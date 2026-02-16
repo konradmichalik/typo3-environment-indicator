@@ -16,4 +16,5 @@ into the generation process.
 
     CustomTriggersAndIndicators
     CustomModifiers
+    TypoScript
     Example
