@@ -55,6 +55,7 @@ class FaviconViewHelper extends AbstractViewHelper
 
         $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
         if (($extensionConfig[$applicationType->value]['favicon'] ?? false) !== true
+            || !isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'])
             || !array_key_exists(Environment::getContext()->__toString(), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'])
             || !array_key_exists('favicon', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'][Environment::getContext()->__toString()])
         ) {

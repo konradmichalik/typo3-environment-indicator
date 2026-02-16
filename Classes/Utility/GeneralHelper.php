@@ -33,7 +33,7 @@ class GeneralHelper
 {
     public static function getFolder(IndicatorInterface $indicator, bool $publicPath = true): string
     {
-        $defaultPath = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][$indicator::class]['_path'];
+        $defaultPath = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][$indicator::class]['_path'] ?? '';
 
         $path = Environment::getPublicPath().'/'.$defaultPath;
         if (!file_exists($path)) {

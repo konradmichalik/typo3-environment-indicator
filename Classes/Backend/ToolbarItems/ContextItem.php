@@ -93,7 +93,7 @@ class ContextItem implements ToolbarItemInterface
     {
         $toolbarConfig = $this->getBackendToolbarConfiguration();
 
-        return [] !== $toolbarConfig ? $toolbarConfig['index'] : 0;
+        return $toolbarConfig['index'] ?? 0;
     }
 
     /**
