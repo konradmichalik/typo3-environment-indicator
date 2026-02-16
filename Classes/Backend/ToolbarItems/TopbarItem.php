@@ -20,9 +20,6 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use function sprintf;
 
 /**
  * TopbarItem.
@@ -60,34 +57,19 @@ class TopbarItem implements ToolbarItemInterface
             return '';
         }
 
-        $relativeCssPath = 'typo3temp/assets/css/'.Configuration::EXT_KEY.'/';
-        $absoluteCssPath = Environment::getPublicPath().'/'.$relativeCssPath;
-        if (!file_exists($absoluteCssPath)) {
-            GeneralUtility::mkdir_deep($absoluteCssPath);
-        }
+        $textColor = ColorUtility::getOptimalTextColor($color);
+        $subTextColor = ColorUtility::getOptimalTextColor($color, 0.8);
 
-        $cssFileName = sprintf(
-            'backend-%s.css',
-            hash('sha256', implode('_', [Environment::getContext()->__toString(), $color])),
+        $cssContent = ViewFactoryHelper::renderView(
+            template: 'ToolbarItems/TopbarItem.html',
+            values: [
+                'color' => $color,
+                'textColor' => $textColor,
+                'subTextColor' => $subTextColor,
+            ],
         );
-        $absoluteCssFile = $absoluteCssPath.$cssFileName;
 
-        if (!file_exists($absoluteCssFile)) {
-            $textColor = ColorUtility::getOptimalTextColor($color);
-            $subTextColor = ColorUtility::getOptimalTextColor($color, 0.8);
-
-            $fileContent = ViewFactoryHelper::renderView(
-                template: 'ToolbarItems/TopbarItem.html',
-                values: [
-                    'color' => $color,
-                    'textColor' => $textColor,
-                    'subTextColor' => $subTextColor,
-                ],
-            );
-        }
-
-        $pageRenderer = $this->pageRenderer;
-        $pageRenderer->addCssFile($relativeCssPath.$cssFileName);
+        $this->pageRenderer->addCssInlineBlock(Configuration::EXT_KEY.'_topbar', $cssContent);
 
         return '';
     }
