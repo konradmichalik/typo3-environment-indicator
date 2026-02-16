@@ -22,4 +22,4 @@ The :code:`IP` trigger is used to show the indicators in the TYPO3 backend for s
         ]
     );
 
-The configuration supports multiple ip addresses, which are separated by a comma. Ip ranges are also supported, e.g. :code:`0/24`.
+The configuration supports multiple IP addresses as separate arguments. Both IPv4 and IPv6 addresses are supported. CIDR range notation is also supported for both address families (e.g. :code:`192.168.0.0/24` or :code:`2001:db8::/32`). Invalid IP formats will throw an :code:`InvalidArgumentException` during construction.
