@@ -37,7 +37,7 @@ class ColorizeModifier extends AbstractModifier implements ModifierInterface
         }
 
         $targetColorArray = ColorUtility::colorToRgb($this->configuration['color']);
-        $opacityPercentage = ($this->configuration['opacity'] * 100).'%';
+        $opacityPercentage = (($this->configuration['opacity'] ?? 1) * 100).'%';
         $targetColor = sprintf('rgb(%d, %d, %d)', $targetColorArray[0], $targetColorArray[1], $targetColorArray[2]);
 
         $imagick = $image->core()->native();

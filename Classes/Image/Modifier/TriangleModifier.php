@@ -32,7 +32,7 @@ class TriangleModifier extends AbstractModifier implements ModifierInterface
         $width = $image->width();
         $height = $image->height();
 
-        $triangleSize = (int) ($width * $this->configuration['size']);
+        $triangleSize = (int) ($width * ($this->configuration['size'] ?? 0.7));
         $position = $this->configuration['position'] ?? 'bottom right';
 
         $points = match ($position) {
