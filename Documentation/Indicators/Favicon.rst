@@ -135,7 +135,8 @@ This is the default modifier if no own configuration is set.
 Additional optional configuration keys:
 
 - :code:`font` (string): The font file path for the text. Default is :code:`EXT:typo3_environment_indicator/Resources/Public/Fonts/OpenSans-Bold.ttf`.
-- :code:`position` (string): The position of the text. Default is :code:`bottom`. Possible values are :code:`bottom`, :code:`top`.
+- :code:`position` (string): The position of the text. Default is :code:`top`. Possible values are :code:`bottom`, :code:`top`.
+- :code:`stroke` (array): Optional stroke configuration for the text outline. If set, it requires the sub-keys :code:`color` (string) and :code:`width` (numeric).
 
 ..  seealso::
 
@@ -347,7 +348,7 @@ Additional optional configuration keys:
 ColorizeModifier
 ===========
 
-Overlay an additional image to the original favicon regarding the environment.
+Colorize the original favicon with a specific color regarding the environment.
 
 ..  warning::
     This modifier is only available with "Imagick" image driver.
