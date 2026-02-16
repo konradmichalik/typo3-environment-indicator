@@ -259,7 +259,7 @@ Adds a circle indicator to the favicon.
 Additional optional configuration keys:
 
 - :code:`size` (float): The percentage size of the circle. Default is :code:`0.4`.
-- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`bottom left`, :code:`bottom right`, :code:`top left`, :code:`top right`.
+- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
 - :code:`padding` (float): The percentage padding of the circle. Default is :code:`0.1`.
 
 ..  seealso::
@@ -376,7 +376,7 @@ Overlay an additional image to the original favicon regarding the environment.
 Additional optional configuration keys:
 
 - :code:`size` (float): The percentage size of the overlay. Default is :code:`0.5`.
-- :code:`position` (string): The position of the overlay. Default is :code:`bottom right`. Possible values are :code:`bottom left`, :code:`bottom right`, :code:`top left`, :code:`top right`.
+- :code:`position` (string): The position of the overlay. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
 - :code:`padding` (float): The percentage padding of the overlay. Default is :code:`0.1`.
 
 ..  seealso::
