@@ -17,8 +17,6 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Theme;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 use function sprintf;
@@ -31,12 +29,8 @@ use function sprintf;
  */
 class ThemeItem implements ToolbarItemInterface
 {
-    private const MINIMUM_TYPO3_VERSION = 14;
-
     public function __construct(
-        private readonly ExtensionConfiguration $extensionConfiguration,
         private readonly PageRenderer $pageRenderer,
-        private readonly Typo3Version $typo3Version,
     ) {}
 
     public function checkAccess(): bool
@@ -96,17 +90,9 @@ class ThemeItem implements ToolbarItemInterface
 
     private function isApplicable(): bool
     {
-        if ($this->typo3Version->getMajorVersion() < self::MINIMUM_TYPO3_VERSION) {
-            return false;
-        }
-
-        $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
-
-        if (true !== (bool) ($extensionConfig['backend']['theme'] ?? false)) {
-            return false;
-        }
-
-        return GeneralHelper::isCurrentIndicator(Theme::class);
+        return GeneralHelper::isMinimumTypo3Version(14)
+            && GeneralHelper::isExtensionFeatureEnabled('backend/theme')
+            && GeneralHelper::isCurrentIndicator(Theme::class);
     }
 
     private function generateCss(string $color, bool $scaffoldHeader, bool $scaffoldSidebar, string $neutralMix): string

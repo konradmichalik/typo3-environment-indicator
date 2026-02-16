@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Backend\UserSettings;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Theme;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ThemeInfoField.
@@ -29,8 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ThemeInfoField
 {
-    private const MINIMUM_TYPO3_VERSION = 14;
-
     /**
      * Renders an info box in User Settings when the Theme indicator is active.
      *
@@ -55,19 +49,9 @@ class ThemeInfoField
 
     private function isApplicable(): bool
     {
-        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-        if ($typo3Version->getMajorVersion() < self::MINIMUM_TYPO3_VERSION) {
-            return false;
-        }
-
-        $extensionConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)
-            ->get(Configuration::EXT_KEY);
-
-        if (true !== (bool) ($extensionConfig['backend']['theme'] ?? false)) {
-            return false;
-        }
-
-        return GeneralHelper::isCurrentIndicator(Theme::class);
+        return GeneralHelper::isMinimumTypo3Version(14)
+            && GeneralHelper::isExtensionFeatureEnabled('backend/theme')
+            && GeneralHelper::isCurrentIndicator(Theme::class);
     }
 
     private function getLanguageService(): LanguageService
