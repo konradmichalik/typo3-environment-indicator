@@ -65,11 +65,11 @@
 			"copyright": 2025
 		},
 		"typo3/cms": {
-			"extension-key": "typo3_environment_indicator",
-			"web-dir": "public",
 			"Package": {
 				"providesPackages": {}
-			}
+			},
+			"extension-key": "typo3_environment_indicator",
+			"web-dir": "public"
 		}
 	},
 	"scripts": {
