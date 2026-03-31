@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') || exit;
 
+// @phpstan-ignore function.alreadyNarrowedType (v13 compatibility: addUserSetting() was added in v14.2)
 if (method_exists(ExtensionManagementUtility::class, 'addUserSetting')) {
     ExtensionManagementUtility::addUserSetting(
         'environmentIndicatorThemeInfo',
