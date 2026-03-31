@@ -17,7 +17,9 @@ use TYPO3\CMS\Core\Utility\{ExtensionManagementUtility, GeneralUtility};
 
 defined('TYPO3') || exit;
 
-if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 14) {
+if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 14
+    && !method_exists(ExtensionManagementUtility::class, 'addUserSetting')
+) {
     $GLOBALS['TYPO3_USER_SETTINGS']['columns']['environmentIndicatorThemeInfo'] = [
         'type' => 'user',
         'userFunc' => ThemeInfoField::class.'->render',
