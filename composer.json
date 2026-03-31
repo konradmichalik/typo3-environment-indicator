@@ -65,6 +65,9 @@
 			"copyright": 2025
 		},
 		"typo3/cms": {
+			"Package": {
+				"providesPackages": {}
+			},
 			"extension-key": "typo3_environment_indicator",
 			"web-dir": "public"
 		}
