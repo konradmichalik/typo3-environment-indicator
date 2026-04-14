@@ -11,7 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use KonradMichalik\Typo3EnvironmentIndicator\Backend\UserSettings\ThemeInfoField;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\{ExtensionManagementUtility, GeneralUtility};
 
@@ -23,7 +22,7 @@ if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 14
 ) {
     $GLOBALS['TYPO3_USER_SETTINGS']['columns']['environmentIndicatorThemeInfo'] = [
         'type' => 'user',
-        'userFunc' => ThemeInfoField::class.'->render',
+        'renderType' => 'environmentIndicatorThemeInfo',
         'label' => '',
     ];
 

@@ -11,7 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use KonradMichalik\Typo3EnvironmentIndicator\Backend\UserSettings\ThemeInfoField;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') || exit;
@@ -24,7 +23,7 @@ if (method_exists(ExtensionManagementUtility::class, 'addUserSetting')) {
             'label' => '',
             'config' => [
                 'type' => 'user',
-                'userFunc' => ThemeInfoField::class.'->render',
+                'renderType' => 'environmentIndicatorThemeInfo',
             ],
         ],
         'after:theme',
