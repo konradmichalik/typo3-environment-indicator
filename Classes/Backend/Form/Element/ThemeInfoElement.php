@@ -40,7 +40,7 @@ class ThemeInfoElement extends AbstractFormElement
             'LLL:EXT:typo3_environment_indicator/Resources/Private/Language/locallang.xlf:userSettings.themeInfo',
         );
 
-        $html = '<div class="alert alert-info" role="alert">'
+        $html = '<div class="alert alert-info">'
             .'<div class="alert-body">'
             .htmlspecialchars($message, \ENT_QUOTES)
             .'</div>'
