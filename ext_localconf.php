@@ -18,6 +18,12 @@ defined('TYPO3') || exit;
 
 Configuration::addToolbarItems();
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1744624800] = [
+    'nodeName' => 'environmentIndicatorThemeInfo',
+    'priority' => 40,
+    'class' => KonradMichalik\Typo3EnvironmentIndicator\Backend\Form\Element\ThemeInfoElement::class,
+];
+
 // Default configuration
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
