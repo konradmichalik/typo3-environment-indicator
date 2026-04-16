@@ -10,7 +10,7 @@
 	  }
 	],
 	"require": {
-	  "konradmichalik/typo3-environment-indicator": "*",
+	  "konradmichalik/typo3-environment-indicator": "1.1.0",
 	  "helhum/dotenv-connector": "^3.2.0"
 	},
 	"suggest": {},
