@@ -100,12 +100,7 @@ class TextModifier extends AbstractModifier implements ModifierInterface
         if (isset($configuration['stroke']['color'])) {
             $font->stroke($configuration['stroke']['color'], (int) $configuration['stroke']['width']);
         }
-        if (ImageManagerHelper::isVersion4()) {
-            $font->align('center', 'top' === $position ? 'top' : 'bottom'); // @phpstan-ignore arguments.count
-        } else {
-            $font->align('center');
-            $font->valign('top' === $position ? 'top' : 'bottom');
-        }
+        ImageManagerHelper::setFontAlignment($font, 'center', 'top' === $position ? 'top' : 'bottom');
     }
 
     /**

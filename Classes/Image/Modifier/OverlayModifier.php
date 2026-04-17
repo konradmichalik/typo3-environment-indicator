@@ -45,11 +45,7 @@ class OverlayModifier extends AbstractModifier implements ModifierInterface
 
         $position = str_replace(' ', '-', strtolower((string) $this->configuration['position']));
 
-        if (ImageManagerHelper::isVersion4()) {
-            $image->insert($overlay, $paddingX, $paddingY, $position); // @phpstan-ignore method.notFound
-        } else {
-            $image->place($overlay, $position, $paddingX, $paddingY);
-        }
+        ImageManagerHelper::placeImage($image, $overlay, $position, $paddingX, $paddingY);
     }
 
     /**

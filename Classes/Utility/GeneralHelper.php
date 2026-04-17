@@ -83,6 +83,14 @@ class GeneralHelper
 
     public static function supportFormat(ImageManagerInterface $manager, string $format): bool
     {
-        return ('ico' === $format) || ('svg' === $format) || $manager->driver()->supports($format);
+        if ('ico' === $format || 'svg' === $format) {
+            return true;
+        }
+
+        if (method_exists($manager, 'driver')) {
+            return $manager->driver()->supports($format);
+        }
+
+        return true;
     }
 }
