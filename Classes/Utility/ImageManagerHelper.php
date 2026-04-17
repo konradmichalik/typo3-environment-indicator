@@ -25,8 +25,6 @@ use Intervention\Image\Typography\FontFactory;
  */
 class ImageManagerHelper
 {
-    private const V4_DECODE = 'decode';
-
     public static function readImage(ImageManager|ImageManagerInterface $manager, string $path): ImageInterface
     {
         $method = self::isVersion4() ? 'decode' : 'read';
@@ -111,6 +109,6 @@ class ImageManagerHelper
 
     public static function isVersion4(): bool
     {
-        return method_exists(ImageManager::class, self::V4_DECODE);
+        return method_exists(ImageManager::class, 'decode');
     }
 }
