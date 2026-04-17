@@ -15,7 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function in_array;
@@ -34,7 +34,7 @@ class OverlayModifier extends AbstractModifier implements ModifierInterface
         $manager = new ImageManager(
             ImageDriverUtility::resolveDriver(),
         );
-        $overlay = $manager->read(GeneralUtility::getFileAbsFileName($this->configuration['path']));
+        $overlay = ImageManagerHelper::readImage($manager, GeneralUtility::getFileAbsFileName($this->configuration['path']));
 
         $newWidth = (int) ($image->width() * $this->configuration['size']);
         $newHeight = (int) ($overlay->height() * ($newWidth / $overlay->width()));
@@ -45,7 +45,11 @@ class OverlayModifier extends AbstractModifier implements ModifierInterface
 
         $position = str_replace(' ', '-', strtolower((string) $this->configuration['position']));
 
-        $image->place($overlay, $position, $paddingX, $paddingY);
+        if (ImageManagerHelper::isVersion4()) {
+            $image->insert($overlay, $paddingX, $paddingY, $position); // @phpstan-ignore method.notFound
+        } else {
+            $image->place($overlay, $position, $paddingX, $paddingY);
+        }
     }
 
     /**

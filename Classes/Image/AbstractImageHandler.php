@@ -17,7 +17,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility};
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
 
@@ -191,7 +191,7 @@ abstract class AbstractImageHandler
 
         $this->preProcessImage($absolutePath, $newImageFilename, $format);
 
-        $image = $manager->read($absolutePath);
+        $image = ImageManagerHelper::readImage($manager, $absolutePath);
         $this->applyImageModifiers($image);
         $image->save(GeneralHelper::getFolder($this->indicator).$newImageFilename);
 
