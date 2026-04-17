@@ -47,6 +47,14 @@ class GeneralHelperTest extends TestCase
 
     public function testSupportFormatWithSupportedFormat(): void
     {
+        if (!method_exists(ImageManagerInterface::class, 'driver')) {
+            // intervention/image v4 removed driver() from interface — supportFormat() returns true as fallback
+            $manager = $this->createStub(ImageManagerInterface::class);
+            self::assertTrue(GeneralHelper::supportFormat($manager, 'jpg'));
+
+            return;
+        }
+
         $driver = $this->createMock(DriverInterface::class);
         $driver->expects(self::once())
             ->method('supports')
@@ -64,6 +72,14 @@ class GeneralHelperTest extends TestCase
 
     public function testSupportFormatWithUnsupportedFormat(): void
     {
+        if (!method_exists(ImageManagerInterface::class, 'driver')) {
+            // intervention/image v4 removed driver() from interface — supportFormat() returns true as fallback
+            $manager = $this->createStub(ImageManagerInterface::class);
+            self::assertTrue(GeneralHelper::supportFormat($manager, 'unknown'));
+
+            return;
+        }
+
         $driver = $this->createMock(DriverInterface::class);
         $driver->expects(self::once())
             ->method('supports')

@@ -15,7 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function is_string;
@@ -33,7 +33,7 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         $manager = new ImageManager(
             ImageDriverUtility::resolveDriver(),
         );
-        $image = $manager->read(GeneralUtility::getFileAbsFileName($this->configuration['path']));
+        $image = ImageManagerHelper::readImage($manager, GeneralUtility::getFileAbsFileName($this->configuration['path']));
     }
 
     /**

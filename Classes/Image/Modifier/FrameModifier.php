@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
-use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\Interfaces\ImageInterface;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageManagerHelper;
 
 use function is_string;
 
@@ -34,10 +34,7 @@ class FrameModifier extends AbstractModifier implements ModifierInterface
         $borderSize = $this->configuration['borderSize'] ?? 5;
         $borderColor = $this->configuration['color'] ?? 'black';
 
-        $image->drawRectangle(0, 0, static function (RectangleFactory $rectangle) use ($width, $height, $borderSize, $borderColor): void {
-            $rectangle->size($width, $height);
-            $rectangle->border($borderColor, $borderSize);
-        });
+        ImageManagerHelper::drawRectangle($image, 0, 0, $width, $height, $borderColor, $borderSize);
     }
 
     /**

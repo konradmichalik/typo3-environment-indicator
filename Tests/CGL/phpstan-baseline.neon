@@ -1,2 +1,9 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		# ImageManagerHelper is a compat layer for intervention/image v3 and v4.
+		# Errors differ depending on which version is installed — both are expected.
+		-
+			path: ../../Classes/Utility/ImageManagerHelper.php
+			reportUnmatched: false
+			messages:
+				- '#.*#'

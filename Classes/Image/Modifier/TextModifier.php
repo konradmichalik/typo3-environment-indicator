@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Typography\FontFactory;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageManagerHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function count;
@@ -61,16 +62,7 @@ class TextModifier extends AbstractModifier implements ModifierInterface
         $yPosition = ('top' === $position) ? $padding : $image->height() - $padding;
 
         $image->text($wrappedText, (int) ($image->width() / 2), $yPosition, static function (FontFactory $font) use ($fontSize, $configuration, $fontPath, $position): void {
-            if ('' !== $fontPath) {
-                $font->filename($fontPath);
-            }
-            $font->size($fontSize);
-            $font->color($configuration['color']);
-            if (isset($configuration['stroke']['color'])) {
-                $font->stroke($configuration['stroke']['color'], (int) $configuration['stroke']['width']);
-            }
-            $font->align('center');
-            $font->valign('top' === $position ? 'top' : 'bottom');
+            self::configureFont($font, $fontSize, $configuration, $fontPath, $position);
         });
     }
 
@@ -93,6 +85,22 @@ class TextModifier extends AbstractModifier implements ModifierInterface
             'valid' => [] === $errors,
             'errors' => $errors,
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $configuration
+     */
+    private static function configureFont(FontFactory $font, int $fontSize, array $configuration, string $fontPath, string $position): void
+    {
+        if ('' !== $fontPath) {
+            $font->filename($fontPath);
+        }
+        $font->size($fontSize);
+        $font->color($configuration['color']);
+        if (isset($configuration['stroke']['color'])) {
+            $font->stroke($configuration['stroke']['color'], (int) $configuration['stroke']['width']);
+        }
+        ImageManagerHelper::setFontAlignment($font, 'center', 'top' === $position ? 'top' : 'bottom');
     }
 
     /**

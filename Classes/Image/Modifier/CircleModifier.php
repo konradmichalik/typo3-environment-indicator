@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
-use Intervention\Image\Geometry\Factories\CircleFactory;
 use Intervention\Image\Interfaces\ImageInterface;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageManagerHelper;
 
 use function in_array;
 use function is_string;
@@ -60,14 +60,7 @@ class CircleModifier extends AbstractModifier implements ModifierInterface
                 break;
         }
 
-        $image->drawCircle(
-            $x,
-            $y,
-            function (CircleFactory $circle) use ($radius): void {
-                $circle->radius($radius);
-                $circle->background($this->configuration['color']);
-            },
-        );
+        ImageManagerHelper::drawCircle($image, $x, $y, $radius, $this->configuration['color']);
     }
 
     /**

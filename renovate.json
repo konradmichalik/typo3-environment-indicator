@@ -3,5 +3,8 @@
 	"extends": [
 		"github>konradmichalik/renovate-config",
 		"github>konradmichalik/renovate-config:typo3-extension"
+	],
+	"ignorePaths": [
+		"Tests/Acceptance/Fixtures/packages/sitepackage/composer.json"
 	]
 }
