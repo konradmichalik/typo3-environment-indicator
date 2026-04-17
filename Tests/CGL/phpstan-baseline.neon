@@ -7,3 +7,9 @@ parameters:
 			reportUnmatched: false
 			messages:
 				- '#.*#'
+		# GeneralHelper::supportFormat() uses method_exists() for intervention/image v3/v4 compat.
+		# Which branch is "always true" depends on the installed version.
+		-
+			message: "#^Call to function method_exists\\(\\) with Intervention\\\\Image\\\\Interfaces\\\\ImageManagerInterface and 'driver' will always evaluate to true\\.$#"
+			path: ../../Classes/Utility/GeneralHelper.php
+			reportUnmatched: false
