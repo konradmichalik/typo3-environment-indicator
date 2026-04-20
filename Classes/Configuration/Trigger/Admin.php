@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+
 /**
  * Admin.
  *
@@ -23,6 +25,8 @@ class Admin implements TriggerInterface
 {
     public function check(): bool
     {
-        return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->isAdmin();
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+
+        return $backendUser instanceof BackendUserAuthentication && $backendUser->isAdmin();
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+
 use function in_array;
 
 /**
@@ -35,7 +37,12 @@ class BackendUserGroup implements TriggerInterface
 
     public function check(): bool
     {
-        $currentUserGroups = $GLOBALS['BE_USER']->userGroupsUID ?? [];
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if (!$backendUser instanceof BackendUserAuthentication) {
+            return false;
+        }
+
+        $currentUserGroups = $backendUser->userGroupsUID;
         foreach ($this->groups as $group) {
             if (in_array($group, $currentUserGroups, true)) {
                 return true;
