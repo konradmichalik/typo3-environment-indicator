@@ -261,6 +261,20 @@ Configuration\Handler::addIndicator(
 );
 
 /*
+ * Context "Development/Theme"
+ */
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/Theme'),
+    ],
+    indicators: [
+        new Indicator\Backend\Theme([
+            'color' => '#00ACC1',
+        ]),
+    ],
+);
+
+/*
  * Context "Development/Custom"
  */
 Configuration\Handler::addIndicator(
