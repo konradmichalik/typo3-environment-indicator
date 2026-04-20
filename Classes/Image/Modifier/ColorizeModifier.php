@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
+use Imagick;
 use ImagickPixel;
 use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ColorUtility, ImageDriverUtility};
 use RuntimeException;
 
 use function array_key_exists;
+use function assert;
 use function is_string;
 use function sprintf;
 
@@ -41,6 +43,7 @@ class ColorizeModifier extends AbstractModifier implements ModifierInterface
         $targetColor = sprintf('rgb(%d, %d, %d)', $targetColorArray[0], $targetColorArray[1], $targetColorArray[2]);
 
         $imagick = $image->core()->native();
+        assert($imagick instanceof Imagick);
         $imagick->modulateImage(100, 0, 100);
         $color = new ImagickPixel($targetColor);
         $opacity = new ImagickPixel(sprintf('rgb(%s, %s, %s)', $opacityPercentage, $opacityPercentage, $opacityPercentage));
