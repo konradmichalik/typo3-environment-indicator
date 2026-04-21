@@ -1,7 +1,7 @@
 name: typo3-environment-indicator
 type: php
-docroot: .test
-php_version: "8.3"
+docroot: .Build
+php_version: "8.2"
 webserver_type: apache-fpm
 router_http_port: "80"
 router_https_port: "443"
