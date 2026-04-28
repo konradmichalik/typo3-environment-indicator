@@ -18,6 +18,12 @@ The dashboard widget can be placed to the TYPO3 backend dashboard. It shows the 
 
     Dashboard Widget Selection
 
+The widget is registered with its own icon (identifier :code:`environment-indicator-widget`), which is shown in the widget selection dialog:
+
+..  image:: /Images/environment-indicator-widget.svg
+    :alt: Environment Indicator Widget Icon
+    :width: 32px
+
 You can adjust the widget configuration in your :code:`ext_localconf.php`:
 
 ..  code-block:: php

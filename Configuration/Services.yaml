@@ -31,6 +31,6 @@ services:
         groupNames: 'systemInfo'
         title: 'LLL:EXT:typo3_environment_indicator/Resources/Private/Language/locallang.xlf:widgets.environmentIndicator.title'
         description: 'LLL:EXT:typo3_environment_indicator/Resources/Private/Language/locallang.xlf:widgets.environmentIndicator.description'
-        iconIdentifier: 'content-target'
+        iconIdentifier: 'environment-indicator-widget'
         height: 'small'
         width: 'small'
