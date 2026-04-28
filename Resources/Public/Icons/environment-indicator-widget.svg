@@ -1,0 +1,21 @@
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-180,-33)">
+        <g id="Environment-Indicator---Widget" serif:id="Environment Indicator - Widget" transform="matrix(0.24,0,0,0.24,179.52,33.24)">
+            <rect x="2" y="-1" width="100" height="100" style="fill:none;"/>
+            <g transform="matrix(4.166667,0,0,4.166667,-748,-138.5)">
+                <rect x="186" y="40" width="12" height="10" style="fill:rgb(144,190,109);"/>
+            </g>
+            <g transform="matrix(4.166667,0,0,4.166667,18.666667,15.666667)">
+                <path d="M14,2L2,2C1.451,2 1,2.451 1,3L1,13C1,13.549 1.451,14 2,14L14,14C14.549,14 15,13.549 15,13L15,3C15,2.451 14.549,2 14,2ZM14,4L4,4L4,3L14,3L14,4ZM3,3L3,4L2,4L2,3L3,3ZM2,13L2,5L14,5L14,13L2,13Z" style="fill-rule:nonzero;"/>
+            </g>
+            <g transform="matrix(3.472222,0,0,3.472222,23.728297,27.425601)">
+                <path d="M9.672,8.38C9.585,8.424 9.498,8.424 9.411,8.424C8.628,8.424 7.498,5.728 7.498,4.815C7.498,4.467 7.585,4.38 7.672,4.293C6.759,4.424 5.628,4.772 5.28,5.207C5.193,5.293 5.15,5.467 5.15,5.685C5.15,7.12 6.628,10.294 7.715,10.294C8.193,10.293 9.02,9.511 9.672,8.38M9.193,4.207C10.15,4.207 11.15,4.381 11.15,4.903C11.15,6.033 10.454,7.381 10.063,7.381C9.411,7.381 8.628,5.598 8.628,4.685C8.628,4.293 8.802,4.207 9.193,4.207" style="fill-rule:nonzero;"/>
+            </g>
+            <g transform="matrix(4.166667,0,0,4.166667,-748,-138.5)">
+                <rect x="188" y="40" width="10" height="1" style="fill-opacity:0.4;"/>
+            </g>
+        </g>
+        <g id="Colors">
+        </g>
+    </g>
+</svg>
