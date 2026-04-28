@@ -28,6 +28,11 @@ Environment Indicator
 
 ----
 
+..  figure:: /Images/logo.svg
+    :alt: Frontend Edit Logo
+    :align: center
+    :width: 200px
+
 This extension provides several features to show an environment indicator in the TYPO3 frontend and backend.
 
 ----

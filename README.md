@@ -1,6 +1,6 @@
 <div align="center">
 
-![Extension icon](Resources/Public/Icons/Extension.svg)
+![Extension icon](Resources/Public/Icons/Extension.png)
 
 # TYPO3 extension `typo3_environment_indicator`
 
