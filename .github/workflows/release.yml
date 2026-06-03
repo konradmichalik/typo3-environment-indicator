@@ -6,7 +6,7 @@ on:
 
 jobs:
   ter-publish:
-    uses: konradmichalik/reusable-github-actions/.github/workflows/release-typo3.yml@main
+    uses: konradmichalik/reusable-github-actions/.github/workflows/release-typo3.yml@7e9510ad26b6bc039a13aa4bd9fa44a1a0b723bc # main
     secrets:
       typo3-api-token: ${{ secrets.TYPO3_API_TOKEN }}
     with:
