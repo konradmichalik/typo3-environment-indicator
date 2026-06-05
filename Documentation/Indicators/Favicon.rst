@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-Favicon.png
+    :alt: Favicon Icon
+    :width: 120px
+
 ..  _favicon:
 
 =======================

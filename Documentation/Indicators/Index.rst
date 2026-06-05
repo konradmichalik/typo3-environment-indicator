@@ -47,14 +47,88 @@ You can combine multiple indicators.
 
 The following indicators are available:
 
+Frontend + Backend
+------------------
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+
+    *   -   Icon
+        -   Indicator
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-Favicon.png
+                :alt: Favicon Icon
+                :width: 80px
+        -   :ref:`favicon`
+        -   Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration.
+
+Frontend
+--------
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+
+    *   -   Icon
+        -   Indicator
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-FrontendHint.png
+                :alt: Frontend Hint Icon
+                :width: 80px
+        -   :ref:`frontend-hint`
+        -   Adds an informative hint to the frontend showing the website title and the current application context.
+    *   -   ..  image:: /Images/Extension-EI-FrontendImage.png
+                :alt: Frontend Image Icon
+                :width: 80px
+        -   :ref:`frontend-image`
+        -   Modify a frontend image based on the original image, the current application context and your configuration.
+
+Backend
+-------
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+
+    *   -   Icon
+        -   Indicator
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-BackendToolbarItem.png
+                :alt: Backend Toolbar Item Icon
+                :width: 80px
+        -   :ref:`backend-toolbar-item`
+        -   Adds an informative item with the current application context to the backend toolbar.
+    *   -   ..  image:: /Images/Extension-EI-BackendTopbar.png
+                :alt: Backend Topbar Icon
+                :width: 80px
+        -   :ref:`backend-topbar`
+        -   Colorize the backend header topbar regarding the application context.
+    *   -   ..  image:: /Images/Extension-EI-BackendLogo.png
+                :alt: Backend Logo Icon
+                :width: 80px
+        -   :ref:`backend-logo`
+        -   Modify the backend logo based on the original logo, the current application context and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-DashboardWidget.png
+                :alt: Dashboard Widget Icon
+                :width: 80px
+        -   :ref:`dashboard-widget`
+        -   Render a dashboard widget according to the environment.
+    *   -   ..  image:: /Images/Extension-EI-BackendTheme.png
+                :alt: Backend Theme Icon
+                :width: 80px
+        -   :ref:`backend-theme` *(experimental)*
+        -   Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
+
 ..  toctree::
     :maxdepth: 3
+    :hidden:
 
+    Favicon
     FrontendHint
     FrontendImage
     BackendToolbar
     BackendTopbar
-    BackendTheme
-    Favicon
     BackendLogo
     DashboardWidget
+    BackendTheme

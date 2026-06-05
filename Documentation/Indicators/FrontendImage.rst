@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-FrontendImage.png
+    :alt: Frontend Image Icon
+    :width: 120px
+
 ..  _frontend-image:
 
 =======================

@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-BackendTopbar.png
+    :alt: Backend Topbar Icon
+    :width: 120px
+
 ..  _backend-topbar:
 
 =======================

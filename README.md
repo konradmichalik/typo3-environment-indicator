@@ -23,16 +23,66 @@ This extension provides several features to show an environment indicator in the
 
 ## ✨ Features
 
-| Preview                                                                                | Feature                                                                                                                                                                                                                                                                      | Frontend | Backend |
-|----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
-| ![Frontend Hint Preview](Documentation/Images/preview-frontend-hint.png)               | **[Frontend hint](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHint.html)** <br/><br/> Adds an informative hint to the frontend showing the website title and the current application context.                          | ✔️       |         |
-| ![Backend Toolbar Item Preview](Documentation/Images/preview-backend-toolbar-item.png) | **[Backend toolbar item](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendToolbar.html)** <br/><br/> Adds an informative item with the current application context to the backend toolbar.                                   |          | ✔️      |
-| ![Backend Topbar Preview](Documentation/Images/preview-backend-topbar.jpg)             | **[Backend topbar](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTopbar.html)** <br/><br/> Colorize the backend header topbar regarding the application context.                                                          |          | ✔️      |
-| ![Favicon Preview](Documentation/Images/preview-favicon.png)                           | **[Modified favicon](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Favicon.html)** <br/><br/> Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration. | ✔️       | ✔️      |
-| ![Backend Logo Preview](Documentation/Images/preview-backend-logo.jpg)                 | **[Modified backend logo](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendLogo.html)** <br/><br/> Modify the backend logo based on the original logo, the current application context and your configuration.               |          | ✔️      |
-| ![Dashboard Widget Preview](Documentation/Images/preview-dashboard-widget.jpg)         | **[Dashboard widget](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/DashboardWidget.html)** <br/><br/> Render a dashboard widget according to the environment.                                                                    |          | ✔️      |
-| ![Frontend Image Preview](Documentation/Images/preview-frontend-image.jpg)             | **[Modified frontend image](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html)** <br/><br/> Modify frontend image based on the original image, the current application context and your configuration.            | ✔️       |         |
-| ![preview-theme.jpg](Documentation/Images/preview-theme.jpg)                                                                                       | **[Backend theme](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html)** *(experimental)* <br/><br/> Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.              |          | ✔️      |
+<table>
+  <thead>
+    <tr>
+      <th>Icon</th>
+      <th>Preview</th>
+      <th>Feature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th colspan="3" align="left">Frontend + Backend</th>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-Favicon.png" width="80" alt="Favicon Icon"></td>
+      <td><img src="Documentation/Images/preview-favicon.png" width="320" alt="Favicon Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Favicon.html">Modified favicon</a></strong><br/><br/>Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration.</td>
+    </tr>
+    <tr>
+      <th colspan="3" align="left">Frontend</th>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-FrontendHint.png" width="80" alt="Frontend Hint Icon"></td>
+      <td><img src="Documentation/Images/preview-frontend-hint.png" width="320" alt="Frontend Hint Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHint.html">Frontend hint</a></strong><br/><br/>Adds an informative hint to the frontend showing the website title and the current application context.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-FrontendImage.png" width="80" alt="Frontend Image Icon"></td>
+      <td><img src="Documentation/Images/preview-frontend-image.jpg" width="320" alt="Frontend Image Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
+    </tr>
+    <tr>
+      <th colspan="3" align="left">Backend</th>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendToolbarItem.png" width="80" alt="Backend Toolbar Item Icon"></td>
+      <td><img src="Documentation/Images/preview-backend-toolbar-item.png" width="320" alt="Backend Toolbar Item Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendToolbar.html">Backend toolbar item</a></strong><br/><br/>Adds an informative item with the current application context to the backend toolbar.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendTopbar.png" width="80" alt="Backend Topbar Icon"></td>
+      <td><img src="Documentation/Images/preview-backend-topbar.jpg" width="320" alt="Backend Topbar Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTopbar.html">Backend topbar</a></strong><br/><br/>Colorize the backend header topbar regarding the application context.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendLogo.png" width="80" alt="Backend Logo Icon"></td>
+      <td><img src="Documentation/Images/preview-backend-logo.jpg" width="320" alt="Backend Logo Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendLogo.html">Modified backend logo</a></strong><br/><br/>Modify the backend logo based on the original logo, the current application context and your configuration.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-DashboardWidget.png" width="80" alt="Dashboard Widget Icon"></td>
+      <td><img src="Documentation/Images/preview-dashboard-widget.jpg" width="320" alt="Dashboard Widget Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/DashboardWidget.html">Dashboard widget</a></strong><br/><br/>Render a dashboard widget according to the environment.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendTheme.png" width="80" alt="Backend Theme Icon"></td>
+      <td><img src="Documentation/Images/preview-theme.jpg" width="320" alt="Backend Theme Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
+    </tr>
+  </tbody>
+</table>
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)
