@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendFaviconMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -27,13 +28,18 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 final class FrontendFaviconMiddlewareTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+    }
+
     public function testProcessSkipsWhenFeatureDisabled(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn(['frontend' => ['favicon' => false]]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'frontend' => ['favicon' => false],
+        ];
 
-        $middleware = new FrontendFaviconMiddleware($extensionConfig);
+        $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -50,11 +56,11 @@ final class FrontendFaviconMiddlewareTest extends TestCase
 
     public function testProcessSkipsWhenFeatureMissing(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn(['frontend' => []]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'frontend' => [],
+        ];
 
-        $middleware = new FrontendFaviconMiddleware($extensionConfig);
+        $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -71,11 +77,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
 
     public function testProcessSkipsWhenConfigMissing(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn([]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
 
-        $middleware = new FrontendFaviconMiddleware($extensionConfig);
+        $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -92,11 +96,11 @@ final class FrontendFaviconMiddlewareTest extends TestCase
 
     public function testProcessReturnsResponseWhenFeatureEnabled(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn(['frontend' => ['favicon' => true]]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'frontend' => ['favicon' => true],
+        ];
 
-        $middleware = new FrontendFaviconMiddleware($extensionConfig);
+        $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);

@@ -30,35 +30,37 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
     }
 
     public function testConstructorWithExtensionConfiguration(): void
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $provider = new TechnicalContextConditionFunctionsProvider($extensionConfiguration);
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         self::assertInstanceOf(TechnicalContextConditionFunctionsProvider::class, $provider);
     }
 
     public function testGetFunctionsReturnsArray(): void
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $provider = new TechnicalContextConditionFunctionsProvider($extensionConfiguration);
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $functions = $provider->getFunctions();
         self::assertCount(1, $functions);
     }
 
     public function testGetFunctionsReturnsExpressionFunction(): void
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $provider = new TechnicalContextConditionFunctionsProvider($extensionConfiguration);
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $functions = $provider->getFunctions();
         self::assertInstanceOf(ExpressionFunction::class, $functions[0]);
     }
 
     public function testExpressionFunctionHasCorrectName(): void
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $provider = new TechnicalContextConditionFunctionsProvider($extensionConfiguration);
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $functions = $provider->getFunctions();
         $function = $functions[0];
         self::assertEquals('enableTechnicalContext', $function->getName());
@@ -66,8 +68,7 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
 
     public function testImplementsExpressionFunctionProviderInterface(): void
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
-        $provider = new TechnicalContextConditionFunctionsProvider($extensionConfiguration);
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         self::assertInstanceOf(\Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface::class, $provider);
     }
 }

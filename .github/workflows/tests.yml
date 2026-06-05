@@ -8,5 +8,5 @@ jobs:
   tests:
     uses: konradmichalik/reusable-github-actions/.github/workflows/tests-typo3.yml@main
     with:
-      typo3-versions: '["13.4", "14.2"]'
+      typo3-versions: '["13.4", "14.3"]'
       php-versions: '["8.2", "8.3", "8.4", "8.5"]'

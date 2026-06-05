@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\ToolbarItems;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\ContextItem;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
@@ -25,34 +26,40 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 final class ContextItemTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+    }
+
     public function testCheckAccessReturnsTrue(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $item = new ContextItem($extensionConfig);
+        $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertTrue($item->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $item = new ContextItem($extensionConfig);
+        $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertFalse($item->hasDropDown());
     }
 
     public function testGetDropDownReturnsEmptyString(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $item = new ContextItem($extensionConfig);
+        $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertSame('', $item->getDropDown());
     }
 
     public function testGetAdditionalAttributesReturnsEmptyArray(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $item = new ContextItem($extensionConfig);
+        $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertSame([], $item->getAdditionalAttributes());
     }

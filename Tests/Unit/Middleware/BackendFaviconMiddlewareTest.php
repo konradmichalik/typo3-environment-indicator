@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\BackendFaviconMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -27,13 +28,18 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 final class BackendFaviconMiddlewareTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+    }
+
     public function testProcessSkipsWhenFeatureDisabled(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn(['backend' => ['favicon' => false]]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'backend' => ['favicon' => false],
+        ];
 
-        $middleware = new BackendFaviconMiddleware($extensionConfig);
+        $middleware = new BackendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -50,11 +56,11 @@ final class BackendFaviconMiddlewareTest extends TestCase
 
     public function testProcessSkipsWhenFeatureMissing(): void
     {
-        $extensionConfig = $this->createStub(ExtensionConfiguration::class);
-        $extensionConfig->method('get')
-            ->willReturn(['backend' => []]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'backend' => [],
+        ];
 
-        $middleware = new BackendFaviconMiddleware($extensionConfig);
+        $middleware = new BackendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
