@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-BackendTheme.png
+    :alt: Backend Theme Icon
+    :width: 120px
+
 ..  _backend-theme:
 
 =======================

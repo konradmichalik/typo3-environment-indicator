@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-BackendToolbarItem.png
+    :alt: Backend Toolbar Item Icon
+    :width: 120px
+
 ..  _backend-toolbar-item:
 
 =======================

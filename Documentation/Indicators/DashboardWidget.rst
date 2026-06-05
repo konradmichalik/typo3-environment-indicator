@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-DashboardWidget.png
+    :alt: Dashboard Widget Icon
+    :width: 120px
+
 ..  _dashboard-widget:
 
 =======================

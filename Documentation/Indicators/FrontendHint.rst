@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-FrontendHint.png
+    :alt: Frontend Hint Icon
+    :width: 120px
+
 ..  _frontend-hint:
 
 =======================
