@@ -6,8 +6,5 @@
 	],
 	"ignorePaths": [
 		"Tests/Acceptance/Fixtures/packages/sitepackage/composer.json"
-	],
-	"constraints": {
-		"php": ">=8.2"
-	}
+	]
 }
