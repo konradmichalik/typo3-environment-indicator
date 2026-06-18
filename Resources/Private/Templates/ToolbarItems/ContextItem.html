@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-    <f:asset.css identifier="project-status" useNonce="true">
+    <f:asset.css identifier="project-status" nonce="{f:security.nonce(directive: 'style-src')}">
         .topbar-header-project-status__context {
             display: inline-block;
             padding: 10.5px 13.5px;

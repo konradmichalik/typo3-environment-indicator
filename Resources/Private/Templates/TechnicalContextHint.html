@@ -1,8 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:asset.css identifier="technical-context-hint" href="EXT:typo3_environment_indicator/Resources/Public/Css/TechnicalContextHint.css"  useNonce="true"/>
-<f:asset.script identifier="technical-context-hint-js" src="EXT:typo3_environment_indicator/Resources/Public/JavaScript/TechnicalContextHint.js"  useNonce="true"/>
+<f:asset.css identifier="technical-context-hint" href="EXT:typo3_environment_indicator/Resources/Public/Css/TechnicalContextHint.css"  nonce="{f:security.nonce(directive: 'style-src', scope: 'static')}"/>
+<f:asset.script identifier="technical-context-hint-js" src="EXT:typo3_environment_indicator/Resources/Public/JavaScript/TechnicalContextHint.js"  nonce="{f:security.nonce(directive: 'script-src', scope: 'static')}"/>
 
 <div
     class="technical-context technical-context--custom-colors"
