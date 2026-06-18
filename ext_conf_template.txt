@@ -16,5 +16,5 @@ backend.logo = 1
 backend.context = 1
 # cat=backend/enable/40; type=boolean; label=Enable the backend toolbar item / backend topbar also in production context
 backend.contextProduction = 1
-# cat=backend/enable/50; type=boolean; label=Enable the backend theme modification (TYPO3 v14+ only). Colors the entire backend based on the environment.
-backend.theme = 1
+# cat=backend/enable/50; type=boolean; label=Enable the backend theme modification (TYPO3 v14+ only, experimental). Colors the entire backend based on the environment.
+backend.theme = 0
