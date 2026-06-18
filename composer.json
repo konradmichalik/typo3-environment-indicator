@@ -1,6 +1,6 @@
 {
 	"name": "konradmichalik/typo3-environment-indicator",
-	"description": "TYPO3 extension with several features to show an environment indicator in the TYPO3 frontend and backend.",
+	"description": "Environment Indicator - TYPO3 extension with several features to show an environment indicator in the TYPO3 frontend and backend.",
 	"license": [
 		"GPL-2.0-or-later"
 	],
