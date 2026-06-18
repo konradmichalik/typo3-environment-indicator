@@ -19,6 +19,13 @@ Backend theme
     currently considered internal API. While the overridden CSS custom properties
     are stable within TYPO3 v14, they may change in future major versions.
 
+..  note::
+    Because it is experimental, the backend theme is **disabled by default**.
+    Enable it via the extension configuration setting :code:`backend.theme`
+    (:guilabel:`Admin Tools > Settings > Extension Configuration`). Even with the
+    default configuration active, the backend stays uncolored until this flag is
+    turned on.
+
 ..  figure:: /Images/theme.jpg
     :alt: Backend theme indicator preview
 
