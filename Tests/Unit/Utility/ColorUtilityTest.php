@@ -24,108 +24,28 @@ use PHPUnit\Framework\TestCase;
  */
 class ColorUtilityTest extends TestCase
 {
-    public function testGetColoredStringWithName(): void
-    {
-        $result = ColorUtility::getColoredString('test');
-        self::assertStringStartsWith('hsl(', $result);
-        self::assertStringEndsWith(')', $result);
-    }
-
-    public function testGetColoredStringWithoutName(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'Test Site';
-        $result = ColorUtility::getColoredString();
-        self::assertStringStartsWith('hsl(', $result);
-        self::assertStringEndsWith(')', $result);
-    }
-
     public function testGetOptimalTextColorForLightColor(): void
     {
-        $result = ColorUtility::getOptimalTextColor('#ffffff');
-        self::assertStringStartsWith('rgba(0,0,0,', $result);
+        self::assertSame('rgba(0, 0, 0, 1)', ColorUtility::getOptimalTextColor('#ffffff'));
     }
 
     public function testGetOptimalTextColorForDarkColor(): void
     {
-        $result = ColorUtility::getOptimalTextColor('#000000');
-        self::assertStringStartsWith('rgba(255,255,255,', $result);
+        self::assertSame('rgba(255, 255, 255, 1)', ColorUtility::getOptimalTextColor('#000000'));
     }
 
     public function testGetOptimalTextColorWithOpacity(): void
     {
-        $result = ColorUtility::getOptimalTextColor('#ffffff', 0.5);
-        self::assertStringContainsString('0.5', $result);
+        self::assertSame('rgba(0, 0, 0, 0.5)', ColorUtility::getOptimalTextColor('#ffffff', 0.5));
     }
 
-    public function testColorToRgbWithHex(): void
+    public function testGetOptimalTextColorFallsBackForUnparseableColor(): void
     {
-        $result = ColorUtility::colorToRgb('#ff0000');
-        self::assertEquals([255, 0, 0], $result);
+        self::assertSame('rgba(255, 255, 255, 1)', ColorUtility::getOptimalTextColor('transparent'));
     }
 
-    public function testColorToRgbWithShortHex(): void
+    public function testGetOptimalTextColorUsesCustomFallbackColor(): void
     {
-        $result = ColorUtility::colorToRgb('#f00');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testColorToRgbWithRgb(): void
-    {
-        $result = ColorUtility::colorToRgb('rgb(255, 0, 0)');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testColorToRgbWithHsl(): void
-    {
-        $result = ColorUtility::colorToRgb('hsl(0, 100%, 50%)');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testColorToRgbWithInvalidColor(): void
-    {
-        $result = ColorUtility::colorToRgb('invalid');
-        self::assertEquals([0, 0, 0], $result);
-    }
-
-    public function testColorToRgbWithStringFallback(): void
-    {
-        $result = ColorUtility::colorToRgb('invalid', '#ff0000');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testHexToRgb(): void
-    {
-        $result = ColorUtility::hexToRgb('#ff0000');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testHexToRgbWithShortHex(): void
-    {
-        $result = ColorUtility::hexToRgb('#f00');
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testHslToRgb(): void
-    {
-        $result = ColorUtility::hslToRgb(0, 100, 50);
-        self::assertEquals([255, 0, 0], $result);
-    }
-
-    public function testHslToRgbWithBlue(): void
-    {
-        $result = ColorUtility::hslToRgb(240, 100, 50);
-        self::assertEquals([0, 0, 255], $result);
-    }
-
-    public function testCalculateLuminance(): void
-    {
-        $result = ColorUtility::calculateLuminance(255, 255, 255);
-        self::assertEquals(1.0, $result);
-    }
-
-    public function testCalculateLuminanceBlack(): void
-    {
-        $result = ColorUtility::calculateLuminance(0, 0, 0);
-        self::assertEquals(0.0, $result);
+        self::assertSame('rgba(0, 0, 0, 1)', ColorUtility::getOptimalTextColor('transparent', fallbackColor: '#ffffff'));
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15ab8a15956b82e743aeceececb8c4f7",
+    "content-hash": "1fa2ad54a7a1c5998c52f27a892ca361",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1198,6 +1198,66 @@
                 }
             ],
             "time": "2026-05-01T08:20:10+00:00"
+        },
+        {
+            "name": "konradmichalik/php-color",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konradmichalik/php-color.git",
+                "reference": "ce53155e764e7c7e82cf79da8d685f56f3553139"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konradmichalik/php-color/zipball/ce53155e764e7c7e82cf79da8d685f56f3553139",
+                "reference": "ce53155e764e7c7e82cf79da8d685f56f3553139",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+            },
+            "require-dev": {
+                "armin/editorconfig-cli": "^2.0",
+                "ergebnis/composer-normalize": "^2.42",
+                "konradmichalik/php-cs-fixer-preset": "^0.2.0",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^11.0 || ^12.0",
+                "rector/rector": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KonradMichalik\\Color\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Konrad Michalik",
+                    "email": "hej@konradmichalik.dev",
+                    "homepage": "https://konradmichalik.dev",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A small, framework-agnostic PHP library for color conversion, luminance, contrast and deterministic string-to-color hashing.",
+            "keywords": [
+                "color",
+                "contrast",
+                "hex",
+                "hsl",
+                "luminance",
+                "rgb",
+                "wcag"
+            ],
+            "support": {
+                "issues": "https://github.com/konradmichalik/php-color/issues",
+                "source": "https://github.com/konradmichalik/php-color/tree/0.2.0"
+            },
+            "time": "2026-06-19T11:30:22+00:00"
         },
         {
             "name": "konradmichalik/php-ico-file-loader",

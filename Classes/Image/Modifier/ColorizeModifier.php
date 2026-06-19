@@ -16,7 +16,8 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 use Imagick;
 use ImagickPixel;
 use Intervention\Image\Interfaces\ImageInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ColorUtility, ImageDriverUtility};
+use KonradMichalik\Color\Color;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
 use RuntimeException;
 
 use function array_key_exists;
@@ -38,9 +39,8 @@ class ColorizeModifier extends AbstractModifier implements ModifierInterface
             throw new RuntimeException('This modifier requires the Imagick driver', 1741785764);
         }
 
-        $targetColorArray = ColorUtility::colorToRgb($this->configuration['color']);
+        $targetColor = (Color::tryFromString($this->configuration['color']) ?? Color::fromRgb(0, 0, 0))->toRgb()->toCssString();
         $opacityPercentage = (($this->configuration['opacity'] ?? 1) * 100).'%';
-        $targetColor = sprintf('rgb(%d, %d, %d)', $targetColorArray[0], $targetColorArray[1], $targetColorArray[2]);
 
         $imagick = $image->core()->native();
         assert($imagick instanceof Imagick);
