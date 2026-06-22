@@ -4,6 +4,7 @@
 config
 public
 !Resources/Public
+/Resources/Private/Libs
 vendor
 var
 Documentation-*
