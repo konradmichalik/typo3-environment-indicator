@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
+use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\BackendFaviconMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * BackendFaviconMiddlewareTest.
@@ -31,6 +33,7 @@ final class BackendFaviconMiddlewareTest extends TestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+        GeneralUtility::purgeInstances();
     }
 
     public function testProcessSkipsWhenFeatureDisabled(): void
@@ -73,5 +76,35 @@ final class BackendFaviconMiddlewareTest extends TestCase
 
         $result = $middleware->process($request, $handler);
         self::assertSame($response, $result);
+    }
+
+    public function testProcessCallsFaviconHandlerWhenFeatureEnabled(): void
+    {
+        $extConfigMock = $this->createMock(ExtensionConfiguration::class);
+        $extConfigMock->method('get')
+            ->willReturnCallback(static function (string $ext, string $path = '') {
+                if (Configuration::EXT_KEY === $ext) {
+                    return ['backend' => ['favicon' => true]];
+                }
+
+                return null;
+            });
+
+        $faviconHandlerMock = $this->createMock(FaviconHandler::class);
+        $faviconHandlerMock->method('process')->willReturn('/processed/favicon.ico');
+        GeneralUtility::addInstance(FaviconHandler::class, $faviconHandlerMock);
+
+        $middleware = new BackendFaviconMiddleware($extConfigMock);
+
+        $request = $this->createStub(ServerRequestInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
+
+        $handler->expects(self::once())->method('handle')->willReturn($response);
+
+        $result = $middleware->process($request, $handler);
+
+        self::assertSame($response, $result);
+        self::assertSame('/processed/favicon.ico', $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['backend']['backendFavicon']);
     }
 }

@@ -16,6 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trig
 use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Custom;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * CustomTest.
@@ -73,7 +74,7 @@ class CustomTest extends TestCase
 
     public function testConstructorThrowsForInvalidClassName(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid class name format');
 
         new Custom('123InvalidClass::method');
@@ -81,7 +82,7 @@ class CustomTest extends TestCase
 
     public function testConstructorThrowsForInvalidMethodName(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid method name format');
 
         new Custom('ValidClass::123invalidMethod');
@@ -89,7 +90,7 @@ class CustomTest extends TestCase
 
     public function testConstructorThrowsForNonExistentClass(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Class or method does not exist');
 
         new Custom('NonExistentClassXyz123::someMethod');
@@ -97,7 +98,7 @@ class CustomTest extends TestCase
 
     public function testConstructorThrowsForNonStaticMethod(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Method must be public and static');
 
         new Custom(self::class.'::nonStaticTestMethod');
@@ -105,7 +106,7 @@ class CustomTest extends TestCase
 
     public function testCheckReturnsFalseWhenClosureThrowsException(): void
     {
-        $closure = static fn () => throw new \RuntimeException('Test exception');
+        $closure = static fn () => throw new RuntimeException('Test exception');
         $trigger = new Custom($closure);
 
         self::assertFalse($trigger->check());

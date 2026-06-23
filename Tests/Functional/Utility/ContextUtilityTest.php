@@ -50,6 +50,15 @@ class ContextUtilityTest extends FunctionalTestCase
         parent::tearDown();
     }
 
+    public function testGetContextReturnsApplicationContextString(): void
+    {
+        $contextUtility = new ContextUtility();
+        $context = $contextUtility->getContext();
+
+        self::assertIsString($context);
+        self::assertNotEmpty($context);
+    }
+
     public function testGetTitleReturnsWebsiteTitleFromSiteConfiguration(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
