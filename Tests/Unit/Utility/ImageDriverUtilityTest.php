@@ -45,4 +45,5 @@ class ImageDriverUtilityTest extends TestCase
         $method = $reflection->getMethod('getImageDriverConfiguration');
         self::assertTrue($method->isStatic());
     }
+
 }
