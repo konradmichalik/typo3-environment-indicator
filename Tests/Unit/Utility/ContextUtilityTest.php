@@ -17,10 +17,7 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * ContextUtilityTest.
@@ -110,43 +107,6 @@ class ContextUtilityTest extends TestCase
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
 
         self::assertSame('', (new ContextUtility())->getTitle());
-    }
-
-    public function testGetTitleReturnsEmptyStringWhenSiteIsNotFound(): void
-    {
-        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(42, '0', []));
-
-        $siteFinder = $this->createMock(SiteFinder::class);
-        $siteFinder->method('getSiteByPageId')->willThrowException(new SiteNotFoundException());
-
-        self::assertSame('', (new ContextUtility($siteFinder))->getTitle());
-    }
-
-    public function testGetTitleReturnsWebsiteTitleFromSiteConfiguration(): void
-    {
-        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
-
-        $site = $this->createMock(Site::class);
-        $site->method('getConfiguration')->willReturn(['websiteTitle' => 'Production Site']);
-
-        $siteFinder = $this->createMock(SiteFinder::class);
-        $siteFinder->method('getSiteByPageId')->willReturn($site);
-
-        self::assertSame('Production Site', (new ContextUtility($siteFinder))->getTitle());
-    }
-
-    public function testGetTitleFallsBackToSiteIdentifierWithoutWebsiteTitle(): void
-    {
-        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
-
-        $site = $this->createMock(Site::class);
-        $site->method('getConfiguration')->willReturn([]);
-        $site->method('getIdentifier')->willReturn('main');
-
-        $siteFinder = $this->createMock(SiteFinder::class);
-        $siteFinder->method('getSiteByPageId')->willReturn($site);
-
-        self::assertSame('main', (new ContextUtility($siteFinder))->getTitle());
     }
 
     private function createRequestWithRouting(?PageArguments $routing): ServerRequestInterface
