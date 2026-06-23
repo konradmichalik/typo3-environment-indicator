@@ -106,7 +106,7 @@ class CustomTest extends TestCase
 
     public function testCheckReturnsFalseWhenClosureThrowsException(): void
     {
-        $closure = static fn () => throw new RuntimeException('Test exception');
+        $closure = static fn () => throw new RuntimeException('Test exception', 1372101584);
         $trigger = new Custom($closure);
 
         self::assertFalse($trigger->check());

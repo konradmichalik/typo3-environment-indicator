@@ -32,7 +32,6 @@ class ColorizeModifierTest extends TestCase
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
-        parent::tearDown();
     }
 
     public function testInstantiationWithRequiredValues(): void
