@@ -29,6 +29,12 @@ class ColorizeModifierTest extends TestCase
 {
     use CreatesTestImageTrait;
 
+    protected function tearDown(): void
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
+    }
+
     public function testInstantiationWithRequiredValues(): void
     {
         $modifier = new ColorizeModifier(['color' => '#ff0000']);

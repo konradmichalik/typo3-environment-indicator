@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+use function extension_loaded;
+
 /**
  * AbstractImageHandlerTest.
  *
@@ -39,6 +41,10 @@ class AbstractImageHandlerTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        if (!extension_loaded('gd')) {
+            self::markTestSkipped('GD extension is not available.');
+        }
+
         $fixtureDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
         GeneralUtility::mkdir_deep($fixtureDir);
         $this->testImagePath = $fixtureDir.'test_favicon.png';
@@ -56,6 +62,11 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
     protected function tearDown(): void
     {
+        $fixtureDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        if (is_dir($fixtureDir)) {
+            GeneralUtility::rmdir($fixtureDir, true);
+        }
+
         parent::tearDown();
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class]);
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current']);
