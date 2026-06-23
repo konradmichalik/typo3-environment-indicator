@@ -30,6 +30,7 @@
 		"typo3fluid/fluid": "^4.2 || ^5.0"
 	},
 	"require-dev": {
+		"eliashaeussler/typo3-vendor-bundler": "^4.0",
 		"eliashaeussler/version-bumper": "^4.0.3",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^13.0",
 		"phpunit/phpunit": "^11.0 || ^12.0 || ^13.0",
@@ -48,6 +49,7 @@
 	},
 	"config": {
 		"allow-plugins": {
+			"eliashaeussler/typo3-vendor-bundler": true,
 			"eliashaeussler/version-bumper": true,
 			"ergebnis/composer-normalize": true,
 			"helhum/dotenv-connector": true,
