@@ -103,15 +103,15 @@
 			"@test:unit",
 			"@test:functional"
 		],
-		"test:unit": "phpunit -c phpunit.xml --no-coverage",
-		"test:functional": "phpunit -c phpunit.functional.xml --no-coverage",
 		"test:coverage": [
 			"@test:coverage:unit",
 			"@test:coverage:functional",
 			"@test:coverage:merge"
 		],
-		"test:coverage:unit": "phpunit -c phpunit.xml",
 		"test:coverage:functional": "phpunit -c phpunit.functional.xml",
-		"test:coverage:merge": "phpcov merge --clover .Build/coverage/clover.xml --html .Build/coverage/html .Build/coverage/"
+		"test:coverage:merge": "phpcov merge --clover .Build/coverage/clover.xml --html .Build/coverage/html .Build/coverage/",
+		"test:coverage:unit": "phpunit -c phpunit.xml",
+		"test:functional": "phpunit -c phpunit.functional.xml --no-coverage",
+		"test:unit": "phpunit -c phpunit.xml --no-coverage"
 	}
 }
