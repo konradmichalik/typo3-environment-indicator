@@ -21,6 +21,14 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+
+/**
+ * ContextUtilityTest.
+ *
+ * @author Konrad Michalik <hej@konradmichalik.dev>
+ * @license GPL-2.0-or-later
+ */
+
 class ContextUtilityTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
@@ -31,7 +39,7 @@ class ContextUtilityTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/Pages.csv');
+        $this->importCSVDataSet(__DIR__.'/Fixtures/Pages.csv');
 
         $this->writeSiteConfigurationYaml('test-site', 1, 'Test Site');
         $this->writeSiteConfigurationYaml('no-title-site', 2, null);
@@ -82,7 +90,7 @@ class ContextUtilityTest extends FunctionalTestCase
 
     private function writeSiteConfigurationYaml(string $identifier, int $rootPageId, ?string $websiteTitle): void
     {
-        $configDir = Environment::getConfigPath() . '/sites/' . $identifier;
+        $configDir = Environment::getConfigPath().'/sites/'.$identifier;
         @mkdir($configDir, 0777, true);
 
         $yaml = "rootPageId: {$rootPageId}\n";
@@ -99,6 +107,6 @@ class ContextUtilityTest extends FunctionalTestCase
         $yaml .= "    base: /\n";
         $yaml .= "    locale: en_US.UTF-8\n";
 
-        file_put_contents($configDir . '/config.yaml', $yaml);
+        file_put_contents($configDir.'/config.yaml', $yaml);
     }
 }

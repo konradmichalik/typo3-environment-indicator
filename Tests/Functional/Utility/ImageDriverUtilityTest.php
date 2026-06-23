@@ -18,6 +18,14 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
+
+/**
+ * ImageDriverUtilityTest.
+ *
+ * @author Konrad Michalik <hej@konradmichalik.dev>
+ * @license GPL-2.0-or-later
+ */
+
 class ImageDriverUtilityTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
