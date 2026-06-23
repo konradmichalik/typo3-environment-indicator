@@ -15,6 +15,9 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Image\Modifier;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ColorizeModifier;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ColorizeModifierTest.
@@ -24,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ColorizeModifierTest extends TestCase
 {
+    use CreatesTestImageTrait;
+
     public function testInstantiationWithRequiredValues(): void
     {
         $modifier = new ColorizeModifier(['color' => '#ff0000']);
@@ -45,5 +50,78 @@ class ColorizeModifierTest extends TestCase
     {
         $modifier = new ColorizeModifier(['color' => '#ff0000']);
         self::assertInstanceOf(ColorizeModifier::class, $modifier);
+    }
+
+    public function testModifyThrowsExceptionWhenNotUsingImagickDriver(): void
+    {
+        $extConfigMock = $this->createMock(ExtensionConfiguration::class);
+        $extConfigMock->method('get')->willReturn(['general' => ['imageDriver' => 'gd']]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $extConfigMock);
+
+        $image = $this->createImage();
+        $modifier = new ColorizeModifier(['color' => '#ff0000']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionCode(1741785764);
+        $modifier->modify($image);
+    }
+
+    public function testValidateConfigurationReturnsFalseForMissingColor(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration([]));
+    }
+
+    public function testValidateConfigurationReturnsFalseForNonStringColor(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => 123]));
+    }
+
+    public function testValidateConfigurationReturnsFalseForOpacityBelowZero(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => -0.1]));
+    }
+
+    public function testValidateConfigurationReturnsFalseForOpacityAboveOne(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => 1.1]));
+    }
+
+    public function testValidateConfigurationReturnsFalseForNonNumericOpacity(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => 'full']));
+    }
+
+    public function testValidateConfigurationReturnsFalseForNonNumericBrightness(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'brightness' => 'high']));
+    }
+
+    public function testValidateConfigurationReturnsFalseForNonNumericContrast(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'contrast' => 'high']));
+    }
+
+    public function testValidateConfigurationReturnsTrueForMinimalConfiguration(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertTrue($modifier->validateConfiguration(['color' => '#ff0000']));
+    }
+
+    public function testValidateConfigurationReturnsTrueForFullConfiguration(): void
+    {
+        $modifier = new ColorizeModifier(['color' => '#fff']);
+        self::assertTrue($modifier->validateConfiguration([
+            'color' => '#ff0000',
+            'opacity' => 0.8,
+            'brightness' => 50,
+            'contrast' => -10,
+        ]));
     }
 }
