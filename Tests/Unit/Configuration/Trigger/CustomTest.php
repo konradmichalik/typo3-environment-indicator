@@ -71,7 +71,52 @@ class CustomTest extends TestCase
         self::assertTrue($result);
     }
 
+    public function testConstructorThrowsForInvalidClassName(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid class name format');
+
+        new Custom('123InvalidClass::method');
+    }
+
+    public function testConstructorThrowsForInvalidMethodName(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid method name format');
+
+        new Custom('ValidClass::123invalidMethod');
+    }
+
+    public function testConstructorThrowsForNonExistentClass(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Class or method does not exist');
+
+        new Custom('NonExistentClassXyz123::someMethod');
+    }
+
+    public function testConstructorThrowsForNonStaticMethod(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Method must be public and static');
+
+        new Custom(self::class.'::nonStaticTestMethod');
+    }
+
+    public function testCheckReturnsFalseWhenClosureThrowsException(): void
+    {
+        $closure = static fn () => throw new \RuntimeException('Test exception');
+        $trigger = new Custom($closure);
+
+        self::assertFalse($trigger->check());
+    }
+
     public static function staticTestMethod(): bool
+    {
+        return true;
+    }
+
+    public function nonStaticTestMethod(): bool
     {
         return true;
     }
