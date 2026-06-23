@@ -21,14 +21,12 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-
 /**
  * ContextUtilityTest.
  *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-
 class ContextUtilityTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
