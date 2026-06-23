@@ -71,4 +71,29 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         self::assertInstanceOf(\Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface::class, $provider);
     }
+
+    public function testEvaluatorReturnsFalseWhenFeatureDisabled(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'frontend' => ['context' => false],
+        ];
+
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
+        $evaluator = $provider->getFunctions()[0]->getEvaluator();
+
+        self::assertFalse($evaluator([]));
+    }
+
+    public function testEvaluatorReturnsFalseWhenFeatureEnabledButNoCurrentHintIndicator(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+            'frontend' => ['context' => true],
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
+
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
+        $evaluator = $provider->getFunctions()[0]->getEvaluator();
+
+        self::assertFalse($evaluator([]));
+    }
 }
