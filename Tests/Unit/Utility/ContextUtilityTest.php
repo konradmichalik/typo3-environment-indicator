@@ -16,6 +16,11 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * ContextUtilityTest.
@@ -28,6 +33,11 @@ class ContextUtilityTest extends TestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
     }
 
     public function testGetColorReturnsTransparentWhenNoConfiguration(): void
@@ -68,5 +78,82 @@ class ContextUtilityTest extends TestCase
         $contextUtility = new ContextUtility();
         $positionY = $contextUtility->getPositionY();
         self::assertEquals('left:0', $positionY);
+    }
+
+    public function testGetTitleReturnsConfiguredText(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Configuration\Indicator\Frontend\Hint::class => [
+                'text' => 'My Environment',
+            ],
+        ];
+
+        self::assertSame('My Environment', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenNoRequest(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenRoutingIsNotPageArguments(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(null);
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenSiteFinderIsMissing(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenSiteIsNotFound(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(42, '0', []));
+
+        $siteFinder = $this->createMock(SiteFinder::class);
+        $siteFinder->method('getSiteByPageId')->willThrowException(new SiteNotFoundException());
+
+        self::assertSame('', (new ContextUtility($siteFinder))->getTitle());
+    }
+
+    public function testGetTitleReturnsWebsiteTitleFromSiteConfiguration(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
+
+        $site = $this->createMock(Site::class);
+        $site->method('getConfiguration')->willReturn(['websiteTitle' => 'Production Site']);
+
+        $siteFinder = $this->createMock(SiteFinder::class);
+        $siteFinder->method('getSiteByPageId')->willReturn($site);
+
+        self::assertSame('Production Site', (new ContextUtility($siteFinder))->getTitle());
+    }
+
+    public function testGetTitleFallsBackToSiteIdentifierWithoutWebsiteTitle(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
+
+        $site = $this->createMock(Site::class);
+        $site->method('getConfiguration')->willReturn([]);
+        $site->method('getIdentifier')->willReturn('main');
+
+        $siteFinder = $this->createMock(SiteFinder::class);
+        $siteFinder->method('getSiteByPageId')->willReturn($site);
+
+        self::assertSame('main', (new ContextUtility($siteFinder))->getTitle());
+    }
+
+    private function createRequestWithRouting(?PageArguments $routing): ServerRequestInterface
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('routing')->willReturn($routing);
+
+        return $request;
     }
 }

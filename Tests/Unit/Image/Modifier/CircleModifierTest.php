@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Image\Modifier;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\CircleModifier;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,6 +25,8 @@ use PHPUnit\Framework\TestCase;
  */
 class CircleModifierTest extends TestCase
 {
+    use CreatesTestImageTrait;
+
     public function testInstantiationWithRequiredValues(): void
     {
         $modifier = new CircleModifier([
@@ -172,5 +175,30 @@ class CircleModifierTest extends TestCase
 
         self::assertTrue($result['valid']);
         self::assertEmpty($result['errors']);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function positionDataProvider(): array
+    {
+        return [
+            'top left' => ['top left'],
+            'top right' => ['top right'],
+            'bottom left' => ['bottom left'],
+            'bottom right' => ['bottom right'],
+        ];
+    }
+
+    #[DataProvider('positionDataProvider')]
+    public function testModifyDrawsCircleForEveryPosition(string $position): void
+    {
+        $image = $this->createImage();
+        $modifier = new CircleModifier(['color' => '#ff0000', 'size' => 0.4, 'padding' => 0.1, 'position' => $position]);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+        self::assertSame(64, $image->height());
     }
 }

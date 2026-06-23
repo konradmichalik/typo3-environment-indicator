@@ -24,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 class TextModifierTest extends TestCase
 {
+    use CreatesTestImageTrait;
+
     public function testInstantiationWithRequiredValues(): void
     {
         $modifier = new TextModifier([
@@ -201,5 +203,50 @@ class TextModifierTest extends TestCase
 
         self::assertTrue($result['valid']);
         self::assertEmpty($result['errors']);
+    }
+
+    public function testModifyRendersTextAtBottomPosition(): void
+    {
+        $image = $this->createImage();
+        $modifier = new TextModifier(['text' => 'DEV', 'color' => '#ffffff']);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+        self::assertSame(64, $image->height());
+    }
+
+    public function testModifyRendersTextAtTopPosition(): void
+    {
+        $image = $this->createImage();
+        $modifier = new TextModifier(['text' => 'STAGING', 'color' => '#ffffff', 'position' => 'top']);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->height());
+    }
+
+    public function testModifyRendersTextWithStroke(): void
+    {
+        $image = $this->createImage();
+        $modifier = new TextModifier([
+            'text' => 'PROD',
+            'color' => '#ff0000',
+            'stroke' => ['color' => '#000000', 'width' => 2],
+        ]);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+    }
+
+    public function testModifyWrapsLongText(): void
+    {
+        $image = $this->createImage();
+        $modifier = new TextModifier(['text' => 'This is a very long environment label that needs wrapping', 'color' => '#ffffff']);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
     }
 }

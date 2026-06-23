@@ -24,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 class FrameModifierTest extends TestCase
 {
+    use CreatesTestImageTrait;
+
     public function testInstantiationWithRequiredValues(): void
     {
         $modifier = new FrameModifier(['color' => '#ff0000']);
@@ -58,5 +60,26 @@ class FrameModifierTest extends TestCase
             'borderSize' => 2,
         ]);
         self::assertInstanceOf(FrameModifier::class, $modifier);
+    }
+
+    public function testModifyDrawsBorderWithCustomConfiguration(): void
+    {
+        $image = $this->createImage();
+        $modifier = new FrameModifier(['color' => '#ff0000', 'borderSize' => 3]);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+        self::assertSame(64, $image->height());
+    }
+
+    public function testModifyUsesDefaultColorAndBorderSize(): void
+    {
+        $image = $this->createImage();
+        $modifier = new FrameModifier([]);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
     }
 }

@@ -46,6 +46,14 @@
 			"KonradMichalik\\Typo3EnvironmentIndicator\\": "Classes"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"KonradMichalik\\Typo3EnvironmentIndicator\\Tests\\": "Tests"
+		},
+		"exclude-from-classmap": [
+			"Tests/CGL/vendor/"
+		]
+	},
 	"config": {
 		"allow-plugins": {
 			"eliashaeussler/version-bumper": true,
