@@ -16,6 +16,8 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Routing\PageArguments;
 
 /**
  * ContextUtilityTest.
@@ -28,6 +30,11 @@ class ContextUtilityTest extends TestCase
     protected function setUp(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
     }
 
     public function testGetColorReturnsTransparentWhenNoConfiguration(): void
@@ -68,5 +75,45 @@ class ContextUtilityTest extends TestCase
         $contextUtility = new ContextUtility();
         $positionY = $contextUtility->getPositionY();
         self::assertEquals('left:0', $positionY);
+    }
+
+    public function testGetTitleReturnsConfiguredText(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Configuration\Indicator\Frontend\Hint::class => [
+                'text' => 'My Environment',
+            ],
+        ];
+
+        self::assertSame('My Environment', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenNoRequest(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenRoutingIsNotPageArguments(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(null);
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    public function testGetTitleReturnsEmptyStringWhenSiteFinderIsMissing(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->createRequestWithRouting(new PageArguments(1, '0', []));
+
+        self::assertSame('', (new ContextUtility())->getTitle());
+    }
+
+    private function createRequestWithRouting(?PageArguments $routing): ServerRequestInterface
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('routing')->willReturn($routing);
+
+        return $request;
     }
 }

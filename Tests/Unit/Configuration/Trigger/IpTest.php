@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trigger;
 
+use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Ip;
 use PHPUnit\Framework\TestCase;
 
@@ -149,5 +150,50 @@ class IpTest extends TestCase
         // Restore original address
         // @phpstan-ignore-next-line disallowed.variable
         $_SERVER['REMOTE_ADDR'] = $originalAddr;
+    }
+
+    public function testCheckWithIPv6CidrRangeAndNonByteAlignedMask(): void
+    {
+        // @phpstan-ignore-next-line disallowed.variable
+        $originalAddr = $_SERVER['REMOTE_ADDR'];
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['REMOTE_ADDR'] = '2001:db8::1';
+
+        $trigger = new Ip('2001:db8::/36');
+        self::assertTrue($trigger->check());
+
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['REMOTE_ADDR'] = $originalAddr;
+    }
+
+    public function testConstructorThrowsForInvalidIp(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1726357768);
+
+        new Ip('not-an-ip');
+    }
+
+    public function testConstructorThrowsForCidrWithInvalidMask(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Ip('192.168.1.0/33');
+    }
+
+    public function testConstructorThrowsForCidrWithTooManyParts(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Ip('192.168.1.0/24/8');
+    }
+
+    public function testCheckReturnsFalseWhenRemoteAddrIsInvalid(): void
+    {
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['REMOTE_ADDR'] = 'invalid';
+
+        $trigger = new Ip('192.168.1.1');
+        self::assertFalse($trigger->check());
     }
 }
