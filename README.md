@@ -5,7 +5,7 @@
 # TYPO3 extension `typo3_environment_indicator`
 
 [![Latest Stable Version](https://typo3-badges.dev/badge/typo3_environment_indicator/version/shields.svg)](https://extensions.typo3.org/extension/typo3_environment_indicator)
-[![Supported TYPO3 versions](https://typo3-badges.dev/badge/typo3_environment_indicator/typo3/shields.svg)](https://extensions.typo3.org/extension/typo3_environment_indicator)
+![TYPO3](https://img.shields.io/badge/TYPO3-13.4%20%7C%2014.3-orange.svg)
 [![Coverage](https://img.shields.io/coverallsCoverage/github/konradmichalik/typo3-environment-indicator?logo=coveralls)](https://coveralls.io/github/konradmichalik/typo3-environment-indicator)
 [![CGL](https://img.shields.io/github/actions/workflow/status/konradmichalik/typo3-environment-indicator/cgl.yml?label=cgl&logo=github)](https://github.com/konradmichalik/typo3-environment-indicator/actions/workflows/cgl.yml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/konradmichalik/typo3-environment-indicator/tests.yml?label=tests&logo=github)](https://github.com/konradmichalik/typo3-environment-indicator/actions/workflows/tests.yml)
