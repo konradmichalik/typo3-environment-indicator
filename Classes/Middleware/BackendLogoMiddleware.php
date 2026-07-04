@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Middleware;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Logo;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\BackendLogoHandler;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -51,11 +53,15 @@ class BackendLogoMiddleware implements MiddlewareInterface
 
     private function processLogo(): void
     {
-        $currentLogo = $this->getCurrentLogo();
-        $logoHandler = GeneralUtility::makeInstance(BackendLogoHandler::class);
-        $newLogo = $logoHandler->process($currentLogo);
+        $logo = $this->getCurrentLogo();
 
-        $this->setBackendLogo($newLogo);
+        // Only instantiate the handler and touch the image when an indicator is
+        // actually active; on production this avoids all image work.
+        if (GeneralHelper::isCurrentIndicator(Logo::class)) {
+            $logo = GeneralUtility::makeInstance(BackendLogoHandler::class)->process($logo);
+        }
+
+        $this->setBackendLogo($logo);
     }
 
     private function getCurrentLogo(): string

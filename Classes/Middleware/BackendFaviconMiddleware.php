@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Middleware;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -52,11 +54,15 @@ class BackendFaviconMiddleware implements MiddlewareInterface
 
     private function processFavicon(): void
     {
-        $currentFavicon = $this->getCurrentFavicon();
-        $faviconHandler = GeneralUtility::makeInstance(FaviconHandler::class);
-        $newFavicon = $faviconHandler->process($currentFavicon);
+        $favicon = $this->getCurrentFavicon();
 
-        $this->setBackendFavicon($newFavicon);
+        // Only instantiate the handler and touch the image when an indicator is
+        // actually active; on production this avoids all image work.
+        if (GeneralHelper::isCurrentIndicator(Favicon::class)) {
+            $favicon = GeneralUtility::makeInstance(FaviconHandler::class)->process($favicon);
+        }
+
+        $this->setBackendFavicon($favicon);
     }
 
     private function getCurrentFavicon(): string
