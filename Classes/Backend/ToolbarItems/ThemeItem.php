@@ -35,15 +35,11 @@ class ThemeItem implements ToolbarItemInterface
 
     public function checkAccess(): bool
     {
-        return true;
+        return $this->isApplicable();
     }
 
     public function getItem(): string
     {
-        if (!$this->isApplicable()) {
-            return '';
-        }
-
         $configuration = $this->getThemeConfiguration();
         $color = $configuration['color'] ?? '';
 

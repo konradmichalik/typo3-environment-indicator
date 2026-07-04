@@ -36,21 +36,11 @@ class TopbarItem implements ToolbarItemInterface
 
     public function checkAccess(): bool
     {
-        return true;
+        return $this->isApplicable();
     }
 
     public function getItem(): string
     {
-        $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
-        if (true !== (bool) ($extensionConfig['backend']['context'] ?? false)
-            || !GeneralHelper::isCurrentIndicator(Topbar::class)) {
-            return '';
-        }
-
-        if (true !== (bool) ($extensionConfig['backend']['contextProduction'] ?? false) && 'Production' === Environment::getContext()->__toString()) {
-            return '';
-        }
-
         $color = $this->getBackendTopbarConfiguration()['color'] ?? [];
 
         if ([] === $color) {
@@ -95,6 +85,18 @@ class TopbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 0;
+    }
+
+    private function isApplicable(): bool
+    {
+        $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
+        if (true !== (bool) ($extensionConfig['backend']['context'] ?? false)
+            || !GeneralHelper::isCurrentIndicator(Topbar::class)) {
+            return false;
+        }
+
+        return true === (bool) ($extensionConfig['backend']['contextProduction'] ?? false)
+            || 'Production' !== Environment::getContext()->__toString();
     }
 
     /**

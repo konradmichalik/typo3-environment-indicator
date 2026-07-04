@@ -34,21 +34,11 @@ class ContextItem implements ToolbarItemInterface
 
     public function checkAccess(): bool
     {
-        return true;
+        return $this->isApplicable();
     }
 
     public function getItem(): string
     {
-        $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
-        if (true !== (bool) ($extensionConfig['backend']['context'] ?? false)
-            || !GeneralHelper::isCurrentIndicator(Toolbar::class)) {
-            return '';
-        }
-
-        if (true !== (bool) ($extensionConfig['backend']['contextProduction'] ?? false) && 'Production' === Environment::getContext()->__toString()) {
-            return '';
-        }
-
         $toolbarConfig = $this->getBackendToolbarConfiguration();
         if ([] === $toolbarConfig) {
             return '';
@@ -94,6 +84,18 @@ class ContextItem implements ToolbarItemInterface
         $toolbarConfig = $this->getBackendToolbarConfiguration();
 
         return $toolbarConfig['index'] ?? 0;
+    }
+
+    private function isApplicable(): bool
+    {
+        $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
+        if (true !== (bool) ($extensionConfig['backend']['context'] ?? false)
+            || !GeneralHelper::isCurrentIndicator(Toolbar::class)) {
+            return false;
+        }
+
+        return true === (bool) ($extensionConfig['backend']['contextProduction'] ?? false)
+            || 'Production' !== Environment::getContext()->__toString();
     }
 
     /**

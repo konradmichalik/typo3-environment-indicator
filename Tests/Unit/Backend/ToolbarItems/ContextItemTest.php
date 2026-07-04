@@ -36,11 +36,11 @@ final class ContextItemTest extends TestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
     }
 
-    public function testCheckAccessReturnsTrue(): void
+    public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
     {
         $item = new ContextItem(new ExtensionConfiguration());
 
-        self::assertTrue($item->checkAccess());
+        self::assertFalse($item->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void
