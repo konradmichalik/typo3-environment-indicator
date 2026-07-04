@@ -193,7 +193,20 @@ abstract class AbstractImageHandler
 
         $image = ImageManagerHelper::readImage($manager, $absolutePath);
         $this->applyImageModifiers($image);
-        $image->save(GeneralHelper::getFolder($this->indicator).$newImageFilename);
+
+        $folder = GeneralHelper::getFolder($this->indicator);
+        $targetPath = $folder.$newImageFilename;
+
+        // Write to a temporary file first and move it into place atomically, so
+        // concurrent requests never read a half-written image as a cache hit.
+        $temporaryPath = $folder.'.tmp-'.bin2hex(random_bytes(8)).'-'.$newImageFilename;
+        $image->save($temporaryPath);
+
+        if (!rename($temporaryPath, $targetPath)) {
+            @unlink($temporaryPath);
+
+            return false;
+        }
 
         return true;
     }
