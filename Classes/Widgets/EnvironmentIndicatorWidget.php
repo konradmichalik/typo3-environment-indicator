@@ -38,6 +38,9 @@ class EnvironmentIndicatorWidget implements WidgetInterface, AdditionalCssInterf
 
     public function renderWidgetContent(): string
     {
+        $widgetConfiguration = $this->getWidgetConfiguration();
+        $color = $widgetConfiguration['color'] ?? 'transparent';
+
         return ViewFactoryHelper::renderView(
             template: 'EnvironmentIndicatorWidget.html',
             values: [
@@ -45,11 +48,11 @@ class EnvironmentIndicatorWidget implements WidgetInterface, AdditionalCssInterf
                 'button' => $this->buttonProvider,
                 'options' => $this->options,
                 'context' => [
-                    'icon' => $this->getWidgetConfiguration()['icon'] ?? 'information-application-context',
-                    'text' => $this->getWidgetConfiguration()['text'] ?? Environment::getContext()->__toString(),
-                    'color' => $this->getWidgetConfiguration()['color'] ?? 'transparent',
-                    'textColor' => ColorUtility::getOptimalTextColor($this->getWidgetConfiguration()['color'] ?? 'transparent', fallbackColor: '#ffffff'),
-                    'textSize' => $this->getWidgetConfiguration()['textSize'] ?? '20px',
+                    'icon' => $widgetConfiguration['icon'] ?? 'information-application-context',
+                    'text' => $widgetConfiguration['text'] ?? Environment::getContext()->__toString(),
+                    'color' => $color,
+                    'textColor' => ColorUtility::getOptimalTextColor($color, fallbackColor: '#ffffff'),
+                    'textSize' => $widgetConfiguration['textSize'] ?? '20px',
                 ],
             ],
         );
