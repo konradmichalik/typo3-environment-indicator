@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\ViewHelpers;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-
-use function array_key_exists;
 
 /**
  * FaviconViewHelper.
@@ -55,17 +55,19 @@ class FaviconViewHelper extends AbstractViewHelper
 
         $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
         if (($extensionConfig[$applicationType->value]['favicon'] ?? false) !== true
-            || !isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'])
-            || !array_key_exists(Environment::getContext()->__toString(), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'])
-            || !array_key_exists('favicon', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['context'][Environment::getContext()->__toString()])
+            || !GeneralHelper::isCurrentIndicator(Favicon::class)
         ) {
             return $favicon;
         }
 
-        if (!PathUtility::isExtensionPath($favicon)) {
-            $favicon = Environment::getPublicPath().(str_contains((string) $favicon, '?') ? strtok($favicon, '?') : $favicon);
-        }
+        $resolvedPath = PathUtility::isExtensionPath($favicon)
+            ? (string) $favicon
+            : Environment::getPublicPath().(str_contains((string) $favicon, '?') ? strtok($favicon, '?') : $favicon);
 
-        return GeneralUtility::makeInstance(FaviconHandler::class)->process($favicon);
+        $processedPath = GeneralUtility::makeInstance(FaviconHandler::class)->process($resolvedPath);
+
+        // On failure process() returns its input unchanged (an absolute server
+        // path); fall back to the original reference instead of leaking it.
+        return $processedPath === $resolvedPath ? $favicon : $processedPath;
     }
 }

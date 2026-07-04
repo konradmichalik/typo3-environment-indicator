@@ -51,10 +51,14 @@ class ImageViewHelper extends AbstractViewHelper
             return $image;
         }
 
-        if (!PathUtility::isExtensionPath($image)) {
-            $image = Environment::getPublicPath().(str_contains((string) $image, '?') ? strtok($image, '?') : $image);
-        }
+        $resolvedPath = PathUtility::isExtensionPath($image)
+            ? (string) $image
+            : Environment::getPublicPath().(str_contains((string) $image, '?') ? strtok($image, '?') : $image);
 
-        return GeneralUtility::makeInstance(FrontendImageHandler::class)->process($image);
+        $processedPath = GeneralUtility::makeInstance(FrontendImageHandler::class)->process($resolvedPath);
+
+        // On failure process() returns its input unchanged (an absolute server
+        // path); fall back to the original reference instead of leaking it.
+        return $processedPath === $resolvedPath ? $image : $processedPath;
     }
 }
