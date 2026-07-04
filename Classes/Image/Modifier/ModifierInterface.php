@@ -26,6 +26,13 @@ interface ModifierInterface
     public function modify(ImageInterface &$image): void;
 
     /**
+     * Returns the resolved configuration of this modifier.
+     *
+     * @return array<string, mixed> The modifier configuration
+     */
+    public function getConfiguration(): array;
+
+    /**
      * Validates the configuration for this modifier.
      *
      * @param array<string, mixed> $configuration The configuration to validate

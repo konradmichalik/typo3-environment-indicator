@@ -119,6 +119,21 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertStringEndsWith('.png', $result);
     }
 
+    public function testProcessReturnsDifferentPathsForDifferentModifierConfiguration(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
+        ];
+        $firstResult = (new FaviconHandler())->process($this->testImagePath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new TriangleModifier(['color' => '#00ff00'])],
+        ];
+        $secondResult = (new FaviconHandler())->process($this->testImagePath);
+
+        self::assertNotSame($firstResult, $secondResult);
+    }
+
     public function testProcessReturnsCachedPathOnSecondCall(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
