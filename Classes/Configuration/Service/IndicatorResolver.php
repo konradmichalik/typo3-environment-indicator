@@ -35,7 +35,7 @@ class IndicatorResolver
      */
     public function resolveIndicators(): array
     {
-        if ($this->configurationStorage->hasCurrentIndicators()) {
+        if ($this->configurationStorage->isResolved()) {
             return $this->configurationStorage->getCurrentIndicators();
         }
 
@@ -43,6 +43,8 @@ class IndicatorResolver
         foreach ($configurations as $configuration) {
             $this->processConfiguration($configuration);
         }
+
+        $this->configurationStorage->markResolved();
 
         return $this->configurationStorage->getCurrentIndicators();
     }
