@@ -58,6 +58,11 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class] = [
             '_path' => 'typo3temp/assets/environment-indicator-test/',
         ];
+
+        // Mark resolution as already done so the resolver never reprocesses the
+        // registered presets (e.g. the "Testing" context favicon) on top of the
+        // 'current' fixture each test sets up below.
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
     }
 
     protected function tearDown(): void
@@ -70,6 +75,7 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         parent::tearDown();
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class]);
         unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current']);
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved']);
     }
 
     public function testProcessReturnsOriginalPathWhenFileDoesNotExist(): void

@@ -91,3 +91,40 @@ Backend
     :Default: 1
 
     Enable the backend toolbar item / backend topbar also in production context
+
+Instance
+========
+
+The instance settings allow overriding the *appearance* of all active
+indicators for a single installation — directly from the backend, without any
+PHP configuration. They are stored in the extension configuration of the
+respective installation, so two systems sharing the same code base and
+application context (e.g. two testing systems) can be distinguished from each
+other.
+
+Instance settings take precedence over the built-in presets *and* any
+programmatically registered configuration. Which indicators are active remains
+trigger-driven: on a system where no indicator resolves (e.g. production with
+default configuration), the instance settings have no effect.
+
+..  _extconf-instance.label:
+
+..  confval:: instance.label
+    :type: string
+    :Default: (empty)
+
+    Overrides the indicator text of all active indicators for this
+    installation (e.g. "TEST 1"). Replaces the text of the backend toolbar
+    item and dashboard widget and renders the label onto the favicon and
+    backend logo. Leave empty to use the context defaults.
+
+..  _extconf-instance.color:
+
+..  confval:: instance.color
+    :type: color
+    :Default: (empty)
+
+    Overrides the indicator color of all active indicators for this
+    installation (frontend hint, backend toolbar, topbar, dashboard widget,
+    backend theme and — combined with a label — favicon/logo). Leave empty to
+    use the context defaults.
