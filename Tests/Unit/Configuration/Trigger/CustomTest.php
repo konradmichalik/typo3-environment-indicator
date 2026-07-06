@@ -16,6 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trig
 use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Custom;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 /**
@@ -108,6 +109,22 @@ class CustomTest extends TestCase
     {
         $closure = static fn () => throw new RuntimeException('Test exception', 1372101584);
         $trigger = new Custom($closure);
+
+        self::assertFalse($trigger->check());
+    }
+
+    public function testCheckLogsWarningWhenClosureThrowsException(): void
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())
+            ->method('warning')
+            ->with(
+                'Custom trigger execution failed: {message}',
+                self::callback(static fn (array $context): bool => 'Test exception' === $context['message'] && $context['exception'] instanceof RuntimeException),
+            );
+
+        $closure = static fn () => throw new RuntimeException('Test exception', 1372101584);
+        $trigger = new Custom($closure, $logger);
 
         self::assertFalse($trigger->check());
     }

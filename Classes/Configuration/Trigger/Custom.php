@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
 
 use Closure;
 use InvalidArgumentException;
+use Psr\Log\{LoggerInterface, NullLogger};
 use ReflectionMethod;
 use Throwable;
 
@@ -33,7 +34,7 @@ class Custom implements TriggerInterface
 {
     protected Closure|string $function;
 
-    public function __construct(Closure|string $function)
+    public function __construct(Closure|string $function, private readonly LoggerInterface $logger = new NullLogger())
     {
         if ($function instanceof Closure) {
             $this->function = $function;
@@ -82,7 +83,10 @@ class Custom implements TriggerInterface
             return (bool) $result;
         } catch (Throwable $e) {
             // Log error but don't expose internal details
-            error_log('Custom trigger execution failed: '.$e->getMessage());
+            $this->logger->warning('Custom trigger execution failed: {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
 
             return false;
         }

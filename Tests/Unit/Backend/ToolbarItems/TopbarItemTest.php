@@ -46,11 +46,11 @@ class TopbarItemTest extends TestCase
         self::assertInstanceOf(TopbarItem::class, $topbarItem);
     }
 
-    public function testCheckAccessReturnsTrue(): void
+    public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
     {
         $pageRenderer = $this->createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
-        self::assertTrue($topbarItem->checkAccess());
+        self::assertFalse($topbarItem->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void

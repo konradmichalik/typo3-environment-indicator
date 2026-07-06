@@ -17,6 +17,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
+use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
@@ -78,9 +79,14 @@ abstract class AbstractImageHandler
             $originalPath,
             Environment::getContext()->__toString(),
         ];
-        foreach ($this->imageModifiers as $modifier => $configuration) {
-            $parts[] = $modifier;
-            $parts[] = json_encode($configuration);
+        foreach ($this->imageModifiers as $key => $configuration) {
+            if ($configuration instanceof ModifierInterface) {
+                $parts[] = $configuration::class;
+                $parts[] = json_encode($configuration->getConfiguration());
+            } else {
+                $parts[] = (string) $key;
+                $parts[] = json_encode($configuration);
+            }
         }
 
         return hash('sha256', implode('_', $parts));
@@ -166,17 +172,13 @@ abstract class AbstractImageHandler
 
     private function shouldProcessImage(string $path): bool
     {
-        $absolutePath = GeneralUtility::getFileAbsFileName($path);
-
-        if (!file_exists($absolutePath)) {
-            return false;
-        }
-
+        // Cheap in-memory check first; only hit the filesystem when an
+        // indicator is actually active (never the case on production).
         if (!GeneralHelper::isCurrentIndicator($this->indicator::class)) {
             return false;
         }
 
-        return true;
+        return file_exists(GeneralUtility::getFileAbsFileName($path));
     }
 
     private function processAndSaveImage(string $path, string $newImageFilename): bool
@@ -193,7 +195,20 @@ abstract class AbstractImageHandler
 
         $image = ImageManagerHelper::readImage($manager, $absolutePath);
         $this->applyImageModifiers($image);
-        $image->save(GeneralHelper::getFolder($this->indicator).$newImageFilename);
+
+        $folder = GeneralHelper::getFolder($this->indicator);
+        $targetPath = $folder.$newImageFilename;
+
+        // Write to a temporary file first and move it into place atomically, so
+        // concurrent requests never read a half-written image as a cache hit.
+        $temporaryPath = $folder.'.tmp-'.bin2hex(random_bytes(8)).'-'.$newImageFilename;
+        $image->save($temporaryPath);
+
+        if (!rename($temporaryPath, $targetPath)) {
+            @unlink($temporaryPath);
+
+            return false;
+        }
 
         return true;
     }

@@ -56,6 +56,13 @@ For the **backend**, the favicon will be fetched by the extension configuration 
 
     Favicon Examples
 
+..  warning::
+    SVG favicons (and backend logos) are rasterized to PNG before modification.
+    During rasterization, embedded :code:`<image>` references inside the SVG are
+    resolved and loaded. Only use SVG source files from trusted locations as
+    indicator base images — an untrusted SVG could reference arbitrary local or
+    remote resources.
+
 ..  _favicon-scope:
 
 Scope

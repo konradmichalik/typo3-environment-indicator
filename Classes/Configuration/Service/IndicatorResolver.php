@@ -68,7 +68,7 @@ class IndicatorResolver
      */
     public function resolveIndicators(): array
     {
-        if ($this->configurationStorage->hasCurrentIndicators()) {
+        if ($this->configurationStorage->isResolved()) {
             return $this->configurationStorage->getCurrentIndicators();
         }
 
@@ -78,6 +78,7 @@ class IndicatorResolver
         }
 
         $this->applyInstanceOverride();
+        $this->configurationStorage->markResolved();
 
         return $this->configurationStorage->getCurrentIndicators();
     }

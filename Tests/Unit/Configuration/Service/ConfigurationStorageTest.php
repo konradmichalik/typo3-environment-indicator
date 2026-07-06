@@ -110,4 +110,24 @@ class ConfigurationStorageTest extends TestCase
         self::assertArrayHasKey('TestClass', $indicators);
         self::assertEquals(['config' => 'value'], $indicators['TestClass']);
     }
+
+    public function testIsResolvedReturnsFalseWhenNotSet(): void
+    {
+        self::assertFalse($this->configurationStorage->isResolved());
+    }
+
+    public function testIsResolvedReturnsTrueAfterMarkResolved(): void
+    {
+        $this->configurationStorage->markResolved();
+        self::assertTrue($this->configurationStorage->isResolved());
+    }
+
+    public function testMarkResolvedIsIndependentOfCurrentIndicators(): void
+    {
+        // No matching indicators (e.g. production) must still be memoized.
+        $this->configurationStorage->markResolved();
+
+        self::assertTrue($this->configurationStorage->isResolved());
+        self::assertFalse($this->configurationStorage->hasCurrentIndicators());
+    }
 }

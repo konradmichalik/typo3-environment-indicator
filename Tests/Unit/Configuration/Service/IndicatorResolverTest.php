@@ -38,7 +38,7 @@ final class IndicatorResolverTest extends TestCase
     public function testResolveIndicatorsReturnsCachedIndicators(): void
     {
         $storage = $this->createStub(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(true);
+        $storage->method('isResolved')->willReturn(true);
         $storage->method('getCurrentIndicators')->willReturn([Favicon::class => ['color' => 'red']]);
 
         $evaluator = $this->createStub(TriggerEvaluator::class);
@@ -62,7 +62,7 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
+        $storage->method('isResolved')->willReturn(false);
         $storage->method('getConfigurations')->willReturn($configurations);
         $storage->method('getCurrentIndicators')->willReturn([]);
         $storage->expects(self::once())
@@ -72,8 +72,25 @@ final class IndicatorResolverTest extends TestCase
         $evaluator = $this->createStub(TriggerEvaluator::class);
         $evaluator->method('evaluateTriggers')->willReturn(true);
 
+        $storage->expects(self::once())->method('markResolved');
+
         $resolver = new IndicatorResolver($storage, $evaluator);
         $resolver->resolveIndicators();
+    }
+
+    public function testResolveIndicatorsMemoizesWhenAlreadyResolved(): void
+    {
+        $storage = $this->createMock(ConfigurationStorage::class);
+        $storage->method('isResolved')->willReturn(true);
+        $storage->method('getCurrentIndicators')->willReturn([]);
+        $storage->expects(self::never())->method('getConfigurations');
+        $storage->expects(self::never())->method('markResolved');
+
+        $evaluator = $this->createStub(TriggerEvaluator::class);
+
+        $resolver = new IndicatorResolver($storage, $evaluator);
+
+        self::assertSame([], $resolver->resolveIndicators());
     }
 
     public function testResolveIndicatorsSkipsConfigurationWhenTriggersDoNotPass(): void
@@ -89,7 +106,7 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
+        $storage->method('isResolved')->willReturn(false);
         $storage->method('getConfigurations')->willReturn($configurations);
         $storage->method('getCurrentIndicators')->willReturn([]);
         $storage->expects(self::never())
@@ -112,7 +129,7 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
+        $storage->method('isResolved')->willReturn(false);
         $storage->method('getConfigurations')->willReturn($configurations);
         $storage->method('getCurrentIndicators')->willReturn([]);
         $storage->expects(self::never())
@@ -137,7 +154,7 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createStub(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
+        $storage->method('isResolved')->willReturn(false);
         $storage->method('getConfigurations')->willReturn($configurations);
         $storage->method('getCurrentIndicators')->willReturn([]);
 

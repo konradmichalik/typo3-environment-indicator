@@ -65,4 +65,16 @@ class(['required_key' => 'value']) extends AbstractModifier {
 
         self::assertInstanceOf(AbstractModifier::class, $modifier);
     }
+
+    public function testGetConfigurationReturnsResolvedConfiguration(): void
+    {
+        $modifier = new
+/**
+ * @author Konrad Michalik <hej@konradmichalik.dev>
+ * @license GPL-2.0-or-later
+ */
+class(['color' => '#ff0000', 'position' => 'top-left']) extends AbstractModifier {};
+
+        self::assertSame(['color' => '#ff0000', 'position' => 'top-left'], $modifier->getConfiguration());
+    }
 }
