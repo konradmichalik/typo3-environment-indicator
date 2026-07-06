@@ -47,6 +47,14 @@ class AbstractModifier
     }
 
     /**
+     * @return array<string, mixed>
+     */
+    public function getConfiguration(): array
+    {
+        return $this->configuration;
+    }
+
+    /**
      * Validates the configuration for this modifier.
      * Override this method in subclasses for custom validation logic.
      *

@@ -17,6 +17,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
+use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
@@ -78,9 +79,14 @@ abstract class AbstractImageHandler
             $originalPath,
             Environment::getContext()->__toString(),
         ];
-        foreach ($this->imageModifiers as $modifier => $configuration) {
-            $parts[] = $modifier;
-            $parts[] = json_encode($configuration);
+        foreach ($this->imageModifiers as $key => $configuration) {
+            if ($configuration instanceof ModifierInterface) {
+                $parts[] = $configuration::class;
+                $parts[] = json_encode($configuration->getConfiguration());
+            } else {
+                $parts[] = (string) $key;
+                $parts[] = json_encode($configuration);
+            }
         }
 
         return hash('sha256', implode('_', $parts));
