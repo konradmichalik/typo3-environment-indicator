@@ -147,6 +147,20 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertSame($firstResult, $secondResult);
     }
 
+    public function testProcessLeavesNoTemporaryFilesBehind(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+
+        self::assertFileExists(Environment::getPublicPath().'/'.$result);
+
+        $folder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/';
+        self::assertSame([], glob($folder.'.tmp-*') ?: []);
+    }
+
     public function testProcessHandlesSvgFile(): void
     {
         $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
