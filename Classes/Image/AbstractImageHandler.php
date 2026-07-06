@@ -172,17 +172,13 @@ abstract class AbstractImageHandler
 
     private function shouldProcessImage(string $path): bool
     {
-        $absolutePath = GeneralUtility::getFileAbsFileName($path);
-
-        if (!file_exists($absolutePath)) {
-            return false;
-        }
-
+        // Cheap in-memory check first; only hit the filesystem when an
+        // indicator is actually active (never the case on production).
         if (!GeneralHelper::isCurrentIndicator($this->indicator::class)) {
             return false;
         }
 
-        return true;
+        return file_exists(GeneralUtility::getFileAbsFileName($path));
     }
 
     private function processAndSaveImage(string $path, string $newImageFilename): bool
