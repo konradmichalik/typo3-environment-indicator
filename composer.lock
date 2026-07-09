@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22f547c7f089917e5c5d1b06bbfe1125",
+    "content-hash": "b152b606d408fcd4f1b8c508bab5030c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1408,16 +1408,16 @@
         },
         {
             "name": "konradmichalik/php-ico-file-loader",
-            "version": "0.2.0",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konradmichalik/php-ico-file-loader.git",
-                "reference": "598a2dfec7da0b7c486927a6969aa55744b0b7bf"
+                "reference": "45e6183e81d761c2158165b2acd716d1c65ee57b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konradmichalik/php-ico-file-loader/zipball/598a2dfec7da0b7c486927a6969aa55744b0b7bf",
-                "reference": "598a2dfec7da0b7c486927a6969aa55744b0b7bf",
+                "url": "https://api.github.com/repos/konradmichalik/php-ico-file-loader/zipball/45e6183e81d761c2158165b2acd716d1c65ee57b",
+                "reference": "45e6183e81d761c2158165b2acd716d1c65ee57b",
                 "shasum": ""
             },
             "require": {
@@ -1462,9 +1462,9 @@
                 "load"
             ],
             "support": {
-                "source": "https://github.com/konradmichalik/php-ico-file-loader/tree/0.2.0"
+                "source": "https://github.com/konradmichalik/php-ico-file-loader/tree/0.3.0"
             },
-            "time": "2025-12-12T11:30:28+00:00"
+            "time": "2026-07-09T07:46:37+00:00"
         },
         {
             "name": "lolli42/finediff",
