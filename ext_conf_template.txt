@@ -8,6 +8,8 @@ frontend.favicon = 1
 frontend.context = 1
 # cat=frontend/enable/30; type=boolean; label=Enable the image generation in frontend context
 frontend.image = 1
+# cat=frontend/enable/40; type=boolean; label=Enable the page title prefix/suffix in frontend context
+frontend.pageTitle = 1
 # cat=backend/enable/10; type=boolean; label=Enable the favicon generation in backend context
 backend.favicon = 1
 # cat=backend/enable/20; type=boolean; label=Enable the logo generation in backend context
@@ -18,6 +20,8 @@ backend.context = 1
 backend.contextProduction = 1
 # cat=backend/enable/50; type=boolean; label=Enable the backend theme modification (TYPO3 v14+ only, experimental). Colors the entire backend based on the environment.
 backend.theme = 0
+# cat=backend/enable/60; type=boolean; label=Enable the page title prefix/suffix in backend context
+backend.pageTitle = 1
 # cat=instance/enable/10; type=string; label=Instance label: Overrides the indicator text of all active indicators for this installation (e.g. "TEST 1"). Leave empty to use the context defaults. Takes precedence over any registered configuration.
 instance.label =
 # cat=instance/enable/20; type=color; label=Instance color: Overrides the indicator color of all active indicators for this installation. Leave empty to use the context defaults. Takes precedence over any registered configuration.

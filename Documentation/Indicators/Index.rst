@@ -132,3 +132,4 @@ Backend
     BackendLogo
     DashboardWidget
     BackendTheme
+    PageTitle

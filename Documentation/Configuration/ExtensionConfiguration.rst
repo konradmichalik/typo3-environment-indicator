@@ -57,6 +57,16 @@ Frontend
 
     Enable the image generation in frontend context
 
+..  _extconf-frontend.pageTitle:
+
+..  confval:: frontend.pageTitle
+    :type: boolean
+    :Default: 1
+
+    Enable the page title prefix/suffix in frontend context. When the
+    :ref:`page-title` indicator is active, the final rendered :code:`<title>`
+    is decorated.
+
 Backend
 =======
 
@@ -91,6 +101,16 @@ Backend
     :Default: 1
 
     Enable the backend toolbar item / backend topbar also in production context
+
+..  _extconf-backend.pageTitle:
+
+..  confval:: backend.pageTitle
+    :type: boolean
+    :Default: 1
+
+    Enable the page title prefix/suffix in backend context. When the
+    :ref:`page-title` indicator is active, the backend document title is
+    decorated client-side.
 
 Instance
 ========
