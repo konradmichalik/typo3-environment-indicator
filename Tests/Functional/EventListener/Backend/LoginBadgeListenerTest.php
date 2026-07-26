@@ -16,10 +16,9 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\EventListene
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Login;
 use KonradMichalik\Typo3EnvironmentIndicator\EventListener\Backend\LoginBadgeListener;
-use Psr\Http\Message\ServerRequestInterface;
+use ReflectionClass;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -63,10 +62,10 @@ class LoginBadgeListenerTest extends FunctionalTestCase
                 self::callback(static fn (string $js): bool => str_contains($js, 'Testing')),
             );
 
-        $event = new ModifyPageLayoutOnLoginProviderSelectionEvent(
-            $this->createStub(ViewInterface::class),
-            $this->createStub(ServerRequestInterface::class),
-        );
+        // The listener never reads the event; instantiate without the
+        // constructor so the test is independent of the event's signature,
+        // which differs between TYPO3 v13 and v14.
+        $event = (new ReflectionClass(ModifyPageLayoutOnLoginProviderSelectionEvent::class))->newInstanceWithoutConstructor();
 
         (new LoginBadgeListener($pageRenderer))($event);
     }

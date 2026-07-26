@@ -17,12 +17,11 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Login;
 use KonradMichalik\Typo3EnvironmentIndicator\EventListener\Backend\LoginBadgeListener;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
+use ReflectionClass;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * LoginBadgeListenerTest.
@@ -96,9 +95,9 @@ final class LoginBadgeListenerTest extends TestCase
 
     private function buildEvent(): ModifyPageLayoutOnLoginProviderSelectionEvent
     {
-        return new ModifyPageLayoutOnLoginProviderSelectionEvent(
-            $this->createStub(ViewInterface::class),
-            $this->createStub(ServerRequestInterface::class),
-        );
+        // The listener never reads the event; instantiate without the
+        // constructor so the test is independent of the event's signature,
+        // which differs between TYPO3 v13 and v14.
+        return (new ReflectionClass(ModifyPageLayoutOnLoginProviderSelectionEvent::class))->newInstanceWithoutConstructor();
     }
 }
