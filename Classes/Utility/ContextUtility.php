@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 
 use function array_key_exists;
 use function is_string;
+use function trim;
 
 /**
  * ContextUtility.
@@ -67,7 +68,7 @@ class ContextUtility
     #[AsAllowedCallable]
     public function getDescription(): string
     {
-        return (string) ($this->getFrontendHintConfiguration()['description'] ?? '');
+        return trim((string) ($this->getFrontendHintConfiguration()['description'] ?? ''));
     }
 
     #[AsAllowedCallable]
