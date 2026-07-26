@@ -74,6 +74,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
         'scaffoldSidebar' => true,
         'neutralMix' => '15%',
     ],
+    Indicator\Cli\Banner::class => [
+        'icon' => '🚦',
+    ],
 ];
 
 // Presets

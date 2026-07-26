@@ -92,6 +92,19 @@ Backend
 
     Enable the backend toolbar item / backend topbar also in production context
 
+CLI
+===
+
+..  _extconf-cli.banner:
+
+..  confval:: cli.banner
+    :type: boolean
+    :Default: 1
+
+    Enable the CLI banner. When the :ref:`cli-banner` indicator is active, a
+    colored environment banner is printed to :code:`stderr` before console
+    commands run in an interactive terminal.
+
 Instance
 ========
 
