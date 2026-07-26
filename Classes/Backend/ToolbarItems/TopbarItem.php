@@ -21,6 +21,12 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
+use function json_encode;
+use function sprintf;
+use function trim;
+
+use const JSON_THROW_ON_ERROR;
+
 /**
  * TopbarItem.
  *
@@ -60,6 +66,14 @@ class TopbarItem implements ToolbarItemInterface
         );
 
         $this->pageRenderer->addCssInlineBlock(Configuration::EXT_KEY.'_topbar', $cssContent);
+
+        $description = trim((string) ($this->getBackendTopbarConfiguration()['description'] ?? ''));
+        if ('' !== $description) {
+            $this->pageRenderer->addJsInlineCode(
+                Configuration::EXT_KEY.'_topbar',
+                sprintf('document.querySelector(".topbar")?.setAttribute("title",%s);', json_encode($description, JSON_THROW_ON_ERROR)),
+            );
+        }
 
         return '';
     }

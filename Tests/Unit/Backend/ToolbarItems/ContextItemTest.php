@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\ToolbarIte
 
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\ContextItem;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Toolbar;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
@@ -33,7 +34,10 @@ final class ContextItemTest extends TestCase
 
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+        unset(
+            $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY],
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY],
+        );
     }
 
     public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
@@ -62,5 +66,30 @@ final class ContextItemTest extends TestCase
         $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertSame([], $item->getAdditionalAttributes());
+    }
+
+    public function testHasDropDownReturnsTrueWhenDescriptionIsSet(): void
+    {
+        $this->setToolbar(['description' => 'DB synced nightly from live']);
+
+        self::assertTrue((new ContextItem(new ExtensionConfiguration()))->hasDropDown());
+    }
+
+    public function testGetDropDownContainsEscapedDescription(): void
+    {
+        $this->setToolbar(['description' => 'Data <b>overwritten</b> nightly']);
+
+        $dropDown = (new ContextItem(new ExtensionConfiguration()))->getDropDown();
+
+        self::assertStringContainsString('Data &lt;b&gt;overwritten&lt;/b&gt; nightly', $dropDown);
+    }
+
+    /**
+     * @param array<string, mixed> $configuration
+     */
+    private function setToolbar(array $configuration): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [Toolbar::class => $configuration];
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
     }
 }

@@ -65,6 +65,12 @@ class ContextUtility
     }
 
     #[AsAllowedCallable]
+    public function getDescription(): string
+    {
+        return (string) ($this->getFrontendHintConfiguration()['description'] ?? '');
+    }
+
+    #[AsAllowedCallable]
     public function getTitle(): string
     {
         $title = $this->getFrontendHintConfiguration()['text'] ?? null;

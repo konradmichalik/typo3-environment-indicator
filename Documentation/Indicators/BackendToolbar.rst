@@ -43,6 +43,7 @@ Additional optional configuration keys:
 - :code:`text` (string): The text of the toolbar item. Default is the application context.
 - :code:`icon` (array): The icon configuration of the toolbar item. Expects a nested array with a :code:`context` key. Default is :code:`['context' => 'information-application-context']`.
 - :code:`index` (int): The positioning index of the toolbar item. Default is :code:`0`.
+- :code:`description` (string): An optional description. When set, it is shown inside the toolbar item dropdown. Plain text only (HTML is escaped). Default is empty.
 
 ..  note::
     The backend toolbar item is a feature, which can also be shown in production context. Use the :ref:`extension settings <extconf-backend.contextProduction>` to enable, disable or restrict it.

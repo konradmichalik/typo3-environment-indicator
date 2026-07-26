@@ -10,6 +10,13 @@
 .environment-indicator-widget__text {
     margin-top: 10px;
 }
+.environment-indicator-widget__description {
+    margin-top: 6px;
+    padding: 0 12px;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0.85;
+}
 .environment-indicator-widget__help {
     margin-top: 10px;
     font-size: 10px;

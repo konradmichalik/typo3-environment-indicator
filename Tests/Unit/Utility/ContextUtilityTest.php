@@ -44,6 +44,22 @@ class ContextUtilityTest extends TestCase
         self::assertEquals('transparent', $color);
     }
 
+    public function testGetDescriptionReturnsEmptyStringWhenNoConfiguration(): void
+    {
+        self::assertSame('', (new ContextUtility())->getDescription());
+    }
+
+    public function testGetDescriptionReturnsConfiguredDescription(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Configuration\Indicator\Frontend\Hint::class => [
+                'description' => 'Staging — data synced nightly',
+            ],
+        ];
+
+        self::assertSame('Staging — data synced nightly', (new ContextUtility())->getDescription());
+    }
+
     public function testGetTextColorReturnsColorUtilityResult(): void
     {
         $contextUtility = new ContextUtility();

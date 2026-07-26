@@ -20,6 +20,11 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 
+use function htmlspecialchars;
+use function trim;
+
+use const ENT_QUOTES;
+
 /**
  * ContextItem.
  *
@@ -63,12 +68,19 @@ class ContextItem implements ToolbarItemInterface
 
     public function hasDropDown(): bool
     {
-        return false;
+        return '' !== $this->getDescription();
     }
 
     public function getDropDown(): string
     {
-        return '';
+        $description = $this->getDescription();
+        if ('' === $description) {
+            return '';
+        }
+
+        return '<div class="dropdown-table"><div class="dropdown-table-row"><div class="dropdown-table-column">'
+            .htmlspecialchars($description, ENT_QUOTES)
+            .'</div></div></div>';
     }
 
     /**
@@ -96,6 +108,11 @@ class ContextItem implements ToolbarItemInterface
 
         return true === (bool) ($extensionConfig['backend']['contextProduction'] ?? false)
             || 'Production' !== Environment::getContext()->__toString();
+    }
+
+    private function getDescription(): string
+    {
+        return trim((string) ($this->getBackendToolbarConfiguration()['description'] ?? ''));
     }
 
     /**
