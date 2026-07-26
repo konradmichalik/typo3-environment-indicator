@@ -22,6 +22,7 @@
 		"psr/http-server-handler": "^1.0.2",
 		"psr/http-server-middleware": "^1.0.2",
 		"psr/log": "^3.0.2",
+		"symfony/console": "^7.0 || ^8.0",
 		"symfony/expression-language": "^7.0 || ^8.0",
 		"typo3/cms-backend": "^13.4 || ^14.3",
 		"typo3/cms-core": "^13.4 || ^14.3",
