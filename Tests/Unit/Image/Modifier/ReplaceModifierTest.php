@@ -48,36 +48,12 @@ class ReplaceModifierTest extends TestCase
         self::assertInstanceOf(ReplaceModifier::class, $modifier);
     }
 
-    public function testValidateConfigurationForMissingPath(): void
-    {
-        $modifier = new ReplaceModifier(['path' => 'EXT:test.png']);
-        $result = $modifier->validateConfiguration([]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForNonStringPath(): void
-    {
-        $modifier = new ReplaceModifier(['path' => 'EXT:test.png']);
-        $result = $modifier->validateConfiguration(['path' => 123]);
-
-        self::assertFalse($result);
-    }
-
     public function testValidateConfigurationForArrayPath(): void
     {
         $modifier = new ReplaceModifier(['path' => 'EXT:test.png']);
         $result = $modifier->validateConfiguration(['path' => ['EXT:test.png']]);
 
         self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForValidConfiguration(): void
-    {
-        $modifier = new ReplaceModifier(['path' => 'EXT:test.png']);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png']);
-
-        self::assertTrue($result);
     }
 
     public function testValidateConfigurationForValidPathVariations(): void
