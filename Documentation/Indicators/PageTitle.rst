@@ -16,6 +16,11 @@ switchers. A prefix or suffix in the :code:`<title>` — e.g.
 :code:`[STAGING] Page title` — makes the environment instantly recognizable in
 all of these contexts. It is a perfect complement to the favicon indicator.
 
+..  figure:: /Images/preview-page-title-prefix.jpg
+    :alt: Page Title Prefix Example
+
+    Page Title Prefix Example
+
 The indicator works in both frontend and backend:
 
 - **Frontend:** a middleware decorates the final :code:`<title>` after the

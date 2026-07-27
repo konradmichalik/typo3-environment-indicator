@@ -42,7 +42,7 @@ This extension provides several features to show an environment indicator in the
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-PageTitlePrefix.png" width="80" alt="Page Title Icon"></td>
-      <td></td>
+      <td><img src="Documentation/Images/preview-page-title-prefix.jpg" width="320" alt="Page Title Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/PageTitle.html">Page title</a></strong><br/><br/>Prefix or suffix the page title in frontend and backend with the current application context.</td>
     </tr>
     <tr>

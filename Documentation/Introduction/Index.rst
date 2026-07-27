@@ -47,6 +47,12 @@ Frontend + Backend
         -   ..  image:: /Images/preview-favicon.png
                 :alt: Favicon Preview
         -   :ref:`Modified favicon <favicon>`: Modifies the favicon for frontend and backend based on the original favicon, current environment and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-PageTitlePrefix.png
+                :alt: Page Title Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-page-title-prefix.jpg
+                :alt: Page Title Preview
+        -   :ref:`Page title <page-title>`: Prefix or suffix the page title in frontend and backend with the current application context.
 
 Frontend
 --------
