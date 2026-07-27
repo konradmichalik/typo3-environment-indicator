@@ -42,6 +42,7 @@ final class LoginBadgeListenerTest extends TestCase
         $this->mockExtensionConfiguration(false);
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addCssInlineBlock');
+        $pageRenderer->expects(self::never())->method('addJsInlineCode');
 
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
@@ -52,6 +53,7 @@ final class LoginBadgeListenerTest extends TestCase
         $this->setResolvedIndicators([]);
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addCssInlineBlock');
+        $pageRenderer->expects(self::never())->method('addJsInlineCode');
 
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }

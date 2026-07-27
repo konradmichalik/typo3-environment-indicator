@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 use function json_encode;
+use function preg_match;
 use function sprintf;
 use function trim;
 
@@ -57,7 +58,10 @@ final readonly class LoginBadgeListener
             return;
         }
 
-        $color = trim((string) ($configuration['color'] ?? '')) ?: '#bd593a';
+        $color = trim((string) ($configuration['color'] ?? ''));
+        if (1 !== preg_match('/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $color)) {
+            $color = '#bd593a';
+        }
         $description = trim((string) ($configuration['description'] ?? ''));
         $position = 'bottom' === ($configuration['position'] ?? 'top') ? 'bottom' : 'top';
         $textColor = ColorUtility::getOptimalTextColor($color, fallbackColor: '#ffffff');
