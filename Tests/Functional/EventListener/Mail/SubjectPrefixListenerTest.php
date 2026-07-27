@@ -96,7 +96,7 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
         $templatePaths->setTemplateRootPaths([__DIR__.'/Fixtures/Templates/']);
 
         $email = new FluidEmail($templatePaths);
-        $email->setTemplate('LazySubject');
+        $email->setTemplate('Mail/LazySubject');
 
         $this->dispatch($email);
 
