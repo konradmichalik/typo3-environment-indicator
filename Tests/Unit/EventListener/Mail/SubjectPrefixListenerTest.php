@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\EventListener\Mail;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Mail\SubjectPrefix;
 use KonradMichalik\Typo3EnvironmentIndicator\EventListener\Mail\SubjectPrefixListener;
@@ -33,7 +34,6 @@ final class SubjectPrefixListenerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
         GeneralUtility::purgeInstances();
     }
 
@@ -47,10 +47,10 @@ final class SubjectPrefixListenerTest extends TestCase
         self::assertSame('Hello', $email->getSubject());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [], 'resolved' => true]]])]
     public function testSubjectIsUntouchedWhenIndicatorNotResolved(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([]);
         $email = (new Email())->subject('Hello');
 
         (new SubjectPrefixListener())($this->buildEvent($email));
@@ -58,10 +58,13 @@ final class SubjectPrefixListenerTest extends TestCase
         self::assertSame('Hello', $email->getSubject());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [SubjectPrefix::class => ['prefix' => '[STG] ']],
+        'resolved' => true,
+    ]]])]
     public function testNonEmailMessageIsIgnored(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([SubjectPrefix::class => ['prefix' => '[STG] ']]);
         $message = new \Symfony\Component\Mime\RawMessage('raw');
 
         $event = new BeforeMailerSentMessageEvent($this->createStub(MailerInterface::class), $message);
@@ -77,15 +80,6 @@ final class SubjectPrefixListenerTest extends TestCase
         $mock = $this->createMock(ExtensionConfiguration::class);
         $mock->method('get')->willReturn($enabled);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $mock);
-    }
-
-    /**
-     * @param array<class-string, array<string, mixed>> $indicators
-     */
-    private function setResolvedIndicators(array $indicators): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = $indicators;
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
     }
 
     private function buildEvent(Email $email): BeforeMailerSentMessageEvent
