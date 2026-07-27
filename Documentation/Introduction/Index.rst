@@ -15,7 +15,7 @@ This extension provides several features to show an environment indicator in the
 
 
 ..  note::
-    These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems) and will not show in production environments.
+    These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems) and will not show on the live production site. They do show in :code:`Production/Staging` and :code:`Production/Standby` application contexts, where they help distinguish those systems from the live site.
 
 ..  _features:
 

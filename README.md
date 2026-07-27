@@ -94,7 +94,8 @@ This extension provides several features to show an environment indicator in the
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)
-> and will not show in production environments.
+> and will not show on the live production site. They do show in `Production/Staging` and `Production/Standby`
+> application contexts, where they help distinguish those systems from the live site.
 
 ## 🔥 Installation
 
