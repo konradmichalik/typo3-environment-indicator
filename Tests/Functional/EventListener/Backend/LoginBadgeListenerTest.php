@@ -63,10 +63,13 @@ class LoginBadgeListenerTest extends FunctionalTestCase
     {
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::once())
-            ->method('addJsInlineCode')
+            ->method('addJsFooterInlineCode')
             ->with(
                 Configuration::EXT_KEY.'_login',
                 self::callback(static fn (string $js): bool => str_contains($js, 'Testing')),
+                null,
+                false,
+                true,
             );
 
         // The listener never reads the event; instantiate without the

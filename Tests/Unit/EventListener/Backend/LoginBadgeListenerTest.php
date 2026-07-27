@@ -42,7 +42,7 @@ final class LoginBadgeListenerTest extends TestCase
         $this->mockExtensionConfiguration(false);
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addCssInlineBlock');
-        $pageRenderer->expects(self::never())->method('addJsInlineCode');
+        $pageRenderer->expects(self::never())->method('addJsFooterInlineCode');
 
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
@@ -53,7 +53,7 @@ final class LoginBadgeListenerTest extends TestCase
         $this->mockExtensionConfiguration(true);
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addCssInlineBlock');
-        $pageRenderer->expects(self::never())->method('addJsInlineCode');
+        $pageRenderer->expects(self::never())->method('addJsFooterInlineCode');
 
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
@@ -69,12 +69,62 @@ final class LoginBadgeListenerTest extends TestCase
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::once())
             ->method('addCssInlineBlock')
-            ->with(Configuration::EXT_KEY.'_login', self::stringContains('#00ACC1'));
+            ->with(
+                Configuration::EXT_KEY.'_login',
+                self::logicalAnd(
+                    self::stringContains('#00ACC1'),
+                    self::stringContains('body>.typo3-environment-indicator-login{position:fixed;left:0;right:0;top:0;'),
+                ),
+                null,
+                false,
+                true,
+            );
         $pageRenderer->expects(self::once())
-            ->method('addJsInlineCode')
+            ->method('addJsFooterInlineCode')
             ->with(
                 Configuration::EXT_KEY.'_login',
                 self::callback(static fn (string $js): bool => str_contains($js, 'STAGING') && str_contains($js, 'DB synced nightly')),
+                null,
+                false,
+                true,
+            );
+
+        (new LoginBadgeListener($pageRenderer))($this->buildEvent());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Login::class => ['text' => 'STAGING', 'color' => '#00ACC1', 'position' => 'bottom']],
+        'resolved' => true,
+    ]]])]
+    public function testBottomPositionAppendsAfterCardInsteadOfBeforeIt(): void
+    {
+        $this->mockExtensionConfiguration(true);
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::once())
+            ->method('addCssInlineBlock')
+            ->with(
+                self::anything(),
+                self::logicalAnd(
+                    self::stringContains('border-bottom-left-radius:inherit'),
+                    self::logicalNot(self::stringContains('border-top-left-radius:inherit')),
+                    self::stringContains('body>.typo3-environment-indicator-login{position:fixed;left:0;right:0;bottom:0;'),
+                ),
+                null,
+                false,
+                true,
+            );
+        $pageRenderer->expects(self::once())
+            ->method('addJsFooterInlineCode')
+            ->with(
+                self::anything(),
+                self::logicalAnd(
+                    self::stringContains('c.appendChild(b);'),
+                    self::logicalNot(self::stringContains('c.insertBefore(b,c.firstChild);')),
+                ),
+                null,
+                false,
+                true,
             );
 
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
