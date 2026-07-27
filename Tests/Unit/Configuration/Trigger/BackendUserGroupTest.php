@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trigger;
 
+use KonradMichalik\Ttt\Attribute\WithBackendUser;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\BackendUserGroup;
 use PHPUnit\Framework\TestCase;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * BackendUserGroupTest.
@@ -25,11 +25,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  */
 class BackendUserGroupTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        unset($GLOBALS['BE_USER']);
-    }
-
     public function testConstructorAcceptsSingleGroup(): void
     {
         $trigger = new BackendUserGroup(1);
@@ -49,61 +44,49 @@ class BackendUserGroupTest extends TestCase
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(groups: [])]
     public function testCheckReturnsFalseWhenNoUserGroups(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(1);
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(groups: [1, 2, 3])]
     public function testCheckReturnsTrueWhenUserIsInMatchingGroup(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [1, 2, 3];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(2);
         $result = $trigger->check();
         self::assertTrue($result);
     }
 
+    #[WithBackendUser(groups: [1, 2, 3])]
     public function testCheckReturnsTrueWhenUserIsInOneOfMultipleGroups(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [1, 2, 3];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(4, 5, 2);
         $result = $trigger->check();
         self::assertTrue($result);
     }
 
+    #[WithBackendUser(groups: [1, 2, 3])]
     public function testCheckReturnsFalseWhenUserIsNotInAnyGroup(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [1, 2, 3];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(4, 5, 6);
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(groups: [])]
     public function testCheckReturnsFalseWhenUserHasEmptyGroups(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(1);
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(groups: [1, 2, 3])]
     public function testCheckUsesStrictComparison(): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->userGroupsUID = [1, 2, 3];
-        $GLOBALS['BE_USER'] = $backendUser;
         $trigger = new BackendUserGroup(4);
         $result = $trigger->check();
         self::assertFalse($result);

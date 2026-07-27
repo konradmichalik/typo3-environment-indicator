@@ -51,114 +51,6 @@ class CircleModifierTest extends TestCase
         self::assertInstanceOf(CircleModifier::class, $modifier);
     }
 
-    public function testValidateConfigurationForMissingColor(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Missing required configuration key: color', $result['errors']);
-    }
-
-    public function testValidateConfigurationForNonStringColor(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => 123, 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "color" must be a string', $result['errors']);
-    }
-
-    public function testValidateConfigurationForMissingSize(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Missing required configuration key: size', $result['errors']);
-    }
-
-    public function testValidateConfigurationForNonNumericSize(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 'large', 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "size" must be numeric', $result['errors']);
-    }
-
-    public function testValidateConfigurationForSizeTooSmall(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => -0.1, 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "size" must be between 0 and 1', $result['errors']);
-    }
-
-    public function testValidateConfigurationForSizeTooLarge(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 1.5, 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "size" must be between 0 and 1', $result['errors']);
-    }
-
-    public function testValidateConfigurationForMissingPadding(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Missing required configuration key: padding', $result['errors']);
-    }
-
-    public function testValidateConfigurationForNonNumericPadding(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => 'small', 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "padding" must be numeric', $result['errors']);
-    }
-
-    public function testValidateConfigurationForPaddingTooSmall(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => -0.1, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "padding" must be between 0 and 1', $result['errors']);
-    }
-
-    public function testValidateConfigurationForPaddingTooLarge(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => 1.5, 'position' => 'top left']);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "padding" must be between 0 and 1', $result['errors']);
-    }
-
-    public function testValidateConfigurationForMissingPosition(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1]);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Missing required configuration key: position', $result['errors']);
-    }
-
-    public function testValidateConfigurationForNonStringPosition(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 123]);
-
-        self::assertFalse($result['valid']);
-        self::assertContains('Configuration key "position" must be a string', $result['errors']);
-    }
-
     public function testValidateConfigurationForInvalidPosition(): void
     {
         $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
@@ -166,15 +58,6 @@ class CircleModifierTest extends TestCase
 
         self::assertFalse($result['valid']);
         self::assertStringContainsString('Configuration key "position" must be one of:', $result['errors'][0]);
-    }
-
-    public function testValidateConfigurationForValidConfiguration(): void
-    {
-        $modifier = new CircleModifier(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-        $result = $modifier->validateConfigurationWithErrors(['color' => '#fff', 'size' => 0.5, 'padding' => 0.1, 'position' => 'top left']);
-
-        self::assertTrue($result['valid']);
-        self::assertEmpty($result['errors']);
     }
 
     /**

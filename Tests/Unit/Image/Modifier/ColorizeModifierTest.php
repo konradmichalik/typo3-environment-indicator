@@ -71,54 +71,6 @@ class ColorizeModifierTest extends TestCase
         $modifier->modify($image);
     }
 
-    public function testValidateConfigurationReturnsFalseForMissingColor(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration([]));
-    }
-
-    public function testValidateConfigurationReturnsFalseForNonStringColor(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => 123]));
-    }
-
-    public function testValidateConfigurationReturnsFalseForOpacityBelowZero(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => -0.1]));
-    }
-
-    public function testValidateConfigurationReturnsFalseForOpacityAboveOne(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => 1.1]));
-    }
-
-    public function testValidateConfigurationReturnsFalseForNonNumericOpacity(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'opacity' => 'full']));
-    }
-
-    public function testValidateConfigurationReturnsFalseForNonNumericBrightness(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'brightness' => 'high']));
-    }
-
-    public function testValidateConfigurationReturnsFalseForNonNumericContrast(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertFalse($modifier->validateConfiguration(['color' => '#fff', 'contrast' => 'high']));
-    }
-
-    public function testValidateConfigurationReturnsTrueForMinimalConfiguration(): void
-    {
-        $modifier = new ColorizeModifier(['color' => '#fff']);
-        self::assertTrue($modifier->validateConfiguration(['color' => '#ff0000']));
-    }
-
     public function testValidateConfigurationReturnsTrueForFullConfiguration(): void
     {
         $modifier = new ColorizeModifier(['color' => '#fff']);

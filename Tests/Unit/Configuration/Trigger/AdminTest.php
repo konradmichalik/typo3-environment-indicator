@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trigger;
 
+use KonradMichalik\Ttt\Attribute\WithBackendUser;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Admin;
 use PHPUnit\Framework\TestCase;
 
@@ -24,11 +25,6 @@ use PHPUnit\Framework\TestCase;
  */
 class AdminTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        unset($GLOBALS['BE_USER']);
-    }
-
     public function testCheckReturnsFalseWhenNoBackendUser(): void
     {
         $trigger = new Admin();
@@ -36,23 +32,17 @@ class AdminTest extends TestCase
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(admin: false)]
     public function testCheckReturnsFalseWhenBackendUserIsNotAdmin(): void
     {
-        $backendUser = $this->createMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
-        $backendUser->expects(self::once())->method('isAdmin')->willReturn(false);
-        $GLOBALS['BE_USER'] = $backendUser;
-
         $trigger = new Admin();
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
+    #[WithBackendUser(admin: true)]
     public function testCheckReturnsTrueWhenBackendUserIsAdmin(): void
     {
-        $backendUser = $this->createMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
-        $backendUser->expects(self::once())->method('isAdmin')->willReturn(true);
-        $GLOBALS['BE_USER'] = $backendUser;
-
         $trigger = new Admin();
         $result = $trigger->check();
         self::assertTrue($result);

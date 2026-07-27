@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 
 use Intervention\Image\Interfaces\{DriverInterface, ImageManagerInterface};
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use PHPUnit\Framework\TestCase;
@@ -24,13 +25,9 @@ use PHPUnit\Framework\TestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
 class GeneralHelperTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-    }
-
     public function testSupportFormatWithIco(): void
     {
         $manager = $this->createStub(ImageManagerInterface::class);
@@ -95,28 +92,25 @@ class GeneralHelperTest extends TestCase
         self::assertFalse($result);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        'TestIndicator' => ['config' => 'value'],
+    ]]]])]
     public function testIsCurrentIndicatorWithExistingIndicator(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            'TestIndicator' => ['config' => 'value'],
-        ];
-
         $result = GeneralHelper::isCurrentIndicator('TestIndicator');
         self::assertTrue($result);
     }
 
     public function testIsCurrentIndicatorWithNonExistingIndicator(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-
         $result = GeneralHelper::isCurrentIndicator('NonExistingIndicator');
         self::assertFalse($result);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => ['test' => 'value']]]])]
     public function testGetIndicatorConfigurationReturnsExpectedArray(): void
     {
         $expected = ['test' => 'value'];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = $expected;
 
         $result = GeneralHelper::getIndicatorConfiguration();
         self::assertEquals($expected, $result);

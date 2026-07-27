@@ -7,6 +7,9 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+    <extensions>
+        <bootstrap class="KonradMichalik\Ttt\TttExtension"/>
+    </extensions>
     <php>
         <env name="COLUMNS" value="300" />
     </php>
