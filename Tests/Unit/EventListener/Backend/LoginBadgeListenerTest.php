@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\EventListener\Backend;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Login;
 use KonradMichalik\Typo3EnvironmentIndicator\EventListener\Backend\LoginBadgeListener;
@@ -33,7 +34,6 @@ final class LoginBadgeListenerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
         GeneralUtility::purgeInstances();
     }
 
@@ -47,10 +47,10 @@ final class LoginBadgeListenerTest extends TestCase
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [], 'resolved' => true]]])]
     public function testNothingIsInjectedWhenIndicatorNotResolved(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([]);
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addCssInlineBlock');
         $pageRenderer->expects(self::never())->method('addJsInlineCode');
@@ -58,12 +58,13 @@ final class LoginBadgeListenerTest extends TestCase
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Login::class => ['text' => 'STAGING', 'color' => '#00ACC1', 'description' => 'DB synced nightly']],
+        'resolved' => true,
+    ]]])]
     public function testBadgeIsInjectedWithTextAndDescription(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([
-            Login::class => ['text' => 'STAGING', 'color' => '#00ACC1', 'description' => 'DB synced nightly'],
-        ]);
 
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::once())
@@ -84,15 +85,6 @@ final class LoginBadgeListenerTest extends TestCase
         $mock = $this->createMock(ExtensionConfiguration::class);
         $mock->method('get')->willReturn($enabled);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $mock);
-    }
-
-    /**
-     * @param array<class-string, array<string, mixed>> $indicators
-     */
-    private function setResolvedIndicators(array $indicators): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = $indicators;
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
     }
 
     private function buildEvent(): ModifyPageLayoutOnLoginProviderSelectionEvent
