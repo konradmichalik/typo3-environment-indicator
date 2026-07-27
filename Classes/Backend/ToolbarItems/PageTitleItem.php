@@ -53,7 +53,7 @@ class PageTitleItem implements ToolbarItemInterface
             return '';
         }
 
-        $this->pageRenderer->addJsInlineCode(Configuration::EXT_KEY.'_pagetitle', $this->buildScript($prefix, $suffix));
+        $this->pageRenderer->addJsInlineCode(Configuration::EXT_KEY.'_pagetitle', $this->buildScript($prefix, $suffix), null, false, true);
 
         return '';
     }
