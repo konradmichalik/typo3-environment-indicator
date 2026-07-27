@@ -41,6 +41,11 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Favicon.html">Modified favicon</a></strong><br/><br/>Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-PageTitlePrefix.png" width="80" alt="Page Title Icon"></td>
+      <td></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/PageTitle.html">Page title</a></strong><br/><br/>Prefix or suffix the page title in frontend and backend with the current application context.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Frontend</th>
     </tr>
     <tr>

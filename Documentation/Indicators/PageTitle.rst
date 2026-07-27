@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-PageTitlePrefix.png
+    :alt: Page Title Icon
+    :width: 120px
+
 ..  _page-title:
 
 ===========
