@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a07e2f280f69fe18788fe1a52dd94086",
+    "content-hash": "4159e881d248bf6a9f7b54f11c1fb614",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7089,16 +7089,16 @@
         },
         {
             "name": "konradmichalik/ttt",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konradmichalik/ttt.git",
-                "reference": "bcc65f439bdcd3ba10aeeee3e58b7a6257c599a8"
+                "reference": "7924d932009d8a20b9b4e12e67bf4baf28dd0057"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konradmichalik/ttt/zipball/bcc65f439bdcd3ba10aeeee3e58b7a6257c599a8",
-                "reference": "bcc65f439bdcd3ba10aeeee3e58b7a6257c599a8",
+                "url": "https://api.github.com/repos/konradmichalik/ttt/zipball/7924d932009d8a20b9b4e12e67bf4baf28dd0057",
+                "reference": "7924d932009d8a20b9b4e12e67bf4baf28dd0057",
                 "shasum": ""
             },
             "require": {
@@ -7118,7 +7118,6 @@
             "suggest": {
                 "typo3/cms-core": "Required for TYPO3-specific attributes like InApplicationContext and WithEnvironment (^13.4 || ^14.0)"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -7200,10 +7199,10 @@
                 "typo3"
             ],
             "support": {
-                "source": "https://github.com/konradmichalik/ttt/tree/main",
+                "source": "https://github.com/konradmichalik/ttt/tree/0.2.0",
                 "issues": "https://github.com/konradmichalik/ttt/issues"
             },
-            "time": "2026-07-27T10:10:47+00:00"
+            "time": "2026-07-27T11:34:34+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -10738,9 +10737,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "konradmichalik/ttt": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
