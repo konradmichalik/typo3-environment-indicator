@@ -25,7 +25,7 @@ use TYPO3\CMS\Dashboard\Widgets\{ButtonProviderInterface, WidgetConfigurationInt
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => []]]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
 class EnvironmentIndicatorWidgetTest extends TestCase
 {
     public function testConstructorWithConfiguration(): void

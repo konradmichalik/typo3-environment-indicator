@@ -24,11 +24,16 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 /**
  * TopbarItemTest.
  *
+ * The EXTENSIONS[EXT_KEY] override must stay an empty array, not null:
+ * ExtensionConfiguration::hasConfiguration() checks it via isset(), which
+ * is false for null and would make ->get() fall back to a real
+ * PackageManager lookup that isn't available in this Unit bootstrap.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 #[WithTypo3ConfVars([
-    'EXTCONF' => [Configuration::EXT_KEY => ['current' => []]],
+    'EXTCONF' => [Configuration::EXT_KEY => ['current' => null]],
     'EXTENSIONS' => [Configuration::EXT_KEY => []],
 ])]
 class TopbarItemTest extends TestCase

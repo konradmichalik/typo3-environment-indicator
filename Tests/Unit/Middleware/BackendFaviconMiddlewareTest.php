@@ -54,7 +54,7 @@ final class BackendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
-    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => []]]])]
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => null]]])]
     public function testProcessSkipsWhenFeatureMissing(): void
     {
         $middleware = new BackendFaviconMiddleware(new ExtensionConfiguration());

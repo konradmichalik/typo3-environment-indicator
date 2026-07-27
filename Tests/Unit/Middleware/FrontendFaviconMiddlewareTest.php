@@ -54,7 +54,7 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
-    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => []]]])]
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => null]]])]
     public function testProcessSkipsWhenFeatureMissing(): void
     {
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
@@ -72,6 +72,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    // Must stay an empty array, not null: ExtensionConfiguration::hasConfiguration()
+    // checks it via isset(), which is false for null and would make ->get() fall
+    // back to a real PackageManager lookup that isn't available in this Unit bootstrap.
     #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]])]
     public function testProcessSkipsWhenConfigMissing(): void
     {

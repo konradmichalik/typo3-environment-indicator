@@ -22,6 +22,11 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 /**
  * ContextItemTest.
  *
+ * The EXTENSIONS[EXT_KEY] override must stay an empty array, not null:
+ * ExtensionConfiguration::hasConfiguration() checks it via isset(), which
+ * is false for null and would make ->get() fall back to a real
+ * PackageManager lookup that isn't available in this Unit bootstrap.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */

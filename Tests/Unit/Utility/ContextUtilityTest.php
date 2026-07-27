@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => []]]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
 class ContextUtilityTest extends TestCase
 {
     protected function tearDown(): void

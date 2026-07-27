@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => []]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => null]])]
 class ConfigurationStorageTest extends TestCase
 {
     private ConfigurationStorage $configurationStorage;

@@ -26,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => []]]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => null]]])]
 class AbstractIndicatorTest extends TestCase
 {
     public function testConstructorWithEmptyConfiguration(): void

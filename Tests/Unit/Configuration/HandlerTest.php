@@ -27,7 +27,7 @@ use stdClass;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => []]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => null]])]
 class HandlerTest extends TestCase
 {
     public function testAddIndicatorWithEmptyArraysDoesNothing(): void

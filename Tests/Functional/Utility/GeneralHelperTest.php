@@ -74,9 +74,9 @@ class GeneralHelperTest extends FunctionalTestCase
     public function testGetFolderCreatesDirectoryIfNotExists(): void
     {
         $testPath = 'typo3temp/assets/test-indicator-'.uniqid().'/';
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class] = [
-            '_path' => $testPath,
-        ];
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [
+            Favicon::class => ['_path' => $testPath],
+        ]]]]);
 
         $indicator = new Favicon([]);
         GeneralHelper::getFolder($indicator);

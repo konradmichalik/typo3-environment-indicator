@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => []]]])]
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
 class GeneralHelperTest extends TestCase
 {
     public function testSupportFormatWithIco(): void
