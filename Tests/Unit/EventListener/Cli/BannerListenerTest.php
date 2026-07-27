@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\EventListener\Cli;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Cli\Banner;
 use KonradMichalik\Typo3EnvironmentIndicator\EventListener\Cli\BannerListener;
@@ -34,7 +35,6 @@ final class BannerListenerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
         GeneralUtility::purgeInstances();
     }
 
@@ -48,10 +48,10 @@ final class BannerListenerTest extends TestCase
         self::assertSame('', $output->fetch());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [], 'resolved' => true]]])]
     public function testNothingIsPrintedWhenIndicatorNotResolved(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([]);
         $output = new BufferedOutput();
 
         (new BannerListener())($this->buildEvent($output));
@@ -59,10 +59,13 @@ final class BannerListenerTest extends TestCase
         self::assertSame('', $output->fetch());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Banner::class => ['text' => 'STAGING']],
+        'resolved' => true,
+    ]]])]
     public function testNothingIsPrintedForNonInteractiveInput(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([Banner::class => ['text' => 'STAGING']]);
         $output = new BufferedOutput();
 
         (new BannerListener())($this->buildEvent($output, $this->input(false)));
@@ -70,11 +73,16 @@ final class BannerListenerTest extends TestCase
         self::assertSame('', $output->fetch());
     }
 
+    #[WithTypo3ConfVars([
+        'EXTCONF' => [Configuration::EXT_KEY => [
+            'current' => [Banner::class => ['text' => 'STAGING', 'icon' => '🚦', 'color' => 'cyan']],
+            'resolved' => true,
+        ]],
+        'SYS' => ['sitename' => 'My Project'],
+    ])]
     public function testBannerIsPrintedWithTextAndSiteName(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My Project';
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([Banner::class => ['text' => 'STAGING', 'icon' => '🚦', 'color' => 'cyan']]);
         $output = new BufferedOutput();
 
         (new BannerListener())($this->buildEvent($output));
@@ -82,14 +90,15 @@ final class BannerListenerTest extends TestCase
         $printed = $output->fetch();
         self::assertStringContainsString('🚦 STAGING', $printed);
         self::assertStringContainsString('My Project', $printed);
-
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Banner::class => ['text' => 'STAGING', 'commands' => ['cache:*']]],
+        'resolved' => true,
+    ]]])]
     public function testBannerIsNotPrintedWhenCommandDoesNotMatchWhitelist(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([Banner::class => ['text' => 'STAGING', 'commands' => ['cache:*']]]);
         $output = new BufferedOutput();
 
         (new BannerListener())($this->buildEvent($output, command: new Command('site:list')));
@@ -97,10 +106,13 @@ final class BannerListenerTest extends TestCase
         self::assertSame('', $output->fetch());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Banner::class => ['text' => 'STAGING', 'commands' => ['cache:*']]],
+        'resolved' => true,
+    ]]])]
     public function testBannerIsPrintedWhenCommandMatchesWhitelist(): void
     {
         $this->mockExtensionConfiguration(true);
-        $this->setResolvedIndicators([Banner::class => ['text' => 'STAGING', 'commands' => ['cache:*']]]);
         $output = new BufferedOutput();
 
         (new BannerListener())($this->buildEvent($output, command: new Command('cache:flush')));
@@ -113,15 +125,6 @@ final class BannerListenerTest extends TestCase
         $mock = $this->createMock(ExtensionConfiguration::class);
         $mock->method('get')->willReturn($enabled);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $mock);
-    }
-
-    /**
-     * @param array<class-string, array<string, mixed>> $indicators
-     */
-    private function setResolvedIndicators(array $indicators): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = $indicators;
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
     }
 
     private function input(bool $interactive): InputInterface
