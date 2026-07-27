@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-BackendLogin.png
+    :alt: Backend Login Icon
+    :width: 120px
+
 ..  _backend-login:
 
 ===================
