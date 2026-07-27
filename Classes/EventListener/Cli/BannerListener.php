@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use function fnmatch;
 use function function_exists;
 use function is_array;
+use function mb_strwidth;
 use function sprintf;
 use function stream_isatty;
 use function trim;
@@ -85,15 +86,28 @@ final class BannerListener
         $color = trim((string) ($configuration['color'] ?? ''));
         $sitename = trim((string) ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
 
-        $label = '' !== $icon ? $icon.' '.$text : $text;
-        if ('' !== $sitename) {
-            $label .= ' — '.$sitename;
+        $main = OutputFormatter::escape('' !== $icon ? $icon.' '.$text : $text);
+        $siteLabel = '' !== $sitename ? ' — '.OutputFormatter::escape($sitename) : '';
+
+        if ('' === $color) {
+            return $main.$siteLabel;
         }
 
-        $label = OutputFormatter::escape($label);
+        // mb_strwidth (not mb_strlen) so double-width glyphs (e.g. the emoji icon)
+        // don't leave the padding lines shorter than the content line.
+        $paddingLine = str_repeat(' ', mb_strwidth('  '.$main.$siteLabel.'  '));
 
-        // Non-decorated output (piped stdout, NO_COLOR) strips the tags automatically.
-        return '' !== $color ? sprintf('<fg=%s;options=bold>%s</>', $color, $label) : $label;
+        // Sibling tags, not nested ones: Symfony's formatter does not inherit
+        // the background from an enclosing tag, so each segment declares its
+        // own "bg" to keep the bar filled behind the (non-bold) padding. Only
+        // the environment label is bold, the site name stays regular weight.
+        $bar = sprintf('<bg=%s>', $color);
+        $barBold = sprintf('<bg=%s;fg=white;options=bold>', $color);
+        $barRegular = sprintf('<bg=%s;fg=white>', $color);
+
+        return "{$bar}{$paddingLine}</>\n"
+            ."{$bar}  </>{$barBold}{$main}</>{$barRegular}{$siteLabel}</>{$bar}  </>\n"
+            ."{$bar}{$paddingLine}</>";
     }
 
     /**
