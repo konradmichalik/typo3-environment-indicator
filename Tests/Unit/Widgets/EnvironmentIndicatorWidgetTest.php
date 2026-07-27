@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Widgets;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Widgets\EnvironmentIndicatorWidget;
 use PHPUnit\Framework\TestCase;
@@ -24,13 +25,9 @@ use TYPO3\CMS\Dashboard\Widgets\{ButtonProviderInterface, WidgetConfigurationInt
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => []]]])]
 class EnvironmentIndicatorWidgetTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-    }
-
     public function testConstructorWithConfiguration(): void
     {
         $configuration = $this->createStub(WidgetConfigurationInterface::class);

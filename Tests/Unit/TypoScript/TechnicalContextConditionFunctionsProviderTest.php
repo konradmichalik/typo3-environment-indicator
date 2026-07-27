@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\TypoScript;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\TypoScript\TechnicalContextConditionFunctionsProvider;
 use PHPUnit\Framework\TestCase;
@@ -25,19 +26,12 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars([
+    'EXTCONF' => [Configuration::EXT_KEY => ['current' => []]],
+    'EXTENSIONS' => [Configuration::EXT_KEY => []],
+])]
 class TechnicalContextConditionFunctionsProviderTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
-    }
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
-    }
-
     public function testConstructorWithExtensionConfiguration(): void
     {
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
@@ -72,25 +66,18 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
         self::assertInstanceOf(\Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface::class, $provider);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['context' => false]]]])]
     public function testEvaluatorReturnsFalseWhenFeatureDisabled(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => ['context' => false],
-        ];
-
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $evaluator = $provider->getFunctions()[0]->getEvaluator();
 
         self::assertFalse($evaluator([]));
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['context' => true]]]])]
     public function testEvaluatorReturnsFalseWhenFeatureEnabledButNoCurrentHintIndicator(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => ['context' => true],
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $evaluator = $provider->getFunctions()[0]->getEvaluator();
 

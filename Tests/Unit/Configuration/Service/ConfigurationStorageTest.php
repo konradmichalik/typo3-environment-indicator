@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Service;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service\ConfigurationStorage;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => []]])]
 class ConfigurationStorageTest extends TestCase
 {
     private ConfigurationStorage $configurationStorage;
@@ -30,15 +32,6 @@ class ConfigurationStorageTest extends TestCase
     protected function setUp(): void
     {
         $this->configurationStorage = new ConfigurationStorage();
-
-        // Clear global state
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
-    }
-
-    protected function tearDown(): void
-    {
-        // Clear global state
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
     }
 
     public function testAddConfiguration(): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
@@ -26,13 +27,9 @@ use stdClass;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => []]])]
 class HandlerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
-    }
-
     public function testAddIndicatorWithEmptyArraysDoesNothing(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
