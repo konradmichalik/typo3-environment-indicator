@@ -92,11 +92,13 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
      */
     public function testSubjectFromFluidEmailIsPrefixedAfterLazyRendering(): void
     {
+        // Fluid's controller/action-based template resolution differs between
+        // typo3fluid versions shipped with TYPO3 13.4 and 14.3, so the fixture
+        // is addressed directly instead, bypassing that resolution entirely.
         $templatePaths = new TemplatePaths();
-        $templatePaths->setTemplateRootPaths([__DIR__.'/Fixtures/Templates/']);
+        $templatePaths->setTemplatePathAndFilename(__DIR__.'/Fixtures/Templates/Mail/LazySubject.fluid.html');
 
         $email = new FluidEmail($templatePaths);
-        $email->setTemplate('Mail/LazySubject');
 
         $this->dispatch($email);
 

@@ -1,2 +1,0 @@
-<f:section name="Subject">Lazily rendered subject</f:section>
-Body content.
