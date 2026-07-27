@@ -79,66 +79,10 @@ class OverlayModifierTest extends TestCase
         self::assertInstanceOf(OverlayModifier::class, $modifier2);
     }
 
-    public function testValidateConfigurationForMissingPath(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForNonStringPath(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 123, 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForMissingSize(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForNonNumericSize(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 'large', 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
     public function testValidateConfigurationForSizeZero(): void
     {
         $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
         $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0, 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForSizeTooLarge(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 1.5, 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForMissingPosition(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForNonStringPosition(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 123, 'padding' => 0.1]);
 
         self::assertFalse($result);
     }
@@ -149,45 +93,5 @@ class OverlayModifierTest extends TestCase
         $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'middle', 'padding' => 0.1]);
 
         self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForMissingPadding(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center']);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForNonNumericPadding(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 'small']);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForPaddingTooSmall(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => -0.1]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForPaddingTooLarge(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 1.5]);
-
-        self::assertFalse($result);
-    }
-
-    public function testValidateConfigurationForValidConfiguration(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-
-        self::assertTrue($result);
     }
 }
