@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-MailSubjectPrefix.png
+    :alt: Mail Subject Prefix Icon
+    :width: 120px
+
 ..  _mail-subject-prefix:
 
 ===================
@@ -12,6 +16,11 @@ a mail originates from the live system or a test system. The mail subject prefix
 indicator prepends the environment to the subject of every mail sent through the
 TYPO3 Mailer API (e.g. :code:`[Staging] Your registration`), so the origin is
 visible at first glance in every inbox.
+
+..  figure:: /Images/mail-subject-prefix.jpg
+    :alt: Mail Subject Prefix Example
+
+    Mail Subject Prefix Example
 
 The prefix is applied via a listener on the :php:`BeforeMailerSentMessageEvent`,
 covering all mails sent via TYPO3's Mailer API (frontend forms, backend
