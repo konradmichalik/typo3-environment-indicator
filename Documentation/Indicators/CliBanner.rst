@@ -11,10 +11,10 @@ CLI Banner
 ===========
 
 The classic "wrong SSH terminal" scenario is the CLI counterpart to the original
-motivation of this extension: running :code:`cache:flush`,
-:code:`database:updateschema` or an import command on the live system instead of
-staging. The CLI banner prints a colored environment banner to :code:`stderr`
-before a console command runs, e.g. :code:`🚦 STAGING — project.example.dev`.
+motivation of this extension: running an import, a custom deployment command or
+:code:`impexp:import` on the live system instead of staging. The CLI banner
+prints a colored environment banner to :code:`stderr` before a console command
+runs, e.g. :code:`🚦 STAGING — project.example.dev`.
 
 The banner is printed via a listener on the Symfony Console
 :php:`ConsoleCommandEvent`, so it appears before the command is executed. It is
@@ -51,7 +51,7 @@ Additional optional configuration keys:
   (e.g. :code:`#00ACC1`, rendered on truecolor terminals). Default is no color.
 - :code:`icon` (string): A leading glyph. Default is :code:`🚦`.
 - :code:`commands` (array): A whitelist of command name patterns (:code:`fnmatch`
-  syntax, e.g. :code:`['cache:*', 'database:*']`). If set, the banner is only
+  syntax, e.g. :code:`['site:*', 'impexp:*']`). If set, the banner is only
   printed for matching commands. Default is empty (the banner is printed for all
   commands).
 
@@ -72,6 +72,18 @@ Additional optional configuration keys:
     This indicator is deliberately *indicator only* (a banner). It does not add
     confirmation prompts ("Really execute on live? [y/N]") — that would be guard
     functionality and out of scope.
+
+..  note::
+    A small set of low-level TYPO3 core commands (:code:`cache:flush`,
+    :code:`cache:warmup`, :code:`cache:flushtags`, :code:`list`, :code:`help`,
+    :code:`upgrade:*`, among others) always run in TYPO3's failsafe CLI
+    bootstrap, which uses a no-op event dispatcher for resilience — so this and
+    any other third-party listener never fires for them, regardless of
+    configuration. Some community packages register additional commands the
+    same way (e.g. :code:`helhum/typo3-console`'s :code:`database:updateschema`,
+    :code:`database:import`, :code:`install:*`). The banner works normally for
+    everything else, including custom extension commands, :code:`site:*` and
+    :code:`impexp:*`.
 
 The CLI banner can be disabled globally via the
 :ref:`extension configuration <extconf-cli.banner>`.
