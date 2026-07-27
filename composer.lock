@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0883875ccadcf1ad476ef1a28620f6ff",
+    "content-hash": "977502e00894274976efce46023bfcb1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7088,6 +7088,123 @@
             "time": "2026-06-04T05:37:13+00:00"
         },
         {
+            "name": "konradmichalik/ttt",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/konradmichalik/ttt.git",
+                "reference": "7924d932009d8a20b9b4e12e67bf4baf28dd0057"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/konradmichalik/ttt/zipball/7924d932009d8a20b9b4e12e67bf4baf28dd0057",
+                "reference": "7924d932009d8a20b9b4e12e67bf4baf28dd0057",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0 || ^13.0"
+            },
+            "require-dev": {
+                "armin/editorconfig-cli": "^2.0",
+                "ergebnis/composer-normalize": "^2.44",
+                "konradmichalik/php-cs-fixer-preset": "^0.2.0",
+                "konradmichalik/php-doc-block-header-fixer": "^0.3.4",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "rector/rector": "^2.2",
+                "typo3/cms-core": "^13.4 || ^14.0"
+            },
+            "suggest": {
+                "typo3/cms-core": "Required for TYPO3-specific attributes like InApplicationContext and WithEnvironment (^13.4 || ^14.0)"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KonradMichalik\\Ttt\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "KonradMichalik\\Ttt\\Tests\\": "tests/src"
+                }
+            },
+            "scripts": {
+                "fix": [
+                    "@fix:composer",
+                    "@fix:editorconfig",
+                    "@fix:php"
+                ],
+                "fix:composer": [
+                    "@composer normalize"
+                ],
+                "fix:editorconfig": [
+                    "@lint:editorconfig --fix"
+                ],
+                "fix:php": [
+                    "php-cs-fixer fix"
+                ],
+                "lint": [
+                    "@lint:composer",
+                    "@lint:editorconfig",
+                    "@lint:php"
+                ],
+                "lint:composer": [
+                    "@fix:composer --dry-run"
+                ],
+                "lint:editorconfig": [
+                    "ec"
+                ],
+                "lint:php": [
+                    "@fix:php --dry-run"
+                ],
+                "migration": [
+                    "@migration:rector"
+                ],
+                "migration:rector": [
+                    "rector process -c rector.php"
+                ],
+                "sca": [
+                    "@sca:php"
+                ],
+                "sca:php": [
+                    "phpstan analyse --memory-limit=2G"
+                ],
+                "test": [
+                    "@test:coverage --no-coverage"
+                ],
+                "test:coverage": [
+                    "XDEBUG_MODE=coverage phpunit -c phpunit.xml"
+                ]
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Konrad Michalik",
+                    "email": "hej@konradmichalik.dev",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "ttt - TYPO3 Testing Terrarium. Declarative test sandboxing via PHP attributes: TYPO3_CONF_VARS, application context, environment and more - applied before the test, guaranteed to be restored afterwards.",
+            "keywords": [
+                "attributes",
+                "php",
+                "phpunit",
+                "sandbox",
+                "testing",
+                "toolbox",
+                "ttt",
+                "typo3"
+            ],
+            "support": {
+                "source": "https://github.com/konradmichalik/ttt/tree/0.2.0",
+                "issues": "https://github.com/konradmichalik/ttt/issues"
+            },
+            "time": "2026-07-27T11:34:34+00:00"
+        },
+        {
             "name": "myclabs/deep-copy",
             "version": "1.13.4",
             "source": {
@@ -8064,24 +8181,24 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.55",
+            "version": "11.5.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "adc7262fccc12de2b30f12a8aa0b33775d814f00"
+                "reference": "5f83edffa6967c3db468d48a695ec7bcb02e9256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/adc7262fccc12de2b30f12a8aa0b33775d814f00",
-                "reference": "adc7262fccc12de2b30f12a8aa0b33775d814f00",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5f83edffa6967c3db468d48a695ec7bcb02e9256",
+                "reference": "5f83edffa6967c3db468d48a695ec7bcb02e9256",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
+                "ext-filter": "*",
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
-                "ext-xml": "*",
                 "ext-xmlwriter": "*",
                 "myclabs/deep-copy": "^1.13.4",
                 "phar-io/manifest": "^2.0.4",
@@ -8146,31 +8263,15 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.55"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.56"
             },
             "funding": [
                 {
-                    "url": "https://phpunit.de/sponsors.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                },
-                {
-                    "url": "https://liberapay.com/sebastianbergmann",
-                    "type": "liberapay"
-                },
-                {
-                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
-                    "type": "thanks_dev"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpunit/phpunit",
-                    "type": "tidelift"
+                    "url": "https://phpunit.de/sponsoring.html",
+                    "type": "other"
                 }
             ],
-            "time": "2026-02-18T12:37:06+00:00"
+            "time": "2026-07-06T14:52:39+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -10647,5 +10748,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

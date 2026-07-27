@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\ToolbarItems;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\ContextItem;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use PHPUnit\Framework\TestCase;
@@ -21,21 +22,17 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 /**
  * ContextItemTest.
  *
+ * The EXTENSIONS[EXT_KEY] override must stay an empty array, not null:
+ * ExtensionConfiguration::hasConfiguration() checks it via isset(), which
+ * is false for null and would make ->get() fall back to a real
+ * PackageManager lookup that isn't available in this Unit bootstrap.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]])]
 final class ContextItemTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
-    }
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
-    }
-
     public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
     {
         $item = new ContextItem(new ExtensionConfiguration());

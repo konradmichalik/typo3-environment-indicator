@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\BackendLogoHandler;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\BackendLogoMiddleware;
@@ -32,16 +33,12 @@ final class BackendLogoMiddlewareTest extends TestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
         GeneralUtility::purgeInstances();
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['logo' => false]]]])]
     public function testProcessSkipsWhenFeatureDisabled(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'backend' => ['logo' => false],
-        ];
-
         $middleware = new BackendLogoMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
@@ -57,12 +54,9 @@ final class BackendLogoMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => null]]])]
     public function testProcessSkipsWhenFeatureMissing(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'backend' => [],
-        ];
-
         $middleware = new BackendLogoMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);

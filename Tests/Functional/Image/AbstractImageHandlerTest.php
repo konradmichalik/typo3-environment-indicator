@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Image;
 
+use KonradMichalik\Ttt\Fixture\ImageFixtures;
+use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
@@ -26,11 +28,18 @@ use function extension_loaded;
 /**
  * AbstractImageHandlerTest.
  *
+ * Uses the imperative ConfVarsSandbox trait rather than the
+ * WithTypo3ConfVars attribute: the attribute applies before setUp() runs,
+ * but FunctionalTestCase::setUp() reloads $GLOBALS['TYPO3_CONF_VARS'] from
+ * the real bootstrapped configuration afterwards, discarding it.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 class AbstractImageHandlerTest extends FunctionalTestCase
 {
+    use ConfVarsSandbox;
+
     protected array $testExtensionsToLoad = [
         'typo3_environment_indicator',
     ];
@@ -49,20 +58,19 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($fixtureDir);
         $this->testImagePath = $fixtureDir.'test_favicon.png';
 
-        $gd = imagecreatetruecolor(16, 16);
-        $red = imagecolorallocate($gd, 255, 0, 0);
-        imagefill($gd, 0, 0, $red);
-        imagepng($gd, $this->testImagePath);
-        imagedestroy($gd);
+        ImageFixtures::createPng(16, 16, [255, 0, 0], $this->testImagePath);
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class] = [
-            '_path' => 'typo3temp/assets/environment-indicator-test/',
-        ];
-
-        // Mark resolution as already done so the resolver never reprocesses the
-        // registered presets (e.g. the "Testing" context favicon) on top of the
-        // 'current' fixture each test sets up below.
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+            'defaults' => [Favicon::class => ['_path' => 'typo3temp/assets/environment-indicator-test/']],
+            // Mark resolution as already done so the resolver never reprocesses the
+            // registered presets (e.g. the "Testing" context favicon) on top of the
+            // 'current' fixture each test below sets up.
+            'resolved' => true,
+            // Shared baseline for most tests; the few that need a different
+            // "current" configuration reassign $GLOBALS directly in the method
+            // body, which simply overrides this at runtime.
+            'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+        ]]]);
     }
 
     protected function tearDown(): void
@@ -73,17 +81,11 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         }
 
         parent::tearDown();
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class]);
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current']);
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved']);
+        $this->restoreTypo3ConfVars();
     }
 
     public function testProcessReturnsOriginalPathWhenFileDoesNotExist(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $handler = new FaviconHandler();
         $result = $handler->process('/nonexistent/path/favicon.png');
 
@@ -114,10 +116,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
     public function testProcessReturnsModifiedPathWhenModifierIsConfigured(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $handler = new FaviconHandler();
         $result = $handler->process($this->testImagePath);
 
@@ -142,10 +140,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
     public function testProcessReturnsCachedPathOnSecondCall(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $handler = new FaviconHandler();
         $firstResult = $handler->process($this->testImagePath);
         $secondResult = $handler->process($this->testImagePath);
@@ -155,10 +149,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
     public function testProcessLeavesNoTemporaryFilesBehind(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $result = (new FaviconHandler())->process($this->testImagePath);
 
         self::assertFileExists(Environment::getPublicPath().'/'.$result);
@@ -174,10 +164,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($svgDir);
         copy(__DIR__.'/Fixtures/test.svg', $svgPath);
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $handler = new FaviconHandler();
         $result = $handler->process($svgPath);
 
@@ -191,10 +177,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($svgDir);
         copy(__DIR__.'/Fixtures/test-no-dims.svg', $svgPath);
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
-
         $handler = new FaviconHandler();
         $result = $handler->process($svgPath);
 
@@ -207,10 +189,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $unsupportedPath = $unsupportedDir.'test_favicon.txt';
         GeneralUtility::mkdir_deep($unsupportedDir);
         file_put_contents($unsupportedPath, 'not an image');
-
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Favicon::class => [new TriangleModifier(['color' => '#ff0000'])],
-        ];
 
         $handler = new FaviconHandler();
         $result = $handler->process($unsupportedPath);
