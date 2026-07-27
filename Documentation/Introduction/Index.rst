@@ -114,6 +114,24 @@ Backend
                 :alt: Backend Theme Preview
         -   :ref:`Backend theme <backend-theme>` *(experimental)*: Colors the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
 
+CLI
+---
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+    :class: center
+
+    *   -   Icon
+        -   Preview
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-CLI.png
+                :alt: CLI Banner Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-cli-banner.jpg
+                :alt: CLI Banner Preview
+        -   :ref:`CLI banner <cli-banner>`: Prints a colored environment banner to the console before a command runs.
+
 ..  _support:
 
 Support

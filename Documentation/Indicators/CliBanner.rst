@@ -13,8 +13,14 @@ CLI Banner
 The classic "wrong SSH terminal" scenario is the CLI counterpart to the original
 motivation of this extension: running an import, a custom deployment command or
 :code:`impexp:import` on the live system instead of staging. The CLI banner
-prints a colored environment banner to :code:`stderr` before a console command
-runs, e.g. :code:`🚦 STAGING — project.example.dev`.
+prints an environment banner with a colored background to :code:`stderr` before
+a console command runs, e.g. a cyan bar reading :code:`🚦 STAGING — project.example.dev`.
+
+..  figure:: /Images/cli-banner.jpg
+    :alt: CLI banner
+    :class: with-shadow
+
+    CLI banner
 
 The banner is printed via a listener on the Symfony Console
 :php:`ConsoleCommandEvent`, so it appears before the command is executed. It is
@@ -46,9 +52,10 @@ Additional optional configuration keys:
 
 - :code:`text` (string): The banner text. Default is the current application
   context.
-- :code:`color` (string): The banner color. Accepts a named ANSI color
-  (e.g. :code:`cyan`, :code:`red`, :code:`yellow`) or a hex value
-  (e.g. :code:`#00ACC1`, rendered on truecolor terminals). Default is no color.
+- :code:`color` (string): The banner background color. Accepts a named ANSI
+  color (e.g. :code:`cyan`, :code:`red`, :code:`yellow`) or a hex value
+  (e.g. :code:`#00ACC1`, rendered on truecolor terminals) and is combined with
+  bold white text. Default is no color (plain text, no background).
 - :code:`icon` (string): A leading glyph. Default is :code:`🚦`.
 - :code:`commands` (array): A whitelist of command name patterns (:code:`fnmatch`
   syntax, e.g. :code:`['site:*', 'impexp:*']`). If set, the banner is only
@@ -85,5 +92,5 @@ Additional optional configuration keys:
     everything else, including custom extension commands, :code:`site:*` and
     :code:`impexp:*`.
 
-The CLI banner can be disabled globally via the
+The CLI banner is opt-in and disabled by default — enable it globally via the
 :ref:`extension configuration <extconf-cli.banner>`.
