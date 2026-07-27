@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indicator;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, IndicatorInterface};
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
@@ -25,13 +26,9 @@ use Psr\Http\Message\ServerRequestInterface;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => null]]])]
 class AbstractIndicatorTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults']);
-    }
-
     public function testConstructorWithEmptyConfiguration(): void
     {
         $indicator = new ConcreteIndicator();
@@ -60,16 +57,11 @@ class AbstractIndicatorTest extends TestCase
         self::assertEquals($config, $indicator->getConfiguration());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [
+        ConcreteIndicator::class => ['global' => 'value', 'override' => 'global'],
+    ]]]])]
     public function testMergeGlobalConfigurationWithGlobal(): void
     {
-        $globalConfig = [
-            ConcreteIndicator::class => [
-                'global' => 'value',
-                'override' => 'global',
-            ],
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = $globalConfig;
-
         $localConfig = ['local' => 'value', 'override' => 'local'];
         $indicator = new ConcreteIndicator($localConfig);
 
@@ -83,17 +75,14 @@ class AbstractIndicatorTest extends TestCase
 
     public function testMergeGlobalConfigurationWithEmptyGlobal(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [];
-
         $config = ['key' => 'value'];
         $indicator = new ConcreteIndicator($config);
         self::assertEquals($config, $indicator->getConfiguration());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => 'not an array']]])]
     public function testMergeGlobalConfigurationWithNonArrayGlobal(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = 'not an array';
-
         $config = ['key' => 'value'];
         $indicator = new ConcreteIndicator($config);
         self::assertEquals($config, $indicator->getConfiguration());

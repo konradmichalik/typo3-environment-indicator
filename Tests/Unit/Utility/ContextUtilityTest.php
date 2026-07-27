@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use PHPUnit\Framework\TestCase;
@@ -25,13 +26,9 @@ use TYPO3\CMS\Core\Routing\PageArguments;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
 class ContextUtilityTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-    }
-
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -51,40 +48,31 @@ class ContextUtilityTest extends TestCase
         self::assertStringStartsWith('rgba(', $textColor);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        Configuration\Indicator\Frontend\Hint::class => ['position' => 'top right'],
+    ]]]])]
     public function testGetPositionXReturnsCorrectFormat(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Configuration\Indicator\Frontend\Hint::class => [
-                'position' => 'top right',
-            ],
-        ];
-
         $contextUtility = new ContextUtility();
         $positionX = $contextUtility->getPositionX();
         self::assertEquals('top:0', $positionX);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        Configuration\Indicator\Frontend\Hint::class => ['position' => 'bottom left'],
+    ]]]])]
     public function testGetPositionYReturnsCorrectFormat(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Configuration\Indicator\Frontend\Hint::class => [
-                'position' => 'bottom left',
-            ],
-        ];
-
         $contextUtility = new ContextUtility();
         $positionY = $contextUtility->getPositionY();
         self::assertEquals('left:0', $positionY);
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        Configuration\Indicator\Frontend\Hint::class => ['text' => 'My Environment'],
+    ]]]])]
     public function testGetTitleReturnsConfiguredText(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            Configuration\Indicator\Frontend\Hint::class => [
-                'text' => 'My Environment',
-            ],
-        ];
-
         self::assertSame('My Environment', (new ContextUtility())->getTitle());
     }
 
