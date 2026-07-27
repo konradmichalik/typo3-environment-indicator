@@ -45,14 +45,6 @@ class TriangleModifierTest extends TestCase
         self::assertInstanceOf(TriangleModifier::class, $modifier);
     }
 
-    public function testValidateConfigurationForInvalidPosition(): void
-    {
-        $modifier = new TriangleModifier(['color' => '#fff']);
-        $result = $modifier->validateConfiguration(['color' => '#fff', 'position' => 'middle']);
-
-        self::assertFalse($result);
-    }
-
     public function testValidateConfigurationForValidConfigurationWithOptionals(): void
     {
         $modifier = new TriangleModifier(['color' => '#fff']);

@@ -21,8 +21,7 @@ use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\OverlayModifier;
  *
  * "size" is only valid in (0, 1] (0 itself is rejected), which the
  * schema's inclusive "0..1" range can't express exactly, so the
- * size-equals-zero boundary stays a manual test in OverlayModifierTest,
- * alongside the enum-style "position" value check.
+ * size-equals-zero boundary stays a manual test in OverlayModifierTest.
  *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
@@ -41,6 +40,11 @@ final class OverlayModifierValidationTest extends ConfigurationValidationContrac
 
     protected function schema(): array
     {
-        return ['path' => 'string', 'size' => 'float:0..1', 'position' => 'string', 'padding' => 'float:0..1'];
+        return [
+            'path' => 'string',
+            'size' => 'float:0..1',
+            'position' => 'enum:top left|top center|top right|center left|center|center right|bottom left|bottom center|bottom right',
+            'padding' => 'float:0..1',
+        ];
     }
 }

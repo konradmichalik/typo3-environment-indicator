@@ -20,8 +20,8 @@ use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\TextModifier;
  * TextModifierValidationTest.
  *
  * Covers the flat top-level keys via the contract; the nested "stroke"
- * sub-config and the enum-style "position" value checks don't fit the
- * schema DSL and stay as manual tests in TextModifierTest.
+ * sub-config doesn't fit the schema DSL and stays a manual test in
+ * TextModifierTest.
  *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
@@ -40,6 +40,6 @@ final class TextModifierValidationTest extends ConfigurationValidationContract
 
     protected function schema(): array
     {
-        return ['text' => 'string', 'color' => 'string', 'font?' => 'string', 'position?' => 'string'];
+        return ['text' => 'string', 'color' => 'string', 'font?' => 'string', 'position?' => 'enum:top|bottom'];
     }
 }

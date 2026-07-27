@@ -36,6 +36,6 @@ final class TriangleModifierValidationTest extends ConfigurationValidationContra
 
     protected function schema(): array
     {
-        return ['color' => 'string', 'size?' => 'float:0..1', 'position?' => 'string'];
+        return ['color' => 'string', 'size?' => 'float:0..1', 'position?' => 'enum:top left|top right|bottom left|bottom right'];
     }
 }

@@ -86,12 +86,4 @@ class OverlayModifierTest extends TestCase
 
         self::assertFalse($result);
     }
-
-    public function testValidateConfigurationForInvalidPosition(): void
-    {
-        $modifier = new OverlayModifier(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'center', 'padding' => 0.1]);
-        $result = $modifier->validateConfiguration(['path' => 'EXT:test.png', 'size' => 0.5, 'position' => 'middle', 'padding' => 0.1]);
-
-        self::assertFalse($result);
-    }
 }
