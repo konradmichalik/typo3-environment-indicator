@@ -118,6 +118,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 
@@ -155,6 +156,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#f39c12',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 
@@ -192,6 +194,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 
