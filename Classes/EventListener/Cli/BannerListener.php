@@ -17,13 +17,15 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Cli\Banner;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Output\{ConsoleOutputInterface, OutputInterface};
+use Symfony\Component\Console\Output\{ConsoleOutputInterface, OutputInterface, StreamOutput};
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Core\Environment;
 
 use function fnmatch;
+use function function_exists;
 use function is_array;
 use function sprintf;
+use function stream_isatty;
 use function trim;
 
 /**
@@ -45,9 +47,13 @@ final class BannerListener
             return;
         }
 
+        $errorOutput = $this->resolveErrorOutput($event->getOutput());
+
         // Only interactive terminals — keeps cron jobs, CI pipelines and
         // scheduler runs (and --no-interaction) free of banner noise.
-        if (!$event->getInput()->isInteractive()) {
+        // isInteractive() alone can be overridden by extensions/tests without
+        // a real TTY, so the output stream is checked as well.
+        if (!$event->getInput()->isInteractive() || !$this->isRealTerminal($errorOutput)) {
             return;
         }
 
@@ -57,7 +63,16 @@ final class BannerListener
             return;
         }
 
-        $this->resolveErrorOutput($event->getOutput())->writeln($this->buildBanner($configuration));
+        $errorOutput->writeln($this->buildBanner($configuration));
+    }
+
+    private function isRealTerminal(OutputInterface $output): bool
+    {
+        if (!$output instanceof StreamOutput) {
+            return true;
+        }
+
+        return !function_exists('stream_isatty') || stream_isatty($output->getStream());
     }
 
     /**
