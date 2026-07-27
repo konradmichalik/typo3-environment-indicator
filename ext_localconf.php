@@ -118,6 +118,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Backend\Login([
+                'color' => '#bd593a',
+            ]),
         ],
     );
 
@@ -153,6 +156,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
                 'color' => '#f39c12',
             ]),
             new Indicator\Backend\Theme([
+                'color' => '#f39c12',
+            ]),
+            new Indicator\Backend\Login([
                 'color' => '#f39c12',
             ]),
         ],
@@ -192,6 +198,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Backend\Login([
+                'color' => '#2f9c91',
+            ]),
         ],
     );
 
@@ -201,6 +210,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
         ],
         indicators: [
             new Indicator\Backend\Toolbar([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\Backend\Login([
                 'color' => '#2f9c91',
             ]),
         ],
