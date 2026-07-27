@@ -19,6 +19,7 @@ use Symfony\Component\Mime\Email;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
+use TYPO3\CMS\Core\Mail\FluidEmail;
 
 use function str_starts_with;
 use function trim;
@@ -45,6 +46,14 @@ final class SubjectPrefixListener
         $message = $event->getMessage();
         if (!$message instanceof Email) {
             return;
+        }
+
+        // FluidEmail renders its Fluid "Subject" section lazily on the first
+        // getBody() call and overwrites whatever subject is set until then.
+        // That call would otherwise happen later inside the transport, after
+        // this listener has already run, silently discarding the prefix.
+        if ($message instanceof FluidEmail) {
+            $message->getBody();
         }
 
         $configuration = GeneralHelper::getIndicatorConfiguration()[SubjectPrefix::class];

@@ -19,6 +19,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -79,6 +81,26 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
         $this->dispatch($email);
 
         self::assertSame('[Testing] Newsletter', $email->getSubject());
+    }
+
+    /**
+     * FluidEmail renders its "Subject" template section lazily on the first
+     * getBody() call, overwriting any subject set until then. TYPO3 core
+     * mails (e.g. password reset) rely on exactly this, so the listener must
+     * force that rendering before it reads/prefixes the subject - otherwise
+     * the prefix is silently discarded once the transport calls getBody().
+     */
+    public function testSubjectFromFluidEmailIsPrefixedAfterLazyRendering(): void
+    {
+        $templatePaths = new TemplatePaths();
+        $templatePaths->setTemplateRootPaths([__DIR__.'/Fixtures/Templates/']);
+
+        $email = new FluidEmail($templatePaths);
+        $email->setTemplate('LazySubject');
+
+        $this->dispatch($email);
+
+        self::assertSame('[Testing] Lazily rendered subject', $email->getSubject());
     }
 
     private function dispatch(Email $email): void
