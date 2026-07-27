@@ -32,6 +32,7 @@
 	"require-dev": {
 		"eliashaeussler/typo3-vendor-bundler": "^4.1.0",
 		"eliashaeussler/version-bumper": "^4.0.3",
+		"konradmichalik/ttt": "^0.2.0",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^13.0",
 		"phpunit/phpunit": "^11.0 || ^12.0 || ^13.0",
 		"typo3/cms-base-distribution": "^13.4 || ^14.3",
@@ -43,6 +44,12 @@
 		"ext-imagick": "Required for image processing and rendering of SVG icons with Imagick support.",
 		"intervention/image-driver-vips": "Required for image processing and rendering of SVG icons with VIPS support."
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/konradmichalik/ttt.git"
+		}
+	],
 	"autoload": {
 		"psr-4": {
 			"KonradMichalik\\Typo3EnvironmentIndicator\\": "Classes"

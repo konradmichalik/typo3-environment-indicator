@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Utility;
 
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -21,11 +22,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * ImageDriverUtilityTest.
  *
+ * Uses the imperative ConfVarsSandbox trait rather than the
+ * WithTypo3ConfVars attribute: the attribute applies before setUp() runs,
+ * but FunctionalTestCase::setUp() reloads $GLOBALS['TYPO3_CONF_VARS'] from
+ * the real bootstrapped configuration afterwards, discarding it.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 class ImageDriverUtilityTest extends FunctionalTestCase
 {
+    use ConfVarsSandbox;
+
     protected array $testExtensionsToLoad = [
         'typo3_environment_indicator',
     ];
@@ -33,7 +41,13 @@ class ImageDriverUtilityTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
+        $this->setTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]]);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->restoreTypo3ConfVars();
     }
 
     public function testGetImageDriverConfigurationReturnsGdWhenNotConfigured(): void
@@ -43,9 +57,9 @@ class ImageDriverUtilityTest extends FunctionalTestCase
 
     public function testGetImageDriverConfigurationReturnsConfiguredDriver(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
+        $this->setTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => [
             'general' => ['imageDriver' => ImageDriverUtility::IMAGE_DRIVER_IMAGICK],
-        ];
+        ]]]);
 
         self::assertSame(ImageDriverUtility::IMAGE_DRIVER_IMAGICK, ImageDriverUtility::getImageDriverConfiguration());
     }

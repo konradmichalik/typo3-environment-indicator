@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Utility;
 
+use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
 use TYPO3\CMS\Core\Core\Environment;
@@ -24,11 +25,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * ContextUtilityTest.
  *
+ * Uses the imperative ConfVarsSandbox trait rather than the
+ * WithTypo3ConfVars attribute: the attribute applies before setUp() runs,
+ * but FunctionalTestCase::setUp() reloads $GLOBALS['TYPO3_CONF_VARS'] from
+ * the real bootstrapped configuration afterwards, discarding it.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 class ContextUtilityTest extends FunctionalTestCase
 {
+    use ConfVarsSandbox;
+
     protected array $testExtensionsToLoad = [
         'typo3_environment_indicator',
     ];
@@ -36,6 +44,8 @@ class ContextUtilityTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => []]]]);
 
         $this->importCSVDataSet(__DIR__.'/Fixtures/Pages.csv');
 
@@ -46,8 +56,8 @@ class ContextUtilityTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]);
         parent::tearDown();
+        $this->restoreTypo3ConfVars();
     }
 
     public function testGetContextReturnsApplicationContextString(): void
@@ -61,7 +71,6 @@ class ContextUtilityTest extends FunctionalTestCase
 
     public function testGetTitleReturnsWebsiteTitleFromSiteConfiguration(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
         $GLOBALS['TYPO3_REQUEST'] = $this->buildRequestWithPageId(1);
 
         $contextUtility = new ContextUtility($this->get(SiteFinder::class));
@@ -71,7 +80,6 @@ class ContextUtilityTest extends FunctionalTestCase
 
     public function testGetTitleFallsBackToSiteIdentifierWhenWebsiteTitleMissing(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
         $GLOBALS['TYPO3_REQUEST'] = $this->buildRequestWithPageId(2);
 
         $contextUtility = new ContextUtility($this->get(SiteFinder::class));
@@ -81,7 +89,6 @@ class ContextUtilityTest extends FunctionalTestCase
 
     public function testGetTitleReturnsEmptyStringWhenSiteIsNotFound(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
         $GLOBALS['TYPO3_REQUEST'] = $this->buildRequestWithPageId(999);
 
         $contextUtility = new ContextUtility($this->get(SiteFinder::class));

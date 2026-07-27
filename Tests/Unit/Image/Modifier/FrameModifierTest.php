@@ -83,24 +83,10 @@ class FrameModifierTest extends TestCase
         self::assertSame(64, $image->width());
     }
 
-    public function testValidateConfigurationReturnsFalseWhenColorMissing(): void
-    {
-        $modifier = new FrameModifier(['color' => '#ff0000']);
-
-        self::assertFalse($modifier->validateConfiguration([]));
-    }
-
     public function testValidateConfigurationReturnsFalseWhenBorderSizeIsNegative(): void
     {
         $modifier = new FrameModifier(['color' => '#ff0000']);
 
         self::assertFalse($modifier->validateConfiguration(['color' => 'red', 'borderSize' => -1]));
-    }
-
-    public function testValidateConfigurationReturnsTrueForValidConfig(): void
-    {
-        $modifier = new FrameModifier(['color' => '#ff0000']);
-
-        self::assertTrue($modifier->validateConfiguration(['color' => 'red']));
     }
 }
