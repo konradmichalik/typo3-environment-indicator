@@ -66,37 +66,48 @@ final readonly class LoginBadgeListener
         $position = 'bottom' === ($configuration['position'] ?? 'top') ? 'bottom' : 'top';
         $textColor = ColorUtility::getOptimalTextColor($color, fallbackColor: '#ffffff');
 
-        $this->pageRenderer->addCssInlineBlock(Configuration::EXT_KEY.'_login', $this->buildCss($color, $textColor, $position));
-        $this->pageRenderer->addJsInlineCode(Configuration::EXT_KEY.'_login', $this->buildScript($text, $description));
+        $this->pageRenderer->addCssInlineBlock(Configuration::EXT_KEY.'_login', $this->buildCss($color, $textColor, $position), null, false, true);
+        $this->pageRenderer->addJsFooterInlineCode(Configuration::EXT_KEY.'_login', $this->buildScript($text, $description, $position), null, false, true);
     }
 
     private function buildCss(string $color, string $textColor, string $position): string
     {
+        $radiusRule = 'top' === $position
+            ? 'border-top-left-radius:inherit;border-top-right-radius:inherit;'
+            : 'border-bottom-left-radius:inherit;border-bottom-right-radius:inherit;';
+
         return sprintf(
-            '.typo3-environment-indicator-login{position:fixed;left:0;right:0;%s:0;z-index:9999;'
-            .'background:%s;color:%s;text-align:center;padding:.5rem 1rem;font-weight:bold;'
-            .'box-shadow:0 0 10px rgba(0,0,0,.3);}'
-            .'.typo3-environment-indicator-login small{display:block;font-weight:normal;opacity:.85;}',
-            $position,
+            '.typo3-environment-indicator-login{%s'
+            .'background:%s;color:%s;text-align:center;padding:1rem;font-weight:bold;'
+            .'font-family:Verdana,Arial,Helvetica,sans-serif;box-sizing:border-box;}'
+            .'.typo3-environment-indicator-login small{display:block;font-weight:normal;opacity:.85;}'
+            .'body>.typo3-environment-indicator-login{position:fixed;left:0;right:0;%s:0;z-index:9999;'
+            .'border-radius:0;box-shadow:0 0 10px rgba(0,0,0,.3);}',
+            $radiusRule,
             $color,
             $textColor,
+            $position,
         );
     }
 
     /**
      * The badge text is injected via textContent, so it is XSS-safe regardless
-     * of the configured value.
+     * of the configured value. Falls back to appending to the body if the
+     * login card markup (.card-login) is not found.
      */
-    private function buildScript(string $text, string $description): string
+    private function buildScript(string $text, string $description, string $position): string
     {
         return sprintf(
             '(function(){var b=document.createElement("div");'
             .'b.className="typo3-environment-indicator-login";b.textContent=%s;'
             .'if(%s){var s=document.createElement("small");s.textContent=%s;b.appendChild(s);}'
-            .'(document.body||document.documentElement).appendChild(b);})();',
+            .'var c=document.querySelector(".card-login");'
+            .'if(c){%s}else{(document.body||document.documentElement).appendChild(b);}'
+            .'})();',
             json_encode($text, JSON_THROW_ON_ERROR),
             json_encode('' !== $description, JSON_THROW_ON_ERROR),
             json_encode($description, JSON_THROW_ON_ERROR),
+            'top' === $position ? 'c.insertBefore(b,c.firstChild);' : 'c.appendChild(b);',
         );
     }
 }
