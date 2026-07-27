@@ -16,10 +16,17 @@ itself — anyone who accidentally logs into live instead of staging only notice
 afterwards. The backend login indicator closes this gap by showing a colored
 environment badge directly on the backend login screen.
 
+..  figure:: /Images/backend-login.jpg
+    :alt: Backend Login Example
+
+    Backend Login Example
+
 The badge is injected via a listener on the
-:php:`ModifyPageLayoutOnLoginProviderSelectionEvent`. It is a fixed-position
-banner (top or bottom), so it is independent of the login form markup and works
-with alternative login providers (e.g. OIDC/SSO extensions).
+:php:`ModifyPageLayoutOnLoginProviderSelectionEvent`. It is attached directly to
+the login card (above the logo, or below the card footer), matching the card's
+rounded corners and font. If the login card markup is not found — e.g. with an
+alternative login provider (OIDC/SSO extensions) — it falls back to a
+full-width banner at the top or bottom of the page.
 
 You can register the indicator in your :code:`ext_localconf.php`:
 

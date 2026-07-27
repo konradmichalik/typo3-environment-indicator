@@ -113,6 +113,12 @@ Backend
         -   ..  image:: /Images/theme.jpg
                 :alt: Backend Theme Preview
         -   :ref:`Backend theme <backend-theme>` *(experimental)*: Colors the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
+    *   -   ..  image:: /Images/Extension-EI-BackendLogin.png
+                :alt: Backend Login Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-backend-login.jpg
+                :alt: Backend Login Preview
+        -   :ref:`Backend login <backend-login>`: Shows a colored environment badge directly on the backend login screen.
 
 ..  _support:
 
