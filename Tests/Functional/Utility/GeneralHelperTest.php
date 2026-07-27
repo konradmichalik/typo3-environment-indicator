@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Utility;
 
+use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
@@ -22,11 +23,19 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * GeneralHelperTest.
  *
+ * The WithTypo3ConfVars attribute applies before setUp() runs, but
+ * FunctionalTestCase::setUp() reloads $GLOBALS['TYPO3_CONF_VARS'] from the
+ * real bootstrapped configuration afterwards, discarding it - so this uses
+ * the imperative ConfVarsSandbox trait instead, which applies inside the
+ * test body (after setUp()) and is guaranteed to restore in tearDown().
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 class GeneralHelperTest extends FunctionalTestCase
 {
+    use ConfVarsSandbox;
+
     protected array $testExtensionsToLoad = [
         'typo3_environment_indicator',
     ];
@@ -34,14 +43,14 @@ class GeneralHelperTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults']);
+        $this->restoreTypo3ConfVars();
     }
 
     public function testGetFolderReturnsAbsolutePublicPath(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class] = [
-            '_path' => 'typo3temp/assets/test-indicator/',
-        ];
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [
+            Favicon::class => ['_path' => 'typo3temp/assets/test-indicator/'],
+        ]]]]);
 
         $indicator = new Favicon([]);
         $result = GeneralHelper::getFolder($indicator);
@@ -52,9 +61,9 @@ class GeneralHelperTest extends FunctionalTestCase
 
     public function testGetFolderReturnsRelativePathWhenPublicPathFalse(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][Favicon::class] = [
-            '_path' => 'typo3temp/assets/test-indicator/',
-        ];
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [
+            Favicon::class => ['_path' => 'typo3temp/assets/test-indicator/'],
+        ]]]]);
 
         $indicator = new Favicon([]);
         $result = GeneralHelper::getFolder($indicator, false);
