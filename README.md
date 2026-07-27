@@ -86,7 +86,7 @@ This extension provides several features to show an environment indicator in the
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-CLI.png" width="80" alt="CLI Banner Icon"></td>
-      <td></td>
+      <td><img src="Documentation/Images/preview-cli-banner.jpg" width="320" alt="CLI Banner Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/CliBanner.html">CLI banner</a></strong><br/><br/>Print a colored environment banner to stderr before an interactive console command runs.</td>
     </tr>
   </tbody>
