@@ -120,7 +120,7 @@ Backend
         -   :ref:`backend-theme` *(experimental)*
         -   Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
 
-Mail
+Misc
 ----
 
 ..  list-table::

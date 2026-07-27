@@ -114,7 +114,7 @@ Backend
                 :alt: Backend Theme Preview
         -   :ref:`Backend theme <backend-theme>` *(experimental)*: Colors the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
 
-Mail
+Misc
 ----
 
 ..  list-table::
