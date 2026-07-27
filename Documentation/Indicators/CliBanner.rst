@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-CLI.png
+    :alt: CLI Banner Icon
+    :width: 120px
+
 ..  _cli-banner:
 
 ===========
