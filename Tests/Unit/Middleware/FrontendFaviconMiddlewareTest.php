@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Middleware;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendFaviconMiddleware;
@@ -32,16 +33,12 @@ final class FrontendFaviconMiddlewareTest extends TestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]);
         GeneralUtility::purgeInstances();
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['favicon' => false]]]])]
     public function testProcessSkipsWhenFeatureDisabled(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => ['favicon' => false],
-        ];
-
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
@@ -57,12 +54,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => []]]])]
     public function testProcessSkipsWhenFeatureMissing(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => [],
-        ];
-
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
@@ -78,10 +72,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]])]
     public function testProcessSkipsWhenConfigMissing(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
-
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
@@ -97,12 +90,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['favicon' => true]]]])]
     public function testProcessReturnsResponseWhenFeatureEnabled(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => ['favicon' => true],
-        ];
-
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
         $request = $this->createStub(ServerRequestInterface::class);
@@ -117,12 +107,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['favicon' => true]]]])]
     public function testProcessHandlesFaviconWhenTypoScriptHasShortcutIcon(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [
-            'frontend' => ['favicon' => true],
-        ];
-
         $typoScript = new class {
             /** @var array<string, string> */
             private array $pageArray = ['shortcutIcon' => 'test/favicon.ico'];
