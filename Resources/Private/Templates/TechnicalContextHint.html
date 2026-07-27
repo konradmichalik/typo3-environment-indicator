@@ -14,10 +14,12 @@
     aria-hidden="true"
     title="This is part of environment indicator extension and shows the actual site name of the website. This hint will not be displayed in production context."
 >
-    {title}
-    <f:if condition="{description}">
-        <span class="technical-context__description">{description}</span>
-    </f:if>
+    <div class="technical-context__content">
+        {title}
+        <f:if condition="{description}">
+            <span class="technical-context__description">{description}</span>
+        </f:if>
+    </div>
     <button
         type="button"
         class="technical-context__close"

@@ -53,7 +53,7 @@ class ContextUtilityTest extends TestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
             Configuration\Indicator\Frontend\Hint::class => [
-                'description' => 'Staging — data synced nightly',
+                'description' => '  Staging — data synced nightly  ',
             ],
         ];
 
