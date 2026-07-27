@@ -81,6 +81,11 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/preview-theme.jpg" width="320" alt="Backend Theme Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
     </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendLogin.png" width="80" alt="Backend Login Icon"></td>
+      <td></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendLogin.html">Backend login</a></strong><br/><br/>Show a colored environment badge directly on the backend login screen.</td>
+    </tr>
   </tbody>
 </table>
 
