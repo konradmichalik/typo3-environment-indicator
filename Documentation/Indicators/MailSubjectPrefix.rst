@@ -64,5 +64,16 @@ Additional optional configuration keys:
     intercept mails ("catch-all to a developer inbox") — that is guard
     functionality well covered by other tools (Mailpit, :code:`transport_spool`).
 
+..  note::
+    The Install Tool's "Test Mail Setup" (Admin Tools > Environment) does not
+    apply this prefix. Direct Install Tool access (:code:`?__typo3_install`)
+    runs TYPO3's failsafe bootstrap, which only loads packages marked as part
+    of the minimal usable system — third-party extensions, including this one,
+    are skipped entirely, so the listener never registers for that request. The
+    prefix still applies normally to mails sent through the regular bootstrap
+    (frontend forms, backend notifications, scheduler tasks). To verify the
+    feature locally, trigger an actual application mail (e.g. a password reset)
+    or run the extension's functional test suite instead.
+
 The mail subject prefix can be disabled globally via the
 :ref:`extension configuration <extconf-mail.subject>`.
