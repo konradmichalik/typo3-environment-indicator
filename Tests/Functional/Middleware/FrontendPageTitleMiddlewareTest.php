@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Middleware;
 
+use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\PageTitle;
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendPageTitleMiddleware;
@@ -25,11 +26,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * FrontendPageTitleMiddlewareTest.
  *
+ * Uses the imperative ConfVarsSandbox trait rather than the
+ * WithTypo3ConfVars attribute: the attribute applies before setUp() runs,
+ * but FunctionalTestCase::setUp() reloads $GLOBALS['TYPO3_CONF_VARS'] from
+ * the real bootstrapped configuration afterwards, discarding it.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
 class FrontendPageTitleMiddlewareTest extends FunctionalTestCase
 {
+    use ConfVarsSandbox;
+
     protected array $testExtensionsToLoad = [
         'typo3_environment_indicator',
     ];
@@ -37,20 +45,19 @@ class FrontendPageTitleMiddlewareTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['frontend']['pageTitle'] = '1';
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            PageTitle::class => ['prefix' => '[%context%] '],
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['pageTitle' => '1']]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [PageTitle::class => ['prefix' => '[%context%] ']],
+                'resolved' => true,
+            ]],
+        ]);
     }
 
     protected function tearDown(): void
     {
-        unset(
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY],
-            $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY],
-        );
         parent::tearDown();
+        $this->restoreTypo3ConfVars();
     }
 
     public function testTitleIsPrefixedWithApplicationContext(): void

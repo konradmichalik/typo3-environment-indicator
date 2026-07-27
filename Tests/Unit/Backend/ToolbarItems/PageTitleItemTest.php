@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\ToolbarItems;
 
+use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\PageTitleItem;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\PageTitle;
@@ -24,49 +25,46 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 /**
  * PageTitleItemTest.
  *
+ * The EXTENSIONS[EXT_KEY] override must stay an empty array, not null:
+ * ExtensionConfiguration::hasConfiguration() checks it via isset(), which
+ * is false for null and would make ->get() fall back to a real
+ * PackageManager lookup that isn't available in this Unit bootstrap.
+ *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
+#[WithTypo3ConfVars([
+    'EXTCONF' => [Configuration::EXT_KEY => ['current' => null, 'resolved' => true]],
+    'EXTENSIONS' => [Configuration::EXT_KEY => []],
+])]
 class PageTitleItemTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['resolved'] = true;
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = [];
-    }
-
-    protected function tearDown(): void
-    {
-        unset(
-            $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY],
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY],
-        );
-    }
-
     public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
     {
         self::assertFalse($this->buildItem()->checkAccess());
     }
 
+    #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['pageTitle' => true]]]])]
     public function testCheckAccessReturnsFalseWhenIndicatorNotResolved(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = ['backend' => ['pageTitle' => true]];
-
         self::assertFalse($this->buildItem()->checkAccess());
     }
 
+    #[WithTypo3ConfVars([
+        'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['pageTitle' => true]]],
+        'EXTCONF' => [Configuration::EXT_KEY => ['current' => [PageTitle::class => []]]],
+    ])]
     public function testCheckAccessReturnsTrueWhenEnabledAndResolved(): void
     {
-        $this->enableIndicator();
-
         self::assertTrue($this->buildItem()->checkAccess());
     }
 
+    #[WithTypo3ConfVars([
+        'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['pageTitle' => true]]],
+        'EXTCONF' => [Configuration::EXT_KEY => ['current' => [PageTitle::class => ['prefix' => '[STG] ']]]],
+    ])]
     public function testGetItemInjectsScriptWithPrefix(): void
     {
-        $this->enableIndicator(['prefix' => '[STG] ']);
-
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::once())
             ->method('addJsInlineCode')
@@ -78,10 +76,12 @@ class PageTitleItemTest extends TestCase
         self::assertSame('', $this->buildItem($pageRenderer)->getItem());
     }
 
+    #[WithTypo3ConfVars([
+        'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['pageTitle' => true]]],
+        'EXTCONF' => [Configuration::EXT_KEY => ['current' => [PageTitle::class => []]]],
+    ])]
     public function testGetItemInjectsNothingWithoutPrefixOrSuffix(): void
     {
-        $this->enableIndicator([]);
-
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects(self::never())->method('addJsInlineCode');
 
@@ -106,17 +106,6 @@ class PageTitleItemTest extends TestCase
     public function testImplementsToolbarItemInterface(): void
     {
         self::assertInstanceOf(ToolbarItemInterface::class, $this->buildItem());
-    }
-
-    /**
-     * @param array<string, mixed> $configuration
-     */
-    private function enableIndicator(array $configuration = []): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY] = ['backend' => ['pageTitle' => true]];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
-            PageTitle::class => $configuration,
-        ];
     }
 
     private function buildItem(?PageRenderer $pageRenderer = null): PageTitleItem
