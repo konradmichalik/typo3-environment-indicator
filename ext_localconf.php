@@ -77,6 +77,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
     Indicator\Cli\Banner::class => [
         'icon' => '🚦',
     ],
+    Indicator\Mail\SubjectPrefix::class => [
+        'prefix' => '[%context%] ',
+    ],
 ];
 
 // Presets
@@ -121,6 +124,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Cli\Banner([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 
@@ -161,6 +165,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Cli\Banner([
                 'color' => '#f39c12',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 
@@ -201,6 +206,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Cli\Banner([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Mail\SubjectPrefix(),
         ],
     );
 

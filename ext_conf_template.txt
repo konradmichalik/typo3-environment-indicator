@@ -20,6 +20,8 @@ backend.contextProduction = 1
 backend.theme = 0
 # cat=cli/enable/10; type=boolean; label=Enable the CLI banner (opt-in). Prints a colored environment banner to stderr before console commands run in an interactive terminal.
 cli.banner = 0
+# cat=mail/enable/10; type=boolean; label=Enable the mail subject prefix for outgoing mails (adds the environment prefix to the subject of every mail sent via the TYPO3 Mailer API)
+mail.subject = 1
 # cat=instance/enable/10; type=string; label=Instance label: Overrides the indicator text of all active indicators for this installation (e.g. "TEST 1"). Leave empty to use the context defaults. Takes precedence over any registered configuration.
 instance.label =
 # cat=instance/enable/20; type=color; label=Instance color: Overrides the indicator color of all active indicators for this installation. Leave empty to use the context defaults. Takes precedence over any registered configuration.

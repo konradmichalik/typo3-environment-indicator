@@ -135,6 +135,11 @@ Misc
                 :width: 80px
         -   :ref:`cli-banner`
         -   Print a colored environment banner to stderr before an interactive console command runs.
+    *   -   ..  image:: /Images/Extension-EI-MailSubjectPrefix.png
+                :alt: Mail Subject Prefix Icon
+                :width: 80px
+        -   :ref:`mail-subject-prefix`
+        -   Prepend the current application context to the subject of every mail sent through the TYPO3 Mailer API.
 
 ..  toctree::
     :maxdepth: 3
@@ -149,3 +154,4 @@ Misc
     DashboardWidget
     BackendTheme
     CliBanner
+    MailSubjectPrefix

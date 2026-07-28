@@ -114,8 +114,8 @@ Backend
                 :alt: Backend Theme Preview
         -   :ref:`Backend theme <backend-theme>` *(experimental)*: Colors the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
 
-CLI
----
+Misc
+----
 
 ..  list-table::
     :header-rows: 1
@@ -131,6 +131,12 @@ CLI
         -   ..  image:: /Images/preview-cli-banner.jpg
                 :alt: CLI Banner Preview
         -   :ref:`CLI banner <cli-banner>`: Prints a colored environment banner to the console before a command runs.
+    *   -   ..  image:: /Images/Extension-EI-MailSubjectPrefix.png
+                :alt: Mail Subject Prefix Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-mail-subject-prefix.jpg
+                :alt: Mail Subject Prefix Preview
+        -   :ref:`Mail subject prefix <mail-subject-prefix>`: Prepends the environment to the subject of every mail sent through the TYPO3 Mailer API.
 
 ..  _support:
 

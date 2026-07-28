@@ -89,6 +89,11 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/preview-cli-banner.jpg" width="320" alt="CLI Banner Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/CliBanner.html">CLI banner</a></strong><br/><br/>Print a colored environment banner to stderr before an interactive console command runs.</td>
     </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-MailSubjectPrefix.png" width="80" alt="Mail Subject Prefix Icon"></td>
+      <td><img src="Documentation/Images/preview-mail-subject-prefix.jpg" width="320" alt="Mail Subject Prefix Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/MailSubjectPrefix.html">Mail subject prefix</a></strong><br/><br/>Prepends the environment to the subject of every mail sent through the TYPO3 Mailer API.</td>
+    </tr>
   </tbody>
 </table>
 

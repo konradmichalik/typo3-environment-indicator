@@ -278,6 +278,8 @@ function setup_typo3() {
     $TYPO3_BIN configuration:set 'SYS/trustedHostsPattern' '.*.*'
     $TYPO3_BIN configuration:set 'MAIL/transport' 'smtp'
     $TYPO3_BIN configuration:set 'MAIL/transport_smtp_server' 'localhost:1025'
+    $TYPO3_BIN configuration:set 'MAIL/defaultMailFromAddress' "no-reply@${EXTENSION_NAME}.ddev.site"
+    $TYPO3_BIN configuration:set 'MAIL/defaultMailFromName' 'TYPO3 Environment Indicator'
     $TYPO3_BIN configuration:set 'GFX/processor' 'ImageMagick'
     $TYPO3_BIN configuration:set 'GFX/processor_path' '/usr/bin/'
 }
