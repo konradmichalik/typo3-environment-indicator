@@ -23,6 +23,10 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use function json_encode;
 use function sprintf;
 
+use const JSON_HEX_AMP;
+use const JSON_HEX_APOS;
+use const JSON_HEX_QUOT;
+use const JSON_HEX_TAG;
 use const JSON_THROW_ON_ERROR;
 
 /**
@@ -95,8 +99,8 @@ class PageTitleItem implements ToolbarItemInterface
             .'if(t!==document.title){document.title=t;}}a();'
             .'var e=document.querySelector("title");'
             .'if(e&&window.MutationObserver){new MutationObserver(a).observe(e,{childList:true});}})();',
-            json_encode($prefix, JSON_THROW_ON_ERROR),
-            json_encode($suffix, JSON_THROW_ON_ERROR),
+            json_encode($prefix, JSON_THROW_ON_ERROR | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
+            json_encode($suffix, JSON_THROW_ON_ERROR | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
         );
     }
 
