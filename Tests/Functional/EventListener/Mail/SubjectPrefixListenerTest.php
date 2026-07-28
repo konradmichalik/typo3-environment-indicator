@@ -91,6 +91,20 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
     }
 
     /**
+     * A retry can re-dispatch the event after another listener has already
+     * prepended its own text, pushing our prefix past the start of the
+     * subject. The idempotency check must still recognize it there.
+     */
+    public function testSubjectIsNotPrefixedTwiceWhenAnotherListenerPrependedTextFirst(): void
+    {
+        $email = (new Email())->subject('[External] [Testing] Invoice');
+
+        $this->dispatch($email);
+
+        self::assertSame('[External] [Testing] Invoice', $email->getSubject());
+    }
+
+    /**
      * FluidEmail renders its "Subject" template section lazily on the first
      * getBody() call, overwriting any subject set until then. TYPO3 core
      * mails (e.g. password reset) rely on exactly this, so the listener must
