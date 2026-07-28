@@ -77,6 +77,15 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
     Indicator\Backend\Login::class => [
         'position' => 'top',
     ],
+    Indicator\Cli\Banner::class => [
+        'icon' => '🚦',
+    ],
+    Indicator\Mail\SubjectPrefix::class => [
+        'prefix' => '[%context%] ',
+    ],
+    Indicator\General\PageTitle::class => [
+        'prefix' => '[%context%] ',
+    ],
 ];
 
 // Presets
@@ -121,6 +130,11 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Login([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#bd593a',
+            ]),
+            new Indicator\Mail\SubjectPrefix(),
+            new Indicator\General\PageTitle(),
         ],
     );
 
@@ -161,6 +175,11 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Login([
                 'color' => '#f39c12',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#f39c12',
+            ]),
+            new Indicator\Mail\SubjectPrefix(),
+            new Indicator\General\PageTitle(),
         ],
     );
 
@@ -201,6 +220,11 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Login([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\Mail\SubjectPrefix(),
+            new Indicator\General\PageTitle(),
         ],
     );
 
@@ -215,6 +239,10 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Login([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\General\PageTitle(),
         ],
     );
 }

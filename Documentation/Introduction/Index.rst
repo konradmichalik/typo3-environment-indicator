@@ -15,7 +15,7 @@ This extension provides several features to show an environment indicator in the
 
 
 ..  note::
-    These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems) and will not show in production environments.
+    These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems) and will not show on the live production site. They do show in :code:`Production/Staging` and :code:`Production/Standby` application contexts, where they help distinguish those systems from the live site.
 
 ..  _features:
 
@@ -47,6 +47,12 @@ Frontend + Backend
         -   ..  image:: /Images/preview-favicon.png
                 :alt: Favicon Preview
         -   :ref:`Modified favicon <favicon>`: Modifies the favicon for frontend and backend based on the original favicon, current environment and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-PageTitlePrefix.png
+                :alt: Page Title Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-page-title-prefix.jpg
+                :alt: Page Title Preview
+        -   :ref:`Page title <page-title>`: Prefix or suffix the page title in frontend and backend with the current application context.
 
 Frontend
 --------
@@ -119,6 +125,30 @@ Backend
         -   ..  image:: /Images/preview-backend-login.jpg
                 :alt: Backend Login Preview
         -   :ref:`Backend login <backend-login>`: Shows a colored environment badge directly on the backend login screen.
+
+Misc
+----
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+    :class: center
+
+    *   -   Icon
+        -   Preview
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-CLI.png
+                :alt: CLI Banner Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-cli-banner.jpg
+                :alt: CLI Banner Preview
+        -   :ref:`CLI banner <cli-banner>`: Prints a colored environment banner to the console before a command runs.
+    *   -   ..  image:: /Images/Extension-EI-MailSubjectPrefix.png
+                :alt: Mail Subject Prefix Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-mail-subject-prefix.jpg
+                :alt: Mail Subject Prefix Preview
+        -   :ref:`Mail subject prefix <mail-subject-prefix>`: Prepends the environment to the subject of every mail sent through the TYPO3 Mailer API.
 
 ..  _support:
 

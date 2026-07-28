@@ -8,6 +8,8 @@ frontend.favicon = 1
 frontend.context = 1
 # cat=frontend/enable/30; type=boolean; label=Enable the image generation in frontend context
 frontend.image = 1
+# cat=frontend/enable/40; type=boolean; label=Enable the page title prefix/suffix in frontend context
+frontend.pageTitle = 1
 # cat=backend/enable/10; type=boolean; label=Enable the favicon generation in backend context
 backend.favicon = 1
 # cat=backend/enable/20; type=boolean; label=Enable the logo generation in backend context
@@ -20,6 +22,12 @@ backend.contextProduction = 1
 backend.theme = 0
 # cat=backend/enable/60; type=boolean; label=Enable the environment badge on the backend login screen
 backend.login = 1
+# cat=backend/enable/70; type=boolean; label=Enable the page title prefix/suffix in backend context
+backend.pageTitle = 1
+# cat=cli/enable/10; type=boolean; label=Enable the CLI banner (opt-in). Prints a colored environment banner to stderr before console commands run in an interactive terminal.
+cli.banner = 0
+# cat=mail/enable/10; type=boolean; label=Enable the mail subject prefix for outgoing mails (adds the environment prefix to the subject of every mail sent via the TYPO3 Mailer API)
+mail.subject = 1
 # cat=instance/enable/10; type=string; label=Instance label: Overrides the indicator text of all active indicators for this installation (e.g. "TEST 1"). Leave empty to use the context defaults. Takes precedence over any registered configuration.
 instance.label =
 # cat=instance/enable/20; type=color; label=Instance color: Overrides the indicator color of all active indicators for this installation. Leave empty to use the context defaults. Takes precedence over any registered configuration.
