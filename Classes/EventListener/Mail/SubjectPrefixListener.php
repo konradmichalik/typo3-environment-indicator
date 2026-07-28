@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 
-use function str_starts_with;
+use function str_contains;
 use function trim;
 
 /**
@@ -73,7 +73,10 @@ final class SubjectPrefixListener
         $subject = $message->getSubject() ?? '';
 
         // Idempotency: never prefix twice when a message is re-processed (queue/retry).
-        if (str_starts_with($subject, $prefix)) {
+        // Checked via str_contains rather than str_starts_with, since a listener
+        // with higher priority may have prepended its own text before this one
+        // runs again, pushing our prefix past the start of the subject.
+        if (str_contains($subject, $prefix)) {
             return;
         }
 
