@@ -19,6 +19,11 @@ lib.websiteTitle {
     userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getTitle
 }
 
+lib.applicationContextDescription = USER
+lib.applicationContextDescription {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getDescription
+}
+
 lib.applicationContextPositionX = USER
 lib.applicationContextPositionX {
     userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getPositionX
@@ -36,6 +41,7 @@ lib.technicalContext {
     context < lib.applicationContextTitle
     color < lib.applicationContextColor
     title < lib.websiteTitle
+    description < lib.applicationContextDescription
     textColor < lib.applicationContextTextColor
     positionX < lib.applicationContextPositionX
     positionY < lib.applicationContextPositionY

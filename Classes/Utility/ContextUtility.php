@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 
 use function array_key_exists;
 use function is_string;
+use function trim;
 
 /**
  * ContextUtility.
@@ -62,6 +63,12 @@ class ContextUtility
     public function getPositionY(): string
     {
         return explode(' ', $this->getFrontendHintConfiguration()['position'] ?? 'left top')[1].':0';
+    }
+
+    #[AsAllowedCallable]
+    public function getDescription(): string
+    {
+        return trim((string) ($this->getFrontendHintConfiguration()['description'] ?? ''));
     }
 
     #[AsAllowedCallable]

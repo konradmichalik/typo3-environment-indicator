@@ -19,6 +19,8 @@ use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ColorUtility, GeneralHelpe
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Dashboard\Widgets\{AdditionalCssInterface, ButtonProviderInterface, WidgetConfigurationInterface, WidgetInterface};
 
+use function trim;
+
 /**
  * EnvironmentIndicatorWidget.
  *
@@ -50,6 +52,7 @@ class EnvironmentIndicatorWidget implements WidgetInterface, AdditionalCssInterf
                 'context' => [
                     'icon' => $widgetConfiguration['icon'] ?? 'information-application-context',
                     'text' => $widgetConfiguration['text'] ?? Environment::getContext()->__toString(),
+                    'description' => trim((string) ($widgetConfiguration['description'] ?? '')),
                     'color' => $color,
                     'textColor' => ColorUtility::getOptimalTextColor($color, fallbackColor: '#ffffff'),
                     'textSize' => $widgetConfiguration['textSize'] ?? '20px',

@@ -38,5 +38,9 @@ You can adjust the color of the topbar in your :code:`ext_localconf.php`:
         ]
     );
 
+Additional optional configuration keys:
+
+- :code:`description` (string): An optional description. When set, it is shown as a tooltip (:code:`title` attribute) on the colored topbar. Plain text only. Default is empty.
+
 ..  note::
     The backend topbar is a feature, which can also be shown in production environments. Use the :ref:`extension settings <extconf-backend.contextProduction>` to enable, disable or restrict it.

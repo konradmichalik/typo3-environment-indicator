@@ -42,3 +42,4 @@ Additional optional configuration keys:
 
 - :code:`text` (string): The text of the hint. Default is the website title.
 - :code:`position` (string): The position of the frontend hint. Default is :code:`top left`. Possible values are :code:`bottom left`,:code:`bottom right`, :code:`top left`, :code:`top right`.
+- :code:`description` (string): An optional description. When set, it is appended to the hint's tooltip (:code:`title` attribute). Default is empty.

@@ -2,6 +2,9 @@
     <div class="environment-indicator-widget" data-context="{context.text}" style="background-color:{context.color};color:{context.textColor};font-size:{context.textSize};">
         <core:icon identifier="{context.icon}" size="medium" />
         <div class="environment-indicator-widget__text">{context.text}</div>
+        <f:if condition="{context.description}">
+            <div class="environment-indicator-widget__description">{context.description}</div>
+        </f:if>
         <div class="environment-indicator-widget__help"><f:translate key="widgets.environmentIndicator.title" extensionName="typo3_environment_indicator" /></div>
     </div>
 </f:if>

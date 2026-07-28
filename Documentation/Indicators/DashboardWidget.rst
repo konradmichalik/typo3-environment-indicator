@@ -54,6 +54,7 @@ Additional optional configuration keys:
 - :code:`text` (string): The text of the widget. Default is the application context.
 - :code:`icon` (string): The icon of the widget. Default is :code:`information-application-context`.
 - :code:`textSize` (string): The text size of the widget. Default is :code:`20px`.
+- :code:`description` (string): An optional description shown as an additional paragraph in the widget body. Plain text only (HTML is escaped). Default is empty.
 
 The dashboard widget can not disappear, if no configuration is set. It is always shown in the backend dashboard.
 

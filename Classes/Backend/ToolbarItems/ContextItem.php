@@ -20,6 +20,8 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 
+use function trim;
+
 /**
  * ContextItem.
  *
@@ -47,6 +49,11 @@ class ContextItem implements ToolbarItemInterface
         $contextName = Environment::getContext()->__toString();
         $defaultColor = 'transparent';
         $contextColor = $toolbarConfig['color'] ?? $defaultColor;
+        $title = 'Application context';
+        $description = $this->getDescription();
+        if ('' !== $description) {
+            $title .= ': '.$description;
+        }
 
         return ViewFactoryHelper::renderView(
             template: 'ToolbarItems/ContextItem.html',
@@ -54,6 +61,7 @@ class ContextItem implements ToolbarItemInterface
                 'context' => [
                     'icon' => $toolbarConfig['icon']['context'] ?? 'information-application-context',
                     'text' => $toolbarConfig['text'] ?? $contextName,
+                    'title' => $title,
                     'color' => $contextColor,
                     'textColor' => ColorUtility::getOptimalTextColor($contextColor),
                 ],
@@ -96,6 +104,11 @@ class ContextItem implements ToolbarItemInterface
 
         return true === (bool) ($extensionConfig['backend']['contextProduction'] ?? false)
             || 'Production' !== Environment::getContext()->__toString();
+    }
+
+    private function getDescription(): string
+    {
+        return trim((string) ($this->getBackendToolbarConfiguration()['description'] ?? ''));
     }
 
     /**

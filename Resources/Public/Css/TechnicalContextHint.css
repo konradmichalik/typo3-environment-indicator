@@ -65,3 +65,8 @@
     background-color: var(--technical-context-bg-color, #f39c12);
     color: var(--technical-context-text-color, #ffffff);
 }
+
+.technical-context__content {
+    display: flex;
+    flex-direction: column;
+}
