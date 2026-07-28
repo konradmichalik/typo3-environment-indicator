@@ -47,7 +47,7 @@ final class SubjectPrefixListenerTest extends TestCase
         self::assertSame('Hello', $email->getSubject());
     }
 
-    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [], 'resolved' => true]]])]
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => null]])]
     public function testSubjectIsUntouchedWhenIndicatorNotResolved(): void
     {
         $this->mockExtensionConfiguration(true);
