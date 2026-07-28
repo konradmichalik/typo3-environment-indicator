@@ -20,7 +20,9 @@ backend.context = 1
 backend.contextProduction = 1
 # cat=backend/enable/50; type=boolean; label=Enable the backend theme modification (TYPO3 v14+ only, experimental). Colors the entire backend based on the environment.
 backend.theme = 0
-# cat=backend/enable/60; type=boolean; label=Enable the page title prefix/suffix in backend context
+# cat=backend/enable/60; type=boolean; label=Enable the environment badge on the backend login screen
+backend.login = 1
+# cat=backend/enable/70; type=boolean; label=Enable the page title prefix/suffix in backend context
 backend.pageTitle = 1
 # cat=cli/enable/10; type=boolean; label=Enable the CLI banner (opt-in). Prints a colored environment banner to stderr before console commands run in an interactive terminal.
 cli.banner = 0

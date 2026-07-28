@@ -102,6 +102,16 @@ Backend
 
     Enable the backend toolbar item / backend topbar also in production context
 
+..  _extconf-backend.login:
+
+..  confval:: backend.login
+    :type: boolean
+    :Default: 1
+
+    Enable the environment badge on the backend login screen. When the
+    :ref:`backend-login` indicator is active, a colored badge is shown on the
+    login screen.
+
 ..  _extconf-backend.pageTitle:
 
 ..  confval:: backend.pageTitle
