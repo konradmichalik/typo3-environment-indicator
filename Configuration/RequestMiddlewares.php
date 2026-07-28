@@ -19,6 +19,12 @@ return [
                 'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
+        'konradmichalik/typo3-environment-indicator/frontend-page-title' => [
+            'target' => KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendPageTitleMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/prepare-tsfe-rendering',
+            ],
+        ],
     ],
     'backend' => [
         'konradmichalik/typo3-environment-indicator/backend-favicon' => [

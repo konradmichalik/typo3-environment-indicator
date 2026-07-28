@@ -41,6 +41,11 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Favicon.html">Modified favicon</a></strong><br/><br/>Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-PageTitlePrefix.png" width="80" alt="Page Title Icon"></td>
+      <td><img src="Documentation/Images/preview-page-title-prefix.jpg" width="320" alt="Page Title Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/PageTitle.html">Page title</a></strong><br/><br/>Prefix or suffix the page title in frontend and backend with the current application context.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Frontend</th>
     </tr>
     <tr>
@@ -81,12 +86,31 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/preview-theme.jpg" width="320" alt="Backend Theme Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
     </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BackendLogin.png" width="80" alt="Backend Login Icon"></td>
+      <td><img src="Documentation/Images/preview-backend-login.jpg" width="320" alt="Backend Login Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendLogin.html">Backend login</a></strong><br/><br/>Show a colored environment badge directly on the backend login screen.</td>
+    </tr>
+    <tr>
+      <th colspan="3" align="left">Misc</th>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-CLI.png" width="80" alt="CLI Banner Icon"></td>
+      <td><img src="Documentation/Images/preview-cli-banner.jpg" width="320" alt="CLI Banner Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/CliBanner.html">CLI banner</a></strong><br/><br/>Print a colored environment banner to stderr before an interactive console command runs.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-MailSubjectPrefix.png" width="80" alt="Mail Subject Prefix Icon"></td>
+      <td><img src="Documentation/Images/preview-mail-subject-prefix.jpg" width="320" alt="Mail Subject Prefix Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/MailSubjectPrefix.html">Mail subject prefix</a></strong><br/><br/>Prepends the environment to the subject of every mail sent through the TYPO3 Mailer API.</td>
+    </tr>
   </tbody>
 </table>
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)
-> and will not show in production environments.
+> and will not show on the live production site. They do show in `Production/Staging` and `Production/Standby`
+> application contexts, where they help distinguish those systems from the live site.
 
 ## 🔥 Installation
 

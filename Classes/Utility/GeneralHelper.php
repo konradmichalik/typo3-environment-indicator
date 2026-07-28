@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function array_key_exists;
+use function str_contains;
+use function str_replace;
 
 /**
  * GeneralHelper.
@@ -64,6 +66,18 @@ class GeneralHelper
             $indicatorClass,
             self::getIndicatorConfiguration(),
         );
+    }
+
+    /**
+     * Replaces the "%context%" placeholder with the current application context.
+     */
+    public static function replaceContextPlaceholder(string $value): string
+    {
+        if (!str_contains($value, '%context%')) {
+            return $value;
+        }
+
+        return str_replace('%context%', Environment::getContext()->__toString(), $value);
     }
 
     public static function isExtensionFeatureEnabled(string $path): bool

@@ -20,6 +20,9 @@ services:
   KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\ThemeItem:
     public: true
 
+  KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\PageTitleItem:
+    public: true
+
   KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility:
     public: true
 
