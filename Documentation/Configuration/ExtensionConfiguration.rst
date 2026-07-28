@@ -31,7 +31,7 @@ General
     Enable the default configuration for the environment indicators. If you want to configure the environment indicators by yourself, set this to false. See :ref:`configuration`.
 
 Frontend
-=======
+========
 
 ..  _extconf-frontend.favicon:
 
@@ -101,6 +101,18 @@ Backend
     :Default: 1
 
     Enable the backend toolbar item / backend topbar also in production context
+
+..  _extconf-backend.theme:
+
+..  confval:: backend.theme
+    :type: boolean
+    :Default: 0
+
+    Enable the backend theme modification (TYPO3 v14+ only, experimental).
+    When the :ref:`backend-theme` indicator is active, this colors the entire
+    backend based on the environment. Disabled by default because the
+    underlying TYPO3 backend CSS framework is currently considered internal
+    API.
 
 ..  _extconf-backend.login:
 
