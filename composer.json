@@ -14,6 +14,7 @@
 	"require": {
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
 		"ext-filter": "*",
+		"ext-mbstring": "*",
 		"intervention/image": "^3.11.7 || ^4.0",
 		"konradmichalik/php-color": "^0.2",
 		"konradmichalik/php-ico-file-loader": "^0.3",
@@ -22,6 +23,7 @@
 		"psr/http-server-handler": "^1.0.2",
 		"psr/http-server-middleware": "^1.0.2",
 		"psr/log": "^3.0.2",
+		"symfony/console": "^7.0 || ^8.0",
 		"symfony/expression-language": "^7.0 || ^8.0",
 		"symfony/mime": "^7.0 || ^8.0",
 		"typo3/cms-backend": "^13.4 || ^14.3",

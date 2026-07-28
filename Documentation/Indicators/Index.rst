@@ -130,6 +130,11 @@ Misc
     *   -   Icon
         -   Indicator
         -   Description
+    *   -   ..  image:: /Images/Extension-EI-CLI.png
+                :alt: CLI Banner Icon
+                :width: 80px
+        -   :ref:`cli-banner`
+        -   Print a colored environment banner to stderr before an interactive console command runs.
     *   -   ..  image:: /Images/Extension-EI-MailSubjectPrefix.png
                 :alt: Mail Subject Prefix Icon
                 :width: 80px
@@ -148,4 +153,5 @@ Misc
     BackendLogo
     DashboardWidget
     BackendTheme
+    CliBanner
     MailSubjectPrefix

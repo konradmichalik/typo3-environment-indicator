@@ -74,6 +74,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
         'scaffoldSidebar' => true,
         'neutralMix' => '15%',
     ],
+    Indicator\Cli\Banner::class => [
+        'icon' => '🚦',
+    ],
     Indicator\Mail\SubjectPrefix::class => [
         'prefix' => '[%context%] ',
     ],
@@ -118,6 +121,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#bd593a',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#bd593a',
+            ]),
             new Indicator\Mail\SubjectPrefix(),
         ],
     );
@@ -154,6 +160,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
                 'color' => '#f39c12',
             ]),
             new Indicator\Backend\Theme([
+                'color' => '#f39c12',
+            ]),
+            new Indicator\Cli\Banner([
                 'color' => '#f39c12',
             ]),
             new Indicator\Mail\SubjectPrefix(),
@@ -194,6 +203,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Backend\Theme([
                 'color' => '#2f9c91',
             ]),
+            new Indicator\Cli\Banner([
+                'color' => '#2f9c91',
+            ]),
             new Indicator\Mail\SubjectPrefix(),
         ],
     );
@@ -204,6 +216,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
         ],
         indicators: [
             new Indicator\Backend\Toolbar([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\Cli\Banner([
                 'color' => '#2f9c91',
             ]),
         ],
