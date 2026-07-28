@@ -12,7 +12,7 @@
     data-position-x="{positionX}"
     data-position-y="{positionY}"
     aria-hidden="true"
-    title="This is part of environment indicator extension and shows the actual site name of the website. This hint will not be displayed in production context.{f:if(condition: description, then: ' {description}')}"
+    title="This is part of environment indicator extension and shows the actual site name of the website. This hint will not be displayed in production context.{f:if(condition: description, then: ' {description -> f:format.htmlspecialchars()}')}"
 >
     <div class="technical-context__content">
         {title}
