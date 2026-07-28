@@ -72,6 +72,19 @@ final class FrontendPageTitleMiddlewareTest extends TestCase
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
         PageTitle::class => ['prefix' => '[STG] '],
     ]]]])]
+    public function testTitleLikeTextInsideInlineScriptIsIgnored(): void
+    {
+        $html = '<html><head><script>var x="<title>Preview</title>";</script><title>Home</title></head></html>';
+
+        $response = $this->process(new HtmlResponse($html));
+
+        self::assertStringContainsString('<title>[STG] Home</title>', (string) $response->getBody());
+        self::assertStringContainsString('<script>var x="<title>Preview</title>";</script>', (string) $response->getBody());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        PageTitle::class => ['prefix' => '[STG] '],
+    ]]]])]
     public function testNonHtmlResponseIsUntouched(): void
     {
         $original = new JsonResponse(['title' => 'Home']);
