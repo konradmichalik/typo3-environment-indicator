@@ -95,7 +95,7 @@ class PageTitleItem implements ToolbarItemInterface
         return sprintf(
             '(function(){var p=%s,s=%s;function a(){var t=document.title||"";'
             .'if(p&&t.indexOf(p)!==0){t=p+t;}'
-            .'if(s&&t.lastIndexOf(s)!==t.length-s.length){t=t+s;}'
+            .'if(s&&!t.endsWith(s)){t=t+s;}'
             .'if(t!==document.title){document.title=t;}}a();'
             .'var e=document.querySelector("title");'
             .'if(e&&window.MutationObserver){new MutationObserver(a).observe(e,{childList:true});}})();',
