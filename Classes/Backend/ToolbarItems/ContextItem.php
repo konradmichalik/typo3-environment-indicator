@@ -20,10 +20,7 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 
-use function htmlspecialchars;
 use function trim;
-
-use const ENT_QUOTES;
 
 /**
  * ContextItem.
@@ -52,6 +49,11 @@ class ContextItem implements ToolbarItemInterface
         $contextName = Environment::getContext()->__toString();
         $defaultColor = 'transparent';
         $contextColor = $toolbarConfig['color'] ?? $defaultColor;
+        $title = 'Application context';
+        $description = $this->getDescription();
+        if ('' !== $description) {
+            $title .= ': '.$description;
+        }
 
         return ViewFactoryHelper::renderView(
             template: 'ToolbarItems/ContextItem.html',
@@ -59,6 +61,7 @@ class ContextItem implements ToolbarItemInterface
                 'context' => [
                     'icon' => $toolbarConfig['icon']['context'] ?? 'information-application-context',
                     'text' => $toolbarConfig['text'] ?? $contextName,
+                    'title' => $title,
                     'color' => $contextColor,
                     'textColor' => ColorUtility::getOptimalTextColor($contextColor),
                 ],
@@ -68,19 +71,12 @@ class ContextItem implements ToolbarItemInterface
 
     public function hasDropDown(): bool
     {
-        return '' !== $this->getDescription();
+        return false;
     }
 
     public function getDropDown(): string
     {
-        $description = $this->getDescription();
-        if ('' === $description) {
-            return '';
-        }
-
-        return '<div class="dropdown-table"><div class="dropdown-table-row"><div class="dropdown-table-column">'
-            .htmlspecialchars($description, ENT_QUOTES)
-            .'</div></div></div>';
+        return '';
     }
 
     /**

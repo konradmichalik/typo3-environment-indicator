@@ -16,7 +16,6 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\ToolbarIte
 use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\ContextItem;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Toolbar;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
@@ -60,25 +59,5 @@ final class ContextItemTest extends TestCase
         $item = new ContextItem(new ExtensionConfiguration());
 
         self::assertSame([], $item->getAdditionalAttributes());
-    }
-
-    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
-        'current' => [Toolbar::class => ['description' => 'DB synced nightly from live']],
-        'resolved' => true,
-    ]]])]
-    public function testHasDropDownReturnsTrueWhenDescriptionIsSet(): void
-    {
-        self::assertTrue((new ContextItem(new ExtensionConfiguration()))->hasDropDown());
-    }
-
-    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
-        'current' => [Toolbar::class => ['description' => 'Data <b>overwritten</b> nightly']],
-        'resolved' => true,
-    ]]])]
-    public function testGetDropDownContainsEscapedDescription(): void
-    {
-        $dropDown = (new ContextItem(new ExtensionConfiguration()))->getDropDown();
-
-        self::assertStringContainsString('Data &lt;b&gt;overwritten&lt;/b&gt; nightly', $dropDown);
     }
 }
