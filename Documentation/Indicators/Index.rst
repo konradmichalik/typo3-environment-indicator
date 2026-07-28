@@ -62,6 +62,11 @@ Frontend + Backend
                 :width: 80px
         -   :ref:`favicon`
         -   Modify the favicon for frontend and backend based on the original favicon, the current application context and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-PageTitlePrefix.png
+                :alt: Page Title Icon
+                :width: 80px
+        -   :ref:`page-title`
+        -   Prefix or suffix the page title in frontend and backend with the current application context.
 
 Frontend
 --------
@@ -153,5 +158,6 @@ Misc
     BackendLogo
     DashboardWidget
     BackendTheme
+    PageTitle
     CliBanner
     MailSubjectPrefix
