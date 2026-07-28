@@ -42,6 +42,15 @@ Require the extension via Composer (recommended):
 Or download it from the
 `TYPO3 extension repository <https://extensions.typo3.org/extension/typo3_environment_indicator>`__.
 
+..  _migration:
+
+Migration from version 1.x to 2.x
+==================================
+
+Since version 2.x, the extension uses the new :php:`Handler::addIndicator()` method to add the
+environment indicator configuration instead of the old :php:`ConfigurationUtility::configByContext()`
+method.
+
 Configuration
 =============
 

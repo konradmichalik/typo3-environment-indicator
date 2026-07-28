@@ -13,7 +13,7 @@
 
 </div>
 
-This extension provides several features to show an environment indicator in the TYPO3 frontend and backend.
+This extension provides several features to show an environment indicator in the TYPO3 frontend and backend, and beyond (CLI, mails).
 
 > [!NOTE]
 > Has it ever happened to you that you changed data on a test system and then realized: oh no, that's the live system. 
@@ -144,11 +144,6 @@ from [TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/t
 
 Please have a look at the
 [official extension documentation](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Index.html).
-
-## 🚧 Migration from version 1.x to 2.x
-
-Since version 2.x, the extension is using the new `Handler::addIndicator` method to add the environment indicator
-configuration instead of the old `ConfigurationUtility::configByContext` method.
 
 ## 🧑‍💻 Contributing
 
