@@ -92,6 +92,19 @@ Backend
 
     Enable the backend toolbar item / backend topbar also in production context
 
+Mail
+====
+
+..  _extconf-mail.subject:
+
+..  confval:: mail.subject
+    :type: boolean
+    :Default: 1
+
+    Enable the mail subject prefix for outgoing mails. When the
+    :ref:`mail-subject-prefix` indicator is active, the environment prefix is
+    prepended to the subject of every mail sent via the TYPO3 Mailer API.
+
 Instance
 ========
 

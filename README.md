@@ -81,6 +81,14 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/preview-theme.jpg" width="320" alt="Backend Theme Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
     </tr>
+    <tr>
+      <th colspan="3" align="left">Misc</th>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-MailSubjectPrefix.png" width="80" alt="Mail Subject Prefix Icon"></td>
+      <td><img src="Documentation/Images/preview-mail-subject-prefix.jpg" width="320" alt="Mail Subject Prefix Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/MailSubjectPrefix.html">Mail subject prefix</a></strong><br/><br/>Prepends the environment to the subject of every mail sent through the TYPO3 Mailer API.</td>
+    </tr>
   </tbody>
 </table>
 
