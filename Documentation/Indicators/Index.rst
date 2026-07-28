@@ -125,6 +125,27 @@ Backend
         -   :ref:`backend-theme` *(experimental)*
         -   Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.
 
+Misc
+----
+
+..  list-table::
+    :header-rows: 1
+    :widths: 10 30 60
+
+    *   -   Icon
+        -   Indicator
+        -   Description
+    *   -   ..  image:: /Images/Extension-EI-CLI.png
+                :alt: CLI Banner Icon
+                :width: 80px
+        -   :ref:`cli-banner`
+        -   Print a colored environment banner to stderr before an interactive console command runs.
+    *   -   ..  image:: /Images/Extension-EI-MailSubjectPrefix.png
+                :alt: Mail Subject Prefix Icon
+                :width: 80px
+        -   :ref:`mail-subject-prefix`
+        -   Prepend the current application context to the subject of every mail sent through the TYPO3 Mailer API.
+
 ..  toctree::
     :maxdepth: 3
     :hidden:
@@ -138,3 +159,5 @@ Backend
     DashboardWidget
     BackendTheme
     PageTitle
+    CliBanner
+    MailSubjectPrefix

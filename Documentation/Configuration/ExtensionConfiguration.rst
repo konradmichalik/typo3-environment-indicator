@@ -112,6 +112,33 @@ Backend
     :ref:`page-title` indicator is active, the backend document title is
     decorated client-side.
 
+CLI
+===
+
+..  _extconf-cli.banner:
+
+..  confval:: cli.banner
+    :type: boolean
+    :Default: 0
+
+    Enable the CLI banner (opt-in, disabled by default). When the
+    :ref:`cli-banner` indicator is active, a colored environment banner is
+    printed to :code:`stderr` before console commands run in an interactive
+    terminal.
+
+Mail
+====
+
+..  _extconf-mail.subject:
+
+..  confval:: mail.subject
+    :type: boolean
+    :Default: 1
+
+    Enable the mail subject prefix for outgoing mails. When the
+    :ref:`mail-subject-prefix` indicator is active, the environment prefix is
+    prepended to the subject of every mail sent via the TYPO3 Mailer API.
+
 Instance
 ========
 
