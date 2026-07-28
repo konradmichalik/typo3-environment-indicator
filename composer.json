@@ -13,7 +13,9 @@
 	],
 	"require": {
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+		"ext-dom": "*",
 		"ext-filter": "*",
+		"ext-libxml": "*",
 		"intervention/image": "^3.11.7 || ^4.0",
 		"konradmichalik/php-color": "^0.2",
 		"konradmichalik/php-ico-file-loader": "^0.3",
