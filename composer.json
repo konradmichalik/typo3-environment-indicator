@@ -36,7 +36,7 @@
 		"typo3fluid/fluid": "^4.2 || ^5.0"
 	},
 	"require-dev": {
-		"eliashaeussler/typo3-vendor-bundler": "^4.1.0",
+		"eliashaeussler/typo3-vendor-bundler": "^4.1.1",
 		"eliashaeussler/version-bumper": "^4.0.3",
 		"konradmichalik/ttt": "^0.3.0",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^13.0",
