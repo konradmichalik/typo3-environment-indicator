@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "591824b74f2c6745d0cff411184949b7",
+    "content-hash": "1245fe93ccd143b8d566b47ed8236e95",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7089,16 +7089,16 @@
         },
         {
             "name": "konradmichalik/ttt",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konradmichalik/ttt.git",
-                "reference": "ec82651b4389945ee17b4cfde5b1f728aee78202"
+                "reference": "2b36b0ce42b7f980f0c23bc5f61a3da6e10cba8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konradmichalik/ttt/zipball/ec82651b4389945ee17b4cfde5b1f728aee78202",
-                "reference": "ec82651b4389945ee17b4cfde5b1f728aee78202",
+                "url": "https://api.github.com/repos/konradmichalik/ttt/zipball/2b36b0ce42b7f980f0c23bc5f61a3da6e10cba8d",
+                "reference": "2b36b0ce42b7f980f0c23bc5f61a3da6e10cba8d",
                 "shasum": ""
             },
             "require": {
@@ -7113,10 +7113,12 @@
                 "phpstan/phpstan": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "rector/rector": "^2.2",
-                "typo3/cms-core": "^13.4 || ^14.0"
+                "typo3/cms-core": "^13.4 || ^14.0",
+                "typo3/cms-frontend": "^13.4 || ^14.0"
             },
             "suggest": {
-                "typo3/cms-core": "Required for TYPO3-specific attributes like InApplicationContext and WithEnvironment (^13.4 || ^14.0)"
+                "typo3/cms-core": "Required for TYPO3-specific attributes like InApplicationContext and WithEnvironment (^13.4 || ^14.0)",
+                "typo3/cms-frontend": "Required for WithFrontendUser (^13.4 || ^14.0)"
             },
             "type": "library",
             "autoload": {
@@ -7127,7 +7129,10 @@
             "autoload-dev": {
                 "psr-4": {
                     "KonradMichalik\\Ttt\\Tests\\": "tests/src"
-                }
+                },
+                "files": [
+                    "tests/stubs/typo3-testing-framework-functional-test-case.php"
+                ]
             },
             "scripts": {
                 "fix": [
@@ -7199,10 +7204,10 @@
                 "typo3"
             ],
             "support": {
-                "source": "https://github.com/konradmichalik/ttt/tree/0.3.0",
+                "source": "https://github.com/konradmichalik/ttt/tree/0.4.0",
                 "issues": "https://github.com/konradmichalik/ttt/issues"
             },
-            "time": "2026-07-28T06:32:33+00:00"
+            "time": "2026-07-30T09:47:20+00:00"
         },
         {
             "name": "myclabs/deep-copy",
