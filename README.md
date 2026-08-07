@@ -59,6 +59,11 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Frontend Console Icon"></td>
+      <td></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendConsole.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console on page load.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Backend</th>
     </tr>
     <tr>

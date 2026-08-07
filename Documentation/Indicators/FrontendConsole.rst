@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-BrowserConsole.png
+    :alt: Frontend Console Icon
+    :width: 120px
+
 ..  _frontend-console:
 
 ================

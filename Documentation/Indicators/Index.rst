@@ -88,7 +88,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
-    *   -
+    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
+                :alt: Frontend Console Icon
+                :width: 80px
         -   :ref:`frontend-console`
         -   Print a styled environment badge to the browser console on page load.
 
