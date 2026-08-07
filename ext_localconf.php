@@ -69,6 +69,10 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
     Indicator\Frontend\Hint::class => [
         'position' => 'top left',
     ],
+    Indicator\Frontend\HttpHeader::class => [
+        'name' => 'X-TYPO3-Environment',
+        'value' => '%context%',
+    ],
     Indicator\Backend\Theme::class => [
         'scaffoldHeader' => true,
         'scaffoldSidebar' => true,

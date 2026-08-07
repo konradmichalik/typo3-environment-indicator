@@ -10,6 +10,8 @@ frontend.context = 1
 frontend.image = 1
 # cat=frontend/enable/40; type=boolean; label=Enable the page title prefix/suffix in frontend context
 frontend.pageTitle = 1
+# cat=frontend/enable/50; type=boolean; label=Enable the environment HTTP response header in frontend context
+frontend.header = 1
 # cat=backend/enable/10; type=boolean; label=Enable the favicon generation in backend context
 backend.favicon = 1
 # cat=backend/enable/20; type=boolean; label=Enable the logo generation in backend context
