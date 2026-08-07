@@ -69,6 +69,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
     Indicator\Frontend\Hint::class => [
         'position' => 'top left',
     ],
+    Indicator\Frontend\Console::class => [
+        'text' => '%context%',
+    ],
     Indicator\Backend\Theme::class => [
         'scaffoldHeader' => true,
         'scaffoldSidebar' => true,
@@ -116,6 +119,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
                 ]),
             ]),
             new Indicator\Frontend\Hint([
+                'color' => '#bd593a',
+            ]),
+            new Indicator\Frontend\Console([
                 'color' => '#bd593a',
             ]),
             new Indicator\Backend\Toolbar([
@@ -166,6 +172,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
             new Indicator\Frontend\Hint([
                 'color' => '#f39c12',
             ]),
+            new Indicator\Frontend\Console([
+                'color' => '#f39c12',
+            ]),
             new Indicator\Backend\Toolbar([
                 'color' => '#f39c12',
             ]),
@@ -209,6 +218,9 @@ if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']
                 ]),
             ]),
             new Indicator\Frontend\Hint([
+                'color' => '#2f9c91',
+            ]),
+            new Indicator\Frontend\Console([
                 'color' => '#2f9c91',
             ]),
             new Indicator\Backend\Toolbar([

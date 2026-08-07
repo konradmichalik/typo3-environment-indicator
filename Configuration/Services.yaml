@@ -26,6 +26,9 @@ services:
   KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility:
     public: true
 
+  KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility:
+    public: true
+
   dashboard.widget.EnvironmentIndicator:
     class: 'KonradMichalik\Typo3EnvironmentIndicator\Widgets\EnvironmentIndicatorWidget'
     tags:

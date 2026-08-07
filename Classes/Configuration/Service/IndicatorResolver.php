@@ -37,6 +37,7 @@ class IndicatorResolver
      */
     private const COLOR_TARGETS = [
         Frontend\Hint::class,
+        Frontend\Console::class,
         Backend\Toolbar::class,
         Backend\Topbar::class,
         Backend\Widget::class,
@@ -47,6 +48,7 @@ class IndicatorResolver
      * Indicator classes whose configuration carries a plain 'text' key.
      */
     private const TEXT_TARGETS = [
+        Frontend\Console::class,
         Backend\Toolbar::class,
         Backend\Widget::class,
     ];
