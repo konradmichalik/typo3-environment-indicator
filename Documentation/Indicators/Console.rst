@@ -4,7 +4,7 @@
     :alt: Frontend Console Icon
     :width: 120px
 
-..  _frontend-console:
+..  _console:
 
 ================
 Frontend Console

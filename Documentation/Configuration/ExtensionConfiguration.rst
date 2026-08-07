@@ -74,7 +74,7 @@ Frontend
     :Default: 1
 
     Enable the environment badge in the browser console. When the
-    :ref:`frontend-console` indicator is active, a styled badge is printed to
+    :ref:`console` indicator is active, a styled badge is printed to
     the console on every frontend page load.
 
 Backend

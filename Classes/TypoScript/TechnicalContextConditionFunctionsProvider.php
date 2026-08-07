@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\TypoScript;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\{Console, Hint};
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Hint;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Symfony\Component\ExpressionLanguage\{ExpressionFunction, ExpressionFunctionProviderInterface};

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indicator\Frontend;
+namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indicator\General;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, IndicatorInterface};
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Console;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
 use PHPUnit\Framework\TestCase;
 
 /**

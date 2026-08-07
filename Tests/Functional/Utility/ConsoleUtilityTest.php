@@ -16,7 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Utility;
 use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Console;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 

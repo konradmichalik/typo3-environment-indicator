@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend;
+namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, IndicatorInterface};
 

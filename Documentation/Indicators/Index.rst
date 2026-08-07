@@ -91,7 +91,7 @@ Frontend
     *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
                 :alt: Frontend Console Icon
                 :width: 80px
-        -   :ref:`frontend-console`
+        -   :ref:`console`
         -   Print a styled environment badge to the browser console on page load.
 
 Backend
@@ -163,7 +163,7 @@ Misc
     Favicon
     FrontendHint
     FrontendImage
-    FrontendConsole
+    Console
     BackendToolbar
     BackendTopbar
     BackendLogo

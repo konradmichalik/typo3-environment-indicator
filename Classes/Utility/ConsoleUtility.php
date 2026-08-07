@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Console;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 
 use function trim;
