@@ -88,7 +88,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
-    *   -
+    *   -   ..  image:: /Images/Extension-EI-HTTPHeader.png
+                :alt: Frontend HTTP Header Icon
+                :width: 80px
         -   :ref:`frontend-http-header`
         -   Add a configurable HTTP response header with the current application context to frontend responses.
 

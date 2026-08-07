@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-HTTPHeader.png
+    :alt: Frontend HTTP Header Icon
+    :width: 120px
+
 ..  _frontend-http-header:
 
 ====================
