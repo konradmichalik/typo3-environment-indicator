@@ -50,9 +50,12 @@ warning, so a misconfiguration cannot break frontend rendering.
     rarely inspected via :code:`curl` or tooling and are left untouched.
 
 ..  note::
-    A header that the application already set is never overwritten. This keeps
-    the indicator from clobbering a header of the same name coming from the
-    site configuration, a reverse proxy or another extension.
+    A header that is already present on the response when the middleware runs
+    is never overwritten, so the indicator cannot clobber a header of the same
+    name set by the site configuration, another extension or an earlier
+    middleware. Headers added by a reverse proxy are outside TYPO3's reach —
+    they are applied after the response has left PHP, so a proxy adding the
+    same header would result in a duplicate. Configure the proxy accordingly.
 
 ..  warning::
     The header discloses the application context to anyone requesting the site.
