@@ -1,8 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:if condition="{script}">
-    <f:asset.script identifier="environment-indicator-console" nonce="{f:security.nonce(directive: 'script-src', scope: 'static')}">{script -> f:format.raw()}</f:asset.script>
+<f:if condition="{text}">
+    <f:asset.script identifier="environment-indicator-console" src="EXT:typo3_environment_indicator/Resources/Public/JavaScript/EnvironmentConsole.js"/>
+    <div class="environment-indicator-console"
+         hidden
+         aria-hidden="true"
+         data-text="{text}"
+         data-color="{color}"
+         data-text-color="{textColor}"></div>
 </f:if>
 
 </html>

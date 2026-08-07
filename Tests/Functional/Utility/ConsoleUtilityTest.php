@@ -40,16 +40,32 @@ class ConsoleUtilityTest extends FunctionalTestCase
         $this->restoreTypo3ConfVars();
     }
 
-    public function testScriptContainsResolvedContextAndBadgeStyle(): void
+    public function testTextResolvesTheContextPlaceholder(): void
     {
         $this->configure(['text' => '%context%', 'color' => '#bd593a']);
 
-        $script = (new ConsoleUtility())->getScript();
+        self::assertSame('Testing', (new ConsoleUtility())->getText());
+    }
 
-        self::assertStringStartsWith('console.info(', $script);
-        self::assertStringContainsString('%cTesting', $script);
-        self::assertStringContainsString('background:#bd593a', $script);
-        self::assertStringContainsString('border-radius:3px', $script);
+    public function testTextIsTrimmed(): void
+    {
+        $this->configure(['text' => '  STAGING  ']);
+
+        self::assertSame('STAGING', (new ConsoleUtility())->getText());
+    }
+
+    public function testConfiguredColorIsUsed(): void
+    {
+        $this->configure(['text' => 'DEV', 'color' => '#bd593a']);
+
+        self::assertSame('#bd593a', (new ConsoleUtility())->getColor());
+    }
+
+    public function testMissingColorFallsBackToNeutral(): void
+    {
+        $this->configure(['text' => 'DEV']);
+
+        self::assertSame('#767676', (new ConsoleUtility())->getColor());
     }
 
     public function testTextColorIsDerivedFromBackgroundColor(): void
@@ -57,60 +73,21 @@ class ConsoleUtilityTest extends FunctionalTestCase
         $this->configure(['text' => 'DEV', 'color' => '#ffffff']);
 
         // Optimal text color on white has to be dark, not the white default.
-        self::assertStringContainsString('color:rgba(0, 0, 0', (new ConsoleUtility())->getScript());
+        self::assertStringStartsWith('rgba(0, 0, 0', (new ConsoleUtility())->getTextColor());
     }
 
-    public function testPercentSignInTextIsEscapedAsFormatDirective(): void
-    {
-        $this->configure(['text' => '100% TEST', 'color' => '#bd593a']);
-
-        self::assertStringContainsString('%c100%% TEST', (new ConsoleUtility())->getScript());
-    }
-
-    public function testHtmlSpecialCharactersAreHexEscaped(): void
-    {
-        $this->configure(['text' => '</script><img src=x onerror=alert(1)>', 'color' => '#bd593a']);
-
-        $script = (new ConsoleUtility())->getScript();
-
-        // No raw angle brackets survive, so the payload cannot terminate the
-        // <script> element the statement is embedded in.
-        self::assertStringNotContainsString('<', $script);
-        self::assertStringNotContainsString('>', $script);
-        self::assertStringContainsString('\\u003C', $script);
-    }
-
-    public function testQuotesCannotBreakOutOfTheStringLiteral(): void
-    {
-        $this->configure(['text' => '");alert(1);//', 'color' => '#bd593a']);
-
-        $script = (new ConsoleUtility())->getScript();
-
-        // The payload stays inside the string literal as data: the quote is
-        // escaped, so the sequence that would close it never appears verbatim.
-        self::assertStringContainsString('\\u0022', $script);
-        self::assertStringNotContainsString('");alert', $script);
-    }
-
-    public function testEmptyTextProducesNoScript(): void
+    public function testEmptyTextDisablesTheBadge(): void
     {
         $this->configure(['text' => '', 'color' => '#bd593a']);
 
-        self::assertSame('', (new ConsoleUtility())->getScript());
+        self::assertSame('', (new ConsoleUtility())->getText());
     }
 
-    public function testInactiveIndicatorProducesNoScript(): void
+    public function testInactiveIndicatorProducesNoText(): void
     {
         $this->configure(null);
 
-        self::assertSame('', (new ConsoleUtility())->getScript());
-    }
-
-    public function testMissingColorFallsBackToNeutralBadge(): void
-    {
-        $this->configure(['text' => 'DEV']);
-
-        self::assertStringContainsString('background:#767676', (new ConsoleUtility())->getScript());
+        self::assertSame('', (new ConsoleUtility())->getText());
     }
 
     /**
