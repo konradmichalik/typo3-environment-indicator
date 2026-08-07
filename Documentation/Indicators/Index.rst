@@ -88,6 +88,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
+    *   -
+        -   :ref:`frontend-http-header`
+        -   Add a configurable HTTP response header with the current application context to frontend responses.
 
 Backend
 -------
@@ -158,6 +161,7 @@ Misc
     Favicon
     FrontendHint
     FrontendImage
+    FrontendHttpHeader
     BackendToolbar
     BackendTopbar
     BackendLogo

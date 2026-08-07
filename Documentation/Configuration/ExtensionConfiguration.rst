@@ -67,6 +67,16 @@ Frontend
     :ref:`page-title` indicator is active, the final rendered :code:`<title>`
     is decorated.
 
+..  _extconf-frontend.header:
+
+..  confval:: frontend.header
+    :type: boolean
+    :Default: 1
+
+    Enable the environment HTTP response header in frontend context. When the
+    :ref:`frontend-http-header` indicator is active, the configured header is
+    added to frontend responses.
+
 Backend
 =======
 
