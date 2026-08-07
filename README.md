@@ -46,6 +46,11 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/PageTitle.html">Page title</a></strong><br/><br/>Prefix or suffix the page title in frontend and backend with the current application context.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Console Icon"></td>
+      <td><img src="Documentation/Images/preview-console.png" width="320" alt="Console Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Console.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console in frontend and backend.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Frontend</th>
     </tr>
     <tr>
@@ -57,11 +62,6 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/Extension-EI-FrontendImage.png" width="80" alt="Frontend Image Icon"></td>
       <td><img src="Documentation/Images/preview-frontend-image.jpg" width="320" alt="Frontend Image Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
-    </tr>
-    <tr>
-      <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Frontend Console Icon"></td>
-      <td><img src="Documentation/Images/preview-console.png" width="320" alt="Frontend Console Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Console.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console on page load.</td>
     </tr>
     <tr>
       <th colspan="3" align="left">Backend</th>

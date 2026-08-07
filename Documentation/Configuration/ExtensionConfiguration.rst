@@ -73,9 +73,9 @@ Frontend
     :type: boolean
     :Default: 1
 
-    Enable the environment badge in the browser console. When the
-    :ref:`console` indicator is active, a styled badge is printed to
-    the console on every frontend page load.
+    Enable the environment badge in the browser console for the frontend. When
+    the :ref:`console` indicator is active, a styled badge is printed to the
+    console on every frontend page load.
 
 Backend
 =======
@@ -133,6 +133,16 @@ Backend
     Enable the environment badge on the backend login screen. When the
     :ref:`backend-login` indicator is active, a colored badge is shown on the
     login screen.
+
+..  _extconf-backend.console:
+
+..  confval:: backend.console
+    :type: boolean
+    :Default: 1
+
+    Enable the environment badge in the browser console for the backend. When
+    the :ref:`console` indicator is active, a styled badge is printed to the
+    console on every backend page load.
 
 ..  _extconf-backend.pageTitle:
 

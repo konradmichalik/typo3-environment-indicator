@@ -1,14 +1,14 @@
 ..  include:: /Includes.rst.txt
 
 ..  image:: /Images/Extension-EI-BrowserConsole.png
-    :alt: Frontend Console Icon
+    :alt: Console Icon
     :width: 120px
 
 ..  _console:
 
-================
-Frontend Console
-================
+=======
+Console
+=======
 
 Developers usually have the browser console open anyway. This indicator prints
 a styled environment badge to the console on every page load — more subtle than
@@ -18,6 +18,9 @@ it never covers page content.
 ..  code-block:: text
 
     DEVELOPMENT
+
+The badge is printed in the **frontend and in the backend**, so the environment
+stays identifiable while working in a module as well.
 
 You can register the indicator in your :code:`ext_localconf.php`:
 
@@ -33,7 +36,7 @@ You can register the indicator in your :code:`ext_localconf.php`:
             new Trigger\ApplicationContext('Development*')
         ],
         indicators: [
-            new Indicator\Frontend\Console([
+            new Indicator\General\Console([
                 'color' => '#bd593a',
             ])
         ]
@@ -53,10 +56,16 @@ Additional optional configuration keys:
     non-production contexts, using the same colors as the :ref:`frontend-hint`.
 
 ..  note::
-    The badge is printed by a regular external JavaScript file that reads the
-    text and colors from data attributes. No inline script is involved, but the
-    script tag still carries a CSP nonce, so it works unchanged on installations
-    with an enforced, nonce-based Content Security Policy.
+    Both scopes are rendered from the same source, so the badge cannot look
+    different in the frontend than in the backend. Only the delivery differs:
+    the frontend uses an external JavaScript file that reads the badge from
+    data attributes, the backend an inline script registered through
+    :php:`PageRenderer`.
+
+..  note::
+    Both work under an enforced, nonce-based Content Security Policy. The
+    frontend script tag carries a CSP nonce, and the backend — which enforces
+    a nonce-based policy by default — gets its nonce from :php:`PageRenderer`.
 
 ..  note::
     A percent sign in the badge text is escaped automatically. Without that,
@@ -65,5 +74,6 @@ Additional optional configuration keys:
     :ref:`instance.label <extconf-instance.label>` values such as
     :code:`TEST 100%`.
 
-The console badge can be disabled globally via the
-:ref:`extension configuration <extconf-frontend.console>`.
+The console badge can be disabled per scope via the extension configuration:
+:ref:`frontend.console <extconf-frontend.console>` and
+:ref:`backend.console <extconf-backend.console>`.

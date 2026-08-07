@@ -67,6 +67,11 @@ Frontend + Backend
                 :width: 80px
         -   :ref:`page-title`
         -   Prefix or suffix the page title in frontend and backend with the current application context.
+    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
+                :alt: Console Icon
+                :width: 80px
+        -   :ref:`console`
+        -   Print a styled environment badge to the browser console in frontend and backend.
 
 Frontend
 --------
@@ -88,11 +93,6 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
-    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
-                :alt: Frontend Console Icon
-                :width: 80px
-        -   :ref:`console`
-        -   Print a styled environment badge to the browser console on page load.
 
 Backend
 -------
@@ -161,9 +161,9 @@ Misc
     :hidden:
 
     Favicon
+    Console
     FrontendHint
     FrontendImage
-    Console
     BackendToolbar
     BackendTopbar
     BackendLogo
