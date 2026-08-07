@@ -67,6 +67,16 @@ Frontend
     :ref:`page-title` indicator is active, the final rendered :code:`<title>`
     is decorated.
 
+..  _extconf-frontend.console:
+
+..  confval:: frontend.console
+    :type: boolean
+    :Default: 1
+
+    Enable the environment badge in the browser console. When the
+    :ref:`frontend-console` indicator is active, a styled badge is printed to
+    the console on every frontend page load.
+
 Backend
 =======
 
@@ -184,8 +194,8 @@ default configuration), the instance settings have no effect.
 
     Overrides the indicator text of all active indicators for this
     installation (e.g. "TEST 1"). Replaces the text of the backend toolbar
-    item and dashboard widget and renders the label onto the favicon and
-    backend logo. Leave empty to use the context defaults.
+    item, dashboard widget and console badge and renders the label onto the
+    favicon and backend logo. Leave empty to use the context defaults.
 
 ..  _extconf-instance.color:
 
@@ -194,6 +204,6 @@ default configuration), the instance settings have no effect.
     :Default: (empty)
 
     Overrides the indicator color of all active indicators for this
-    installation (frontend hint, backend toolbar, topbar, dashboard widget,
-    backend theme and — combined with a label — favicon/logo). Leave empty to
-    use the context defaults.
+    installation (frontend hint, console badge, backend toolbar, topbar,
+    dashboard widget, backend theme and — combined with a label —
+    favicon/logo). Leave empty to use the context defaults.

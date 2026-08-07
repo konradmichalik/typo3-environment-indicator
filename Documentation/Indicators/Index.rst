@@ -88,6 +88,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
+    *   -
+        -   :ref:`frontend-console`
+        -   Print a styled environment badge to the browser console on page load.
 
 Backend
 -------
@@ -158,6 +161,7 @@ Misc
     Favicon
     FrontendHint
     FrontendImage
+    FrontendConsole
     BackendToolbar
     BackendTopbar
     BackendLogo
