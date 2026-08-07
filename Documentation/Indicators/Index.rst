@@ -98,7 +98,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-robots`
         -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
-    *   -
+    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
+                :alt: Frontend Console Icon
+                :width: 80px
         -   :ref:`frontend-console`
         -   Print a styled environment badge to the browser console on page load.
 
