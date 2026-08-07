@@ -49,9 +49,10 @@ Additional optional configuration keys:
     non-production contexts, using the same colors as the :ref:`frontend-hint`.
 
 ..  note::
-    The badge is emitted as an inline script guarded by a CSP nonce
-    (:code:`f:security.nonce`), so it works on installations with a strict
-    Content Security Policy.
+    The badge is printed by a regular external JavaScript file that reads the
+    text and colors from data attributes. No inline script is involved, so the
+    indicator needs no CSP nonce and works unchanged on installations with an
+    enforced Content Security Policy.
 
 ..  note::
     A percent sign in the badge text is escaped automatically. Without that,
