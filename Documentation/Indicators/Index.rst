@@ -98,6 +98,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-robots`
         -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
+    *   -
+        -   :ref:`frontend-console`
+        -   Print a styled environment badge to the browser console on page load.
 
 Backend
 -------
@@ -170,6 +173,7 @@ Misc
     FrontendImage
     FrontendHttpHeader
     FrontendRobots
+    FrontendConsole
     BackendToolbar
     BackendTopbar
     BackendLogo
