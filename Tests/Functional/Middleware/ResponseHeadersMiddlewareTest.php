@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Middleware;
 
+use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\HttpHeader;
@@ -121,7 +122,12 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
         $this->setTypo3ConfVars([
             'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['header' => $featureEnabled ? '1' : '0']]],
             'EXTCONF' => [Configuration::EXT_KEY => [
-                'current' => null === $indicatorConfiguration ? [] : [HttpHeader::class => $indicatorConfiguration],
+                // The sandbox deep-merges, so an override of [] would be a no-op
+                // against an already populated subtree. The sentinel clears the
+                // indicator map regardless of what the bootstrap left behind.
+                'current' => null === $indicatorConfiguration
+                    ? Typo3ConfVarsSentinel::Unset
+                    : [HttpHeader::class => $indicatorConfiguration],
                 'resolved' => true,
             ]],
         ]);
