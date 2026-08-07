@@ -1,11 +1,13 @@
 /**
  * Environment Console Badge
+ *
+ * Both the text (including its "%c" directive and escaping) and the style are
+ * composed server-side, so this only prints what it is handed.
  */
 
 (function() {
 
     const BADGE_SELECTOR = '.environment-indicator-console';
-    const BADGE_STYLE_TEMPLATE = 'background:%bg%;color:%fg%;padding:2px 6px;border-radius:3px';
 
     function printBadge() {
         const carrier = document.querySelector(BADGE_SELECTOR);
@@ -14,16 +16,10 @@
             return;
         }
 
-        const text = carrier.dataset.text || '';
+        const text = carrier.dataset.badgeText || '';
 
         if (text !== '') {
-            const style = BADGE_STYLE_TEMPLATE
-                .replace('%bg%', carrier.dataset.color || '#767676')
-                .replace('%fg%', carrier.dataset.textColor || '#ffffff');
-
-            // A percent sign in the text would be read as another console
-            // format directive and swallow the styling of everything after it.
-            console.info('%c' + text.replace(/%/g, '%%'), style);
+            console.info(text, carrier.dataset.badgeStyle || '');
         }
 
         // The carrier has done its job - leave no stray element behind.

@@ -52,28 +52,22 @@ page.1740392890 =< lib.technicalContext
 [GLOBAL]
 
 [enableEnvironmentConsole()]
-lib.environmentConsoleText = USER
-lib.environmentConsoleText {
-    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getText
+lib.environmentConsoleBadgeText = USER
+lib.environmentConsoleBadgeText {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getBadgeText
 }
 
-lib.environmentConsoleColor = USER
-lib.environmentConsoleColor {
-    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getColor
-}
-
-lib.environmentConsoleTextColor = USER
-lib.environmentConsoleTextColor {
-    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getTextColor
+lib.environmentConsoleBadgeStyle = USER
+lib.environmentConsoleBadgeStyle {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getStyle
 }
 
 lib.environmentConsole = FLUIDTEMPLATE
 lib.environmentConsole {
     file = EXT:typo3_environment_indicator/Resources/Private/Templates/EnvironmentConsole.html
     variables {
-        text < lib.environmentConsoleText
-        color < lib.environmentConsoleColor
-        textColor < lib.environmentConsoleTextColor
+        badgeText < lib.environmentConsoleBadgeText
+        badgeStyle < lib.environmentConsoleBadgeStyle
     }
 }
 

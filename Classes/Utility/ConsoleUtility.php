@@ -16,10 +16,15 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 
+use function sprintf;
+use function str_replace;
 use function trim;
 
 /**
  * ConsoleUtility.
+ *
+ * Single source of truth for how the badge looks and how its text has to be
+ * escaped, so the frontend and backend badges cannot drift apart.
  *
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
@@ -32,33 +37,44 @@ class ConsoleUtility
      */
     private const FALLBACK_COLOR = '#767676';
 
+    private const BADGE_STYLE = 'background:%s;color:%s;padding:2px 6px;border-radius:3px';
+
     /**
-     * An empty text switches the badge off: the template renders nothing and
-     * the script is never registered.
+     * The console argument, ready to be passed as-is: the "%c" directive that
+     * applies the style, followed by the text. A percent sign in the text is
+     * doubled, because the console would otherwise read it as another format
+     * directive and swallow the styling of everything after it.
+     *
+     * Returns an empty string when the badge is switched off, which is what
+     * both callers use to decide whether to emit anything at all.
      */
     #[AsAllowedCallable]
-    public function getText(): string
+    public function getBadgeText(): string
     {
-        // The TypoScript condition already gates the template on an active
-        // indicator; this keeps a stray call from emitting a badge anyway.
+        // The TypoScript condition and the toolbar item already gate on an
+        // active indicator; this keeps a stray call from emitting a badge.
         $configuration = $this->getConfiguration();
         if (null === $configuration) {
             return '';
         }
 
-        return trim(GeneralHelper::replaceContextPlaceholder((string) ($configuration['text'] ?? '%context%')));
+        $text = trim(GeneralHelper::replaceContextPlaceholder((string) ($configuration['text'] ?? '%context%')));
+        if ('' === $text) {
+            return '';
+        }
+
+        return '%c'.str_replace('%', '%%', $text);
     }
 
     #[AsAllowedCallable]
-    public function getColor(): string
+    public function getStyle(): string
     {
-        return (string) (($this->getConfiguration()['color'] ?? null) ?? self::FALLBACK_COLOR);
-    }
+        // Callable from arbitrary TypoScript, so it must not depend on the
+        // caller having checked that the indicator resolved at all.
+        $configuration = $this->getConfiguration() ?? [];
+        $color = (string) ($configuration['color'] ?? self::FALLBACK_COLOR);
 
-    #[AsAllowedCallable]
-    public function getTextColor(): string
-    {
-        return ColorUtility::getOptimalTextColor($this->getColor());
+        return sprintf(self::BADGE_STYLE, $color, ColorUtility::getOptimalTextColor($color));
     }
 
     /**

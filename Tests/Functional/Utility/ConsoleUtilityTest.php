@@ -40,54 +40,61 @@ class ConsoleUtilityTest extends FunctionalTestCase
         $this->restoreTypo3ConfVars();
     }
 
-    public function testTextResolvesTheContextPlaceholder(): void
+    public function testBadgeTextResolvesTheContextPlaceholderBehindTheFormatDirective(): void
     {
         $this->configure(['text' => '%context%', 'color' => '#bd593a']);
 
-        self::assertSame('Testing', (new ConsoleUtility())->getText());
+        self::assertSame('%cTesting', (new ConsoleUtility())->getBadgeText());
     }
 
-    public function testTextIsTrimmed(): void
+    public function testBadgeTextIsTrimmed(): void
     {
         $this->configure(['text' => '  STAGING  ']);
 
-        self::assertSame('STAGING', (new ConsoleUtility())->getText());
+        self::assertSame('%cSTAGING', (new ConsoleUtility())->getBadgeText());
     }
 
-    public function testConfiguredColorIsUsed(): void
+    public function testPercentSignInTextIsEscapedAsFormatDirective(): void
+    {
+        $this->configure(['text' => '100% TEST']);
+
+        self::assertSame('%c100%% TEST', (new ConsoleUtility())->getBadgeText());
+    }
+
+    public function testStyleUsesTheConfiguredColor(): void
     {
         $this->configure(['text' => 'DEV', 'color' => '#bd593a']);
 
-        self::assertSame('#bd593a', (new ConsoleUtility())->getColor());
+        self::assertStringContainsString('background:#bd593a', (new ConsoleUtility())->getStyle());
     }
 
-    public function testMissingColorFallsBackToNeutral(): void
+    public function testStyleFallsBackToNeutralColor(): void
     {
         $this->configure(['text' => 'DEV']);
 
-        self::assertSame('#767676', (new ConsoleUtility())->getColor());
+        self::assertStringContainsString('background:#767676', (new ConsoleUtility())->getStyle());
     }
 
-    public function testTextColorIsDerivedFromBackgroundColor(): void
+    public function testStyleDerivesTextColorFromBackgroundColor(): void
     {
         $this->configure(['text' => 'DEV', 'color' => '#ffffff']);
 
         // Optimal text color on white has to be dark, not the white default.
-        self::assertStringStartsWith('rgba(0, 0, 0', (new ConsoleUtility())->getTextColor());
+        self::assertStringContainsString('color:rgba(0, 0, 0', (new ConsoleUtility())->getStyle());
     }
 
     public function testEmptyTextDisablesTheBadge(): void
     {
         $this->configure(['text' => '', 'color' => '#bd593a']);
 
-        self::assertSame('', (new ConsoleUtility())->getText());
+        self::assertSame('', (new ConsoleUtility())->getBadgeText());
     }
 
-    public function testInactiveIndicatorProducesNoText(): void
+    public function testInactiveIndicatorProducesNoBadgeText(): void
     {
         $this->configure(null);
 
-        self::assertSame('', (new ConsoleUtility())->getText());
+        self::assertSame('', (new ConsoleUtility())->getBadgeText());
     }
 
     /**

@@ -1,14 +1,13 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<f:if condition="{text}">
+<f:if condition="{badgeText}">
     <f:asset.script identifier="environment-indicator-console" src="EXT:typo3_environment_indicator/Resources/Public/JavaScript/EnvironmentConsole.js" nonce="{f:security.nonce(directive: 'script-src', scope: 'static')}"/>
     <div class="environment-indicator-console"
          hidden
          aria-hidden="true"
-         data-text="{text}"
-         data-color="{color}"
-         data-text-color="{textColor}"></div>
+         data-badge-text="{badgeText}"
+         data-badge-style="{badgeStyle}"></div>
 </f:if>
 
 </html>
