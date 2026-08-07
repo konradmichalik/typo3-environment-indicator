@@ -47,7 +47,15 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
     {
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $functions = $provider->getFunctions();
-        self::assertCount(1, $functions);
+        self::assertCount(2, $functions);
+    }
+
+    public function testRegistersBothConditionFunctions(): void
+    {
+        $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
+        $names = array_map(static fn (ExpressionFunction $function): string => $function->getName(), $provider->getFunctions());
+
+        self::assertSame(['enableTechnicalContext', 'enableEnvironmentConsole'], $names);
     }
 
     public function testGetFunctionsReturnsExpressionFunction(): void

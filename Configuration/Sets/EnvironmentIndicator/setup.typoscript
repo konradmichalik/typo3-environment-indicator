@@ -50,3 +50,20 @@ lib.technicalContext {
 
 page.1740392890 =< lib.technicalContext
 [GLOBAL]
+
+[enableEnvironmentConsole()]
+lib.environmentConsoleScript = USER
+lib.environmentConsoleScript {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getScript
+}
+
+lib.environmentConsole = FLUIDTEMPLATE
+lib.environmentConsole {
+    file = EXT:typo3_environment_indicator/Resources/Private/Templates/EnvironmentConsole.html
+    variables {
+        script < lib.environmentConsoleScript
+    }
+}
+
+page.1754500143 =< lib.environmentConsole
+[GLOBAL]
