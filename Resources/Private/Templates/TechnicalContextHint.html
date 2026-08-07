@@ -5,14 +5,12 @@
 <f:asset.script identifier="technical-context-hint-js" src="EXT:typo3_environment_indicator/Resources/Public/JavaScript/TechnicalContextHint.js"  nonce="{f:security.nonce(directive: 'script-src', scope: 'static')}"/>
 
 <div
-    class="technical-context technical-context--custom-colors"
+    class="technical-context technical-context--custom-colors {positionClass}"
     data-context="{context}"
     data-bg-color="{color}"
     data-text-color="{textColor}"
-    data-position-x="{positionX}"
-    data-position-y="{positionY}"
     aria-hidden="true"
-    title="This is part of environment indicator extension and shows the actual site name of the website. This hint will not be displayed in production context.{f:if(condition: description, then: ' {description -> f:format.htmlspecialchars()}')}"
+    title="Environment indicator: this site runs in the {context} application context. Drag the hint to another corner or close it for this browser session.{f:if(condition: description, then: ' {description -> f:format.htmlspecialchars()}')}"
 >
     <div class="technical-context__content">
         {title}

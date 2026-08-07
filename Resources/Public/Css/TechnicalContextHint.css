@@ -2,7 +2,7 @@
  * Technical Context Hint
  */
 .technical-context {
-    position: absolute;
+    position: fixed;
     z-index: 99999;
     display: flex;
     gap: 0.5rem;
@@ -13,6 +13,15 @@
     color: #ffffff;
     font-size: 12px;
     font-family: "Monaco", monospace;
+    cursor: grab;
+    /* Keep a touch drag from scrolling the page instead of moving the hint. */
+    touch-action: none;
+    user-select: none;
+}
+
+.technical-context--dragging {
+    cursor: grabbing;
+    opacity: 0.85;
 }
 
 .technical-context__close {
@@ -27,6 +36,23 @@
     opacity: 0.5;
     margin: 0;
     padding: 0;
+    position: relative;
+}
+
+/*
+ * The visible button stays 28px so the hint keeps its compact look, while the
+ * hit area is expanded to the 44px minimum touch target. It grows to the right
+ * into the hint's padding only - growing symmetrically would eat into the drag
+ * surface and turn "grab the hint" into "close the hint".
+ */
+.technical-context__close::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    transform: translateY(-50%);
 }
 
 .technical-context__close:hover {
@@ -38,7 +64,7 @@
     content: "\2715";
 }
 
-/* Dynamic position and color classes */
+/* Corner positions - the complete position state model of the hint */
 .technical-context--top-left {
     top: 0;
     left: 0;
@@ -69,4 +95,14 @@
 .technical-context__content {
     display: flex;
     flex-direction: column;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .technical-context {
+        transition: top 0.15s ease-out, right 0.15s ease-out, bottom 0.15s ease-out, left 0.15s ease-out;
+    }
+
+    .technical-context--dragging {
+        transition: none;
+    }
 }

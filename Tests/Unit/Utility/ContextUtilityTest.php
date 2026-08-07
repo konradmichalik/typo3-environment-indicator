@@ -16,6 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -61,24 +62,32 @@ class ContextUtilityTest extends TestCase
         self::assertStringStartsWith('rgba(', $textColor);
     }
 
-    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
-        Configuration\Indicator\Frontend\Hint::class => ['position' => 'top right'],
-    ]]]])]
-    public function testGetPositionXReturnsCorrectFormat(): void
+    #[DataProvider('positionClassDataProvider')]
+    public function testGetPositionClassMapsConfiguredCornerToModifierClass(?string $configured, string $expected): void
     {
-        $contextUtility = new ContextUtility();
-        $positionX = $contextUtility->getPositionX();
-        self::assertEquals('top:0', $positionX);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Configuration\Indicator\Frontend\Hint::class => null === $configured ? [] : ['position' => $configured],
+        ];
+
+        self::assertSame($expected, (new ContextUtility())->getPositionClass());
     }
 
-    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
-        Configuration\Indicator\Frontend\Hint::class => ['position' => 'bottom left'],
-    ]]]])]
-    public function testGetPositionYReturnsCorrectFormat(): void
+    /**
+     * @return array<string, array{0: string|null, 1: string}>
+     */
+    public static function positionClassDataProvider(): array
     {
-        $contextUtility = new ContextUtility();
-        $positionY = $contextUtility->getPositionY();
-        self::assertEquals('left:0', $positionY);
+        return [
+            'top left' => ['top left', 'technical-context--top-left'],
+            'top right' => ['top right', 'technical-context--top-right'],
+            'bottom left' => ['bottom left', 'technical-context--bottom-left'],
+            'bottom right' => ['bottom right', 'technical-context--bottom-right'],
+            'mixed case is normalized' => ['Bottom Right', 'technical-context--bottom-right'],
+            'extra whitespace is normalized' => ['  bottom   right ', 'technical-context--bottom-right'],
+            'unconfigured falls back to the documented default' => [null, 'technical-context--top-left'],
+            'swapped axes fall back instead of producing a broken class' => ['left top', 'technical-context--top-left'],
+            'unknown value falls back' => ['centre', 'technical-context--top-left'],
+        ];
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [

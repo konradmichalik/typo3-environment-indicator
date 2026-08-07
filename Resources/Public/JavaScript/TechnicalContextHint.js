@@ -10,27 +10,12 @@
     function applyDynamicStyles(contextElement) {
         const bgColor = contextElement.dataset.bgColor;
         const textColor = contextElement.dataset.textColor;
-        const positionX = contextElement.dataset.positionX;
-        const positionY = contextElement.dataset.positionY;
 
         if (bgColor) {
             contextElement.style.setProperty('--technical-context-bg-color', bgColor);
         }
         if (textColor) {
             contextElement.style.setProperty('--technical-context-text-color', textColor);
-        }
-
-        if (positionX) {
-            const positionXMatch = positionX.match(/(top|bottom):\s*([^;]+)/);
-            if (positionXMatch) {
-                contextElement.style.setProperty(positionXMatch[1], positionXMatch[2]);
-            }
-        }
-        if (positionY) {
-            const positionYMatch = positionY.match(/(left|right):\s*([^;]+)/);
-            if (positionYMatch) {
-                contextElement.style.setProperty(positionYMatch[1], positionYMatch[2]);
-            }
         }
     }
 
