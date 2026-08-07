@@ -7,6 +7,7 @@
     const CORNER_CLASS_PREFIX = 'technical-context--';
     const CORNERS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
     const DRAGGING_CLASS = 'technical-context--dragging';
+    const INTERACTIVE_CLASS = 'technical-context--interactive';
 
     const CORNER_STORAGE_KEY = 'typo3-environment-indicator.hint-corner';
     const CLOSED_STORAGE_KEY = 'typo3-environment-indicator.hint-closed';
@@ -193,6 +194,12 @@
             applyStoredCorner(contextElement);
             initDragging(contextElement);
             initClosing(contextElement);
+
+            // Enable the snap transition only after the restored corner has
+            // been painted, so restoring a position never animates.
+            requestAnimationFrame(function() {
+                contextElement.classList.add(INTERACTIVE_CLASS);
+            });
         });
     }
 

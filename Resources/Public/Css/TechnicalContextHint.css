@@ -97,12 +97,18 @@
     flex-direction: column;
 }
 
+/*
+ * The snap transition is opt-in via JavaScript and only added once the stored
+ * corner has been restored. Transitioning from the start would animate that
+ * restoration too, sliding the hint across the screen on every page load as
+ * soon as the browser paints before DOMContentLoaded.
+ */
 @media (prefers-reduced-motion: no-preference) {
-    .technical-context {
+    .technical-context--interactive {
         transition: top 0.15s ease-out, right 0.15s ease-out, bottom 0.15s ease-out, left 0.15s ease-out;
     }
 
-    .technical-context--dragging {
+    .technical-context--interactive.technical-context--dragging {
         transition: none;
     }
 }
