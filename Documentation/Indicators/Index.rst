@@ -93,6 +93,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-http-header`
         -   Add a configurable HTTP response header with the current application context to frontend responses.
+    *   -
+        -   :ref:`frontend-robots`
+        -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
 
 Backend
 -------
@@ -164,6 +167,7 @@ Misc
     FrontendHint
     FrontendImage
     FrontendHttpHeader
+    FrontendRobots
     BackendToolbar
     BackendTopbar
     BackendLogo

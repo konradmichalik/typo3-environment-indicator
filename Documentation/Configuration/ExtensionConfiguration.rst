@@ -77,6 +77,17 @@ Frontend
     :ref:`frontend-http-header` indicator is active, the configured header is
     added to frontend responses.
 
+..  _extconf-frontend.robots:
+
+..  confval:: frontend.robots
+    :type: boolean
+    :Default: 1
+
+    Enable the :code:`X-Robots-Tag` response header in frontend context. This
+    is a kill switch only — the :ref:`frontend-robots` indicator is never part
+    of the default configuration and has to be registered explicitly, so
+    nothing is sent to crawlers unless you asked for it.
+
 Backend
 =======
 
