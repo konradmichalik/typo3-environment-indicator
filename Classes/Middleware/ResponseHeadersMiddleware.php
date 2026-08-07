@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Middleware;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\HttpHeader;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\{HttpHeader, Robots};
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
@@ -40,6 +40,12 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
     private const HEADER_NAME_PATTERN = '/^[!#$%&\'*+\-.^_`|~0-9A-Za-z]+$/';
     private const HEADER_VALUE_PATTERN = '/^[\x20\x09\x21-\x7E\x80-\xFE]*$/';
 
+    /**
+     * Fixed by the crawler protocol - unlike the HttpHeader indicator this
+     * name is not configurable.
+     */
+    private const ROBOTS_HEADER_NAME = 'X-Robots-Tag';
+
     public function __construct(
         protected readonly LoggerInterface $logger = new NullLogger(),
     ) {}
@@ -48,7 +54,7 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        foreach ($this->resolveEnvironmentHeader() as $name => $value) {
+        foreach ($this->collectHeaders() as $name => $value) {
             // Never clobber a header the application already set on purpose.
             if ($response->hasHeader($name)) {
                 continue;
@@ -58,6 +64,17 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
         }
 
         return $response;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function collectHeaders(): array
+    {
+        return [
+            ...$this->resolveEnvironmentHeader(),
+            ...$this->resolveRobotsHeader(),
+        ];
     }
 
     /**
@@ -94,5 +111,34 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
         }
 
         return [$name => $value];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function resolveRobotsHeader(): array
+    {
+        if (!GeneralHelper::isExtensionFeatureEnabled('frontend/robots')) {
+            return [];
+        }
+
+        if (!GeneralHelper::isCurrentIndicator(Robots::class)) {
+            return [];
+        }
+
+        $configuration = GeneralHelper::getIndicatorConfiguration()[Robots::class];
+        $content = trim((string) ($configuration['content'] ?? ''));
+
+        if ('' === $content) {
+            return [];
+        }
+
+        if (1 !== preg_match(self::HEADER_VALUE_PATTERN, $content)) {
+            $this->logger->warning('Ignoring invalid X-Robots-Tag content from the Robots indicator configuration.');
+
+            return [];
+        }
+
+        return [self::ROBOTS_HEADER_NAME => $content];
     }
 }

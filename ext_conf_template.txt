@@ -12,6 +12,8 @@ frontend.image = 1
 frontend.pageTitle = 1
 # cat=frontend/enable/50; type=boolean; label=Enable the environment HTTP response header in frontend context
 frontend.header = 1
+# cat=frontend/enable/60; type=boolean; label=Enable the X-Robots-Tag response header in frontend context. Only takes effect where the robots indicator is explicitly registered; it is never part of the default configuration.
+frontend.robots = 1
 # cat=backend/enable/10; type=boolean; label=Enable the favicon generation in backend context
 backend.favicon = 1
 # cat=backend/enable/20; type=boolean; label=Enable the logo generation in backend context

@@ -73,6 +73,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
         'name' => 'X-TYPO3-Environment',
         'value' => '%context%',
     ],
+    Indicator\Frontend\Robots::class => [
+        'content' => 'noindex, nofollow',
+    ],
     Indicator\Backend\Theme::class => [
         'scaffoldHeader' => true,
         'scaffoldSidebar' => true,

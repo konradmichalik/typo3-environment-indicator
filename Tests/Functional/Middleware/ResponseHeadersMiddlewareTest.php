@@ -16,7 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Middleware;
 use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\HttpHeader;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\{HttpHeader, Robots};
 use KonradMichalik\Typo3EnvironmentIndicator\Middleware\ResponseHeadersMiddleware;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
@@ -50,7 +50,7 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
 
     public function testHeaderIsAddedWithResolvedApplicationContext(): void
     {
-        $this->configure(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
+        $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
 
         $response = $this->process();
 
@@ -59,7 +59,7 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
 
     public function testCustomHeaderNameAndValueAreUsed(): void
     {
-        $this->configure(true, ['name' => 'X-Environment', 'value' => 'Staging']);
+        $this->configureHttpHeader(true, ['name' => 'X-Environment', 'value' => 'Staging']);
 
         $response = $this->process();
 
@@ -69,7 +69,7 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
 
     public function testExistingHeaderIsNotOverwritten(): void
     {
-        $this->configure(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
+        $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
 
         $response = $this->process(new HtmlResponse('<html lang="en"></html>', 200, ['X-TYPO3-Environment' => 'Production']));
 
@@ -78,14 +78,14 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
 
     public function testInvalidHeaderNameIsIgnored(): void
     {
-        $this->configure(true, ['name' => 'Invalid Header Name', 'value' => '%context%']);
+        $this->configureHttpHeader(true, ['name' => 'Invalid Header Name', 'value' => '%context%']);
 
         self::assertFalse($this->process()->hasHeader('Invalid Header Name'));
     }
 
     public function testInvalidHeaderValueIsIgnored(): void
     {
-        $this->configure(true, ['name' => 'X-TYPO3-Environment', 'value' => "Testing\r\nX-Injected: 1"]);
+        $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => "Testing\r\nX-Injected: 1"]);
 
         $response = $this->process();
 
@@ -95,39 +95,135 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
 
     public function testEmptyValueIsIgnored(): void
     {
-        $this->configure(true, ['name' => 'X-TYPO3-Environment', 'value' => '']);
+        $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => '']);
 
         self::assertFalse($this->process()->hasHeader('X-TYPO3-Environment'));
     }
 
     public function testDisabledFeatureToggleSkipsHeader(): void
     {
-        $this->configure(false, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
+        $this->configureHttpHeader(false, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
 
         self::assertFalse($this->process()->hasHeader('X-TYPO3-Environment'));
     }
 
     public function testInactiveIndicatorSkipsHeader(): void
     {
-        $this->configure(true, null);
+        $this->configure(['header' => '1'], []);
 
         self::assertFalse($this->process()->hasHeader('X-TYPO3-Environment'));
     }
 
+    public function testRobotsHeaderIsAdded(): void
+    {
+        $this->configure(['robots' => '1'], [Robots::class => ['content' => 'noindex, nofollow']]);
+
+        self::assertSame('noindex, nofollow', $this->process()->getHeaderLine('X-Robots-Tag'));
+    }
+
+    public function testRobotsHeaderUsesConfiguredContent(): void
+    {
+        $this->configure(['robots' => '1'], [Robots::class => ['content' => 'noindex']]);
+
+        self::assertSame('noindex', $this->process()->getHeaderLine('X-Robots-Tag'));
+    }
+
+    public function testExistingRobotsHeaderIsNotOverwritten(): void
+    {
+        $this->configure(['robots' => '1'], [Robots::class => ['content' => 'noindex, nofollow']]);
+
+        $response = $this->process(new HtmlResponse('<html lang="en"></html>', 200, ['X-Robots-Tag' => 'all']));
+
+        self::assertSame('all', $response->getHeaderLine('X-Robots-Tag'));
+    }
+
+    public function testInvalidRobotsContentIsIgnored(): void
+    {
+        $this->configure(['robots' => '1'], [Robots::class => ['content' => "noindex\r\nX-Injected: 1"]]);
+
+        $response = $this->process();
+
+        self::assertFalse($response->hasHeader('X-Robots-Tag'));
+        self::assertFalse($response->hasHeader('X-Injected'));
+    }
+
+    public function testEmptyRobotsContentIsIgnored(): void
+    {
+        $this->configure(['robots' => '1'], [Robots::class => ['content' => '']]);
+
+        self::assertFalse($this->process()->hasHeader('X-Robots-Tag'));
+    }
+
+    public function testDisabledRobotsToggleSkipsHeader(): void
+    {
+        $this->configure(['robots' => '0'], [Robots::class => ['content' => 'noindex, nofollow']]);
+
+        self::assertFalse($this->process()->hasHeader('X-Robots-Tag'));
+    }
+
+    public function testInactiveRobotsIndicatorSkipsHeader(): void
+    {
+        $this->configure(['robots' => '1'], []);
+
+        self::assertFalse($this->process()->hasHeader('X-Robots-Tag'));
+    }
+
+    public function testBothIndicatorsContributeIndependently(): void
+    {
+        $this->configure(
+            ['header' => '1', 'robots' => '1'],
+            [
+                HttpHeader::class => ['name' => 'X-TYPO3-Environment', 'value' => '%context%'],
+                Robots::class => ['content' => 'noindex, nofollow'],
+            ],
+        );
+
+        $response = $this->process();
+
+        self::assertSame('Testing', $response->getHeaderLine('X-TYPO3-Environment'));
+        self::assertSame('noindex, nofollow', $response->getHeaderLine('X-Robots-Tag'));
+    }
+
+    public function testRobotsHeaderIsUnaffectedByTheHttpHeaderToggle(): void
+    {
+        $this->configure(
+            ['header' => '0', 'robots' => '1'],
+            [
+                HttpHeader::class => ['name' => 'X-TYPO3-Environment', 'value' => '%context%'],
+                Robots::class => ['content' => 'noindex, nofollow'],
+            ],
+        );
+
+        $response = $this->process();
+
+        self::assertFalse($response->hasHeader('X-TYPO3-Environment'));
+        self::assertSame('noindex, nofollow', $response->getHeaderLine('X-Robots-Tag'));
+    }
+
     /**
-     * @param array<string, string>|null $indicatorConfiguration Null registers no indicator at all
+     * @param array<string, string> $indicatorConfiguration
      */
-    private function configure(bool $featureEnabled, ?array $indicatorConfiguration): void
+    private function configureHttpHeader(bool $featureEnabled, array $indicatorConfiguration): void
+    {
+        $this->configure(
+            ['header' => $featureEnabled ? '1' : '0'],
+            [HttpHeader::class => $indicatorConfiguration],
+        );
+    }
+
+    /**
+     * @param array<string, string>                      $features   Frontend feature toggles, e.g. ['header' => '1']
+     * @param array<class-string, array<string, string>> $indicators Resolved indicator map; an empty map registers no indicator at all
+     */
+    private function configure(array $features, array $indicators): void
     {
         $this->setTypo3ConfVars([
-            'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['header' => $featureEnabled ? '1' : '0']]],
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => $features]],
             'EXTCONF' => [Configuration::EXT_KEY => [
                 // The sandbox deep-merges, so an override of [] would be a no-op
                 // against an already populated subtree. The sentinel clears the
                 // indicator map regardless of what the bootstrap left behind.
-                'current' => null === $indicatorConfiguration
-                    ? Typo3ConfVarsSentinel::Unset
-                    : [HttpHeader::class => $indicatorConfiguration],
+                'current' => [] === $indicators ? Typo3ConfVarsSentinel::Unset : $indicators,
                 'resolved' => true,
             ]],
         ]);
