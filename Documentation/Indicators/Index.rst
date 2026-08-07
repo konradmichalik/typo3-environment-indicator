@@ -93,7 +93,9 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-http-header`
         -   Add a configurable HTTP response header with the current application context to frontend responses.
-    *   -
+    *   -   ..  image:: /Images/Extension-EI-XRobots.png
+                :alt: Frontend Robots Icon
+                :width: 80px
         -   :ref:`frontend-robots`
         -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
 

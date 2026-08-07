@@ -1,5 +1,9 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: /Images/Extension-EI-XRobots.png
+    :alt: Frontend Robots Icon
+    :width: 120px
+
 ..  _frontend-robots:
 
 ===============

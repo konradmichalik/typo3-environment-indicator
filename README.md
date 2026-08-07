@@ -64,6 +64,11 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHttpHeader.html">HTTP response header</a></strong><br/><br/>Add a configurable HTTP response header with the current application context to frontend responses.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-XRobots.png" width="80" alt="Frontend Robots Icon"></td>
+      <td></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Backend</th>
     </tr>
     <tr>
