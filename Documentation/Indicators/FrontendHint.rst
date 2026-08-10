@@ -52,7 +52,6 @@ Moving the hint out of the way
 
 ..  figure:: /Images/screencast-draggable-frontend-hint.gif
     :alt: Screencast showing the frontend hint being dragged to another corner and closed
-    :class: with-shadow
 
     Dragging the hint to another corner and closing it
 
