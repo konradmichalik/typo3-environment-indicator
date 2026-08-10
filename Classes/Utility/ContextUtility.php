@@ -68,7 +68,8 @@ class ContextUtility
     #[AsAllowedCallable]
     public function getPositionClass(): string
     {
-        $position = (string) preg_replace('/\s+/', ' ', strtolower(trim((string) ($this->getFrontendHintConfiguration()['position'] ?? ''))));
+        $configured = $this->getFrontendHintConfiguration()['position'] ?? '';
+        $position = is_string($configured) ? (string) preg_replace('/\s+/', ' ', strtolower(trim($configured))) : '';
 
         if (!in_array($position, self::POSITIONS, true)) {
             $position = self::DEFAULT_POSITION;

@@ -72,6 +72,15 @@ class ContextUtilityTest extends TestCase
         self::assertSame($expected, (new ContextUtility())->getPositionClass());
     }
 
+    public function testGetPositionClassFallsBackWhenConfiguredAsNonString(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Configuration\Indicator\Frontend\Hint::class => ['position' => ['top', 'left']],
+        ];
+
+        self::assertSame('technical-context--top-left', (new ContextUtility())->getPositionClass());
+    }
+
     /**
      * @return array<string, array{0: string|null, 1: string}>
      */
