@@ -278,8 +278,9 @@ Configuration\Handler::addIndicator(
  * Context "Development/ColorScheme"
  *
  * Two registrations for the same context, separated only by the color scheme.
- * Switch it in the backend via the user menu to see the logo and toolbar change.
- * Requires TYPO3 v13.3 or later; "auto" is grouped with "light" here.
+ * Switch it in the backend via the user menu, then reload the page to see the
+ * logo and toolbar change — image-based indicators do not update client-side.
+ * Requires TYPO3 v13.3 or later; "auto" is listed explicitly alongside "light" here.
  */
 Configuration\Handler::addIndicator(
     triggers: [
