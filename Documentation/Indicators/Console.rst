@@ -33,7 +33,7 @@ You can register the indicator in your :code:`ext_localconf.php`:
             new Trigger\ApplicationContext('Development*')
         ],
         indicators: [
-            new Indicator\Frontend\Console([
+            new Indicator\General\Console([
                 'color' => '#bd593a',
             ])
         ]
