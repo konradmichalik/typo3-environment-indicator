@@ -275,6 +275,133 @@ Configuration\Handler::addIndicator(
 );
 
 /*
+ * Context "Development/ColorScheme"
+ *
+ * Two registrations for the same context, separated only by the color scheme.
+ * Switch it in the backend via the user menu, then reload the page to see the
+ * logo and toolbar change — image-based indicators do not update client-side.
+ * Requires TYPO3 v13.3 or later; "auto" is listed explicitly alongside "light" here.
+ */
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ColorScheme'),
+        new Trigger\ColorScheme('light', 'auto'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'LIGHT',
+                'color' => '#0277BD',
+                'stroke' => [
+                    'color' => '#ffffff',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#0277BD',
+        ]),
+    ],
+);
+
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ColorScheme'),
+        new Trigger\ColorScheme('dark'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'DARK',
+                'color' => '#FFB300',
+                'stroke' => [
+                    'color' => '#000000',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#FFB300',
+        ]),
+    ],
+);
+
+/*
+ * Context "Development/ThemeTrigger"
+ *
+ * Three registrations for the same context, separated only by the backend theme.
+ * Switch it in the backend via the user settings, then reload the page to see
+ * the logo and toolbar change — image-based indicators do not update client-side.
+ * Requires TYPO3 v13.4 or later, where the "classic" theme was introduced.
+ */
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ThemeTrigger'),
+        new Trigger\Theme('fresh'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'FRESH',
+                'color' => '#0277BD',
+                'stroke' => [
+                    'color' => '#ffffff',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#0277BD',
+        ]),
+    ],
+);
+
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ThemeTrigger'),
+        new Trigger\Theme('modern'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'MODERN',
+                'color' => '#2E7D32',
+                'stroke' => [
+                    'color' => '#ffffff',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#2E7D32',
+        ]),
+    ],
+);
+
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ThemeTrigger'),
+        new Trigger\Theme('classic'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            // classic keeps the header dark regardless of the color scheme
+            new Image\Modifier\TextModifier([
+                'text' => 'CLASSIC',
+                'color' => '#FFB300',
+                'stroke' => [
+                    'color' => '#000000',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#FFB300',
+        ]),
+    ],
+);
+
+/*
  * Context "Development/Custom"
  */
 Configuration\Handler::addIndicator(
