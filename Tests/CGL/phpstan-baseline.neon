@@ -13,3 +13,17 @@ parameters:
 			message: "#^Call to function method_exists\\(\\) with Intervention\\\\Image\\\\Interfaces\\\\ImageManagerInterface and 'driver' will always evaluate to true\\.$#"
 			path: ../../Classes/Utility/GeneralHelper.php
 			reportUnmatched: false
+		# be_users.php TCA override uses method_exists() for a v14.2+-only API.
+		# Only flagged as "already narrowed" when TYPO3 v14 is the resolved core version.
+		-
+			identifier: function.alreadyNarrowedType
+			path: ../../Configuration/TCA/Overrides/be_users.php
+			reportUnmatched: false
+		# AbstractViewHelper::$renderingContext has an imprecise, non-nullable
+		# @var tag on fluid ^4.2 (paired with TYPO3 v13), even though it can be
+		# null before setRenderingContext() runs. Only flagged there - fluid
+		# ^5.0 (paired with TYPO3 v14) types the property as genuinely nullable.
+		-
+			identifier: identical.alwaysFalse
+			path: ../../Classes/ViewHelpers/FaviconViewHelper.php
+			reportUnmatched: false
