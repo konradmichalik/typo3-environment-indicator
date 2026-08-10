@@ -56,7 +56,7 @@ This extension provides several features to show an environment indicator in the
     <tr>
       <td><img src="Documentation/Images/Extension-EI-FrontendHint.png" width="80" alt="Frontend Hint Icon"></td>
       <td><img src="Documentation/Images/preview-frontend-hint.png" width="320" alt="Frontend Hint Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHint.html">Frontend hint</a></strong><br/><br/>Adds an informative hint to the frontend showing the website title and the current application context.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHint.html">Frontend hint</a></strong><br/><br/>Adds a draggable, removable hint to the frontend showing the website title and the current application context.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-FrontendImage.png" width="80" alt="Frontend Image Icon"></td>
@@ -72,11 +72,6 @@ This extension provides several features to show an environment indicator in the
       <td><img src="Documentation/Images/Extension-EI-XRobots.png" width="80" alt="Frontend Robots Icon"></td>
       <td><img src="Documentation/Images/preview-header-x-robots.png" width="320" alt="Frontend Robots Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
-    </tr>
-    <tr>
-      <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Frontend Console Icon"></td>
-      <td><img src="Documentation/Images/preview-console.png" width="320" alt="Frontend Console Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Console.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console on page load.</td>
     </tr>
     <tr>
       <th colspan="3" align="left">Backend</th>
