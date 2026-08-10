@@ -71,10 +71,21 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
      */
     private function collectHeaders(): array
     {
-        return [
-            ...$this->resolveEnvironmentHeader(),
-            ...$this->resolveRobotsHeader(),
-        ];
+        $headers = [];
+
+        foreach ([$this->resolveEnvironmentHeader(), $this->resolveRobotsHeader()] as $contribution) {
+            foreach ($contribution as $name => $value) {
+                if (isset($headers[$name])) {
+                    $this->logger->warning('Ignoring header "{name}" from another indicator - it was already set.', ['name' => $name]);
+
+                    continue;
+                }
+
+                $headers[$name] = $value;
+            }
+        }
+
+        return $headers;
     }
 
     /**

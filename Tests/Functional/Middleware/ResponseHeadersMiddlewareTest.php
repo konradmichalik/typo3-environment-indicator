@@ -184,6 +184,31 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
         self::assertSame('noindex, nofollow', $response->getHeaderLine('X-Robots-Tag'));
     }
 
+    public function testDuplicateHeaderNameKeepsFirstContributionAndSkipsTheSecond(): void
+    {
+        $this->configure(
+            ['header' => '1', 'robots' => '1'],
+            [
+                HttpHeader::class => ['name' => 'X-Robots-Tag', 'value' => 'Testing'],
+                Robots::class => ['content' => 'noindex, nofollow'],
+            ],
+        );
+
+        $response = $this->process();
+
+        self::assertSame('Testing', $response->getHeaderLine('X-Robots-Tag'));
+    }
+
+    public function testHeaderValueWithByteFFIsIgnored(): void
+    {
+        // Byte 0xFF is technically valid per RFC 9110 obs-text, but TYPO3's
+        // own PSR-7 Message::isValidHeaderValue() rejects it regardless, so
+        // withHeader() would throw if this pattern let it through.
+        $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => "Test\xFF"]);
+
+        self::assertFalse($this->process()->hasHeader('X-TYPO3-Environment'));
+    }
+
     public function testRobotsHeaderIsUnaffectedByTheHttpHeaderToggle(): void
     {
         $this->configure(
