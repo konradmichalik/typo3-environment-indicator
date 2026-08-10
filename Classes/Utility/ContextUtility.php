@@ -22,7 +22,11 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 use function array_key_exists;
+use function in_array;
 use function is_string;
+use function preg_replace;
+use function str_replace;
+use function strtolower;
 use function trim;
 
 /**
@@ -33,6 +37,9 @@ use function trim;
  */
 class ContextUtility
 {
+    private const POSITIONS = ['top left', 'top right', 'bottom left', 'bottom right'];
+    private const DEFAULT_POSITION = 'top left';
+
     public function __construct(private readonly ?SiteFinder $siteFinder = null) {}
 
     #[AsAllowedCallable]
@@ -53,16 +60,22 @@ class ContextUtility
         return ColorUtility::getOptimalTextColor($this->getFrontendHintConfiguration()['color'] ?? 'transparent');
     }
 
+    /**
+     * The four corners are the complete state model of the hint's position,
+     * so they are expressed as a single modifier class instead of separate
+     * offset strings that would have to be parsed again client-side.
+     */
     #[AsAllowedCallable]
-    public function getPositionX(): string
+    public function getPositionClass(): string
     {
-        return explode(' ', $this->getFrontendHintConfiguration()['position'] ?? 'left top')[0].':0';
-    }
+        $configured = $this->getFrontendHintConfiguration()['position'] ?? '';
+        $position = is_string($configured) ? (string) preg_replace('/\s+/', ' ', strtolower(trim($configured))) : '';
 
-    #[AsAllowedCallable]
-    public function getPositionY(): string
-    {
-        return explode(' ', $this->getFrontendHintConfiguration()['position'] ?? 'left top')[1].':0';
+        if (!in_array($position, self::POSITIONS, true)) {
+            $position = self::DEFAULT_POSITION;
+        }
+
+        return 'technical-context--'.str_replace(' ', '-', $position);
     }
 
     #[AsAllowedCallable]

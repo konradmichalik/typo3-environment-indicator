@@ -24,14 +24,9 @@ lib.applicationContextDescription {
     userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getDescription
 }
 
-lib.applicationContextPositionX = USER
-lib.applicationContextPositionX {
-    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getPositionX
-}
-
-lib.applicationContextPositionY = USER
-lib.applicationContextPositionY {
-    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getPositionY
+lib.applicationContextPositionClass = USER
+lib.applicationContextPositionClass {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ContextUtility->getPositionClass
 }
 
 lib.technicalContext = FLUIDTEMPLATE
@@ -43,8 +38,7 @@ lib.technicalContext {
     title < lib.websiteTitle
     description < lib.applicationContextDescription
     textColor < lib.applicationContextTextColor
-    positionX < lib.applicationContextPositionX
-    positionY < lib.applicationContextPositionY
+    positionClass < lib.applicationContextPositionClass
     }
 }
 
