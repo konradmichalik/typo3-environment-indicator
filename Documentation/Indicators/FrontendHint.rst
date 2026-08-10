@@ -50,6 +50,10 @@ Additional optional configuration keys:
 Moving the hint out of the way
 ==============================
 
+..  versionadded:: 3.5
+    Dragging the hint to another corner and closing it for the session were
+    added in TYPO3 Environment Indicator 3.5.
+
 ..  figure:: /Images/screencast-draggable-frontend-hint.gif
     :alt: Screencast showing the frontend hint being dragged to another corner and closed
 
