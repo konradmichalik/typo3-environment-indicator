@@ -19,10 +19,27 @@
     const DRAG_THRESHOLD = 4;
 
     /**
-     * Web Storage throws in some privacy configurations. The hint must never
-     * be the reason a page breaks, so every access degrades to "no memory".
+     * Web Storage throws in some privacy configurations - not only on
+     * getItem()/setItem(), but already when the localStorage/sessionStorage
+     * property itself is read. The hint must never be the reason a page
+     * breaks, so every access, including that property read, degrades to
+     * "no memory".
      */
-    function readStorage(storage, key) {
+    function getStorage(name) {
+        try {
+            return window[name];
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function readStorage(name, key) {
+        const storage = getStorage(name);
+
+        if (!storage) {
+            return null;
+        }
+
         try {
             return storage.getItem(key);
         } catch (error) {
@@ -30,7 +47,13 @@
         }
     }
 
-    function writeStorage(storage, key, value) {
+    function writeStorage(name, key, value) {
+        const storage = getStorage(name);
+
+        if (!storage) {
+            return;
+        }
+
         try {
             storage.setItem(key, value);
         } catch (error) {
@@ -65,7 +88,7 @@
      * explicit choice by the person looking at the page.
      */
     function applyStoredCorner(contextElement) {
-        const stored = readStorage(localStorage, CORNER_STORAGE_KEY);
+        const stored = readStorage('localStorage', CORNER_STORAGE_KEY);
 
         if (CORNERS.indexOf(stored) !== -1) {
             applyCorner(contextElement, stored);
@@ -155,7 +178,7 @@
             contextElement.classList.remove(DRAGGING_CLASS);
 
             applyCorner(contextElement, corner);
-            writeStorage(localStorage, CORNER_STORAGE_KEY, corner);
+            writeStorage('localStorage', CORNER_STORAGE_KEY, corner);
         }
 
         contextElement.addEventListener('pointerup', finishDrag);
@@ -172,7 +195,7 @@
         closeButton.addEventListener('click', function() {
             // Deliberately session-scoped: the hint is a safety marker, so it
             // comes back in a new session rather than staying gone for good.
-            writeStorage(sessionStorage, CLOSED_STORAGE_KEY, '1');
+            writeStorage('sessionStorage', CLOSED_STORAGE_KEY, '1');
             contextElement.remove();
         });
     }
@@ -181,7 +204,7 @@
      * Initialize technical context hint functionality
      */
     function initTechnicalContextHint() {
-        const closedForSession = readStorage(sessionStorage, CLOSED_STORAGE_KEY) === '1';
+        const closedForSession = readStorage('sessionStorage', CLOSED_STORAGE_KEY) === '1';
         const contextElements = document.querySelectorAll('.technical-context');
 
         contextElements.forEach(function(contextElement) {
