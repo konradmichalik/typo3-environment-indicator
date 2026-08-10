@@ -119,8 +119,10 @@ This extension provides several features to show an environment indicator in the
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)
-> and will not show on the live production site. They do show in `Production/Staging` and `Production/Standby`
-> application contexts, where they help distinguish those systems from the live site.
+> and will not show on the live production site by default. They do show in `Production/Staging` and `Production/Standby`
+> application contexts, where they help distinguish those systems from the live site. Indicators you register yourself,
+> such as the [robots header](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html),
+> can still affect live production if you explicitly configure their triggers to do so.
 
 ## 🔥 Installation
 
