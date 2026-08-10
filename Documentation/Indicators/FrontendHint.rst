@@ -50,6 +50,12 @@ Additional optional configuration keys:
 Moving the hint out of the way
 ==============================
 
+..  figure:: /Images/screencast-draggable-frontend-hint.gif
+    :alt: Screencast showing the frontend hint being dragged to another corner and closed
+    :class: with-shadow
+
+    Dragging the hint to another corner and closing it
+
 The hint is positioned relative to the viewport, so it stays visible while
 scrolling. If it covers something you need to see, drag it to another corner:
 on release it snaps to whichever of the four corners is nearest.
