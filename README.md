@@ -64,6 +64,21 @@ This extension provides several features to show an environment indicator in the
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
     </tr>
     <tr>
+      <td><img src="Documentation/Images/Extension-EI-HTTPHeader.png" width="80" alt="Frontend HTTP Header Icon"></td>
+      <td><img src="Documentation/Images/preview-header-environment.png" width="320" alt="Frontend HTTP Header Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHttpHeader.html">HTTP response header</a></strong><br/><br/>Add a configurable HTTP response header with the current application context to frontend responses.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-XRobots.png" width="80" alt="Frontend Robots Icon"></td>
+      <td><img src="Documentation/Images/preview-header-x-robots.png" width="320" alt="Frontend Robots Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
+    </tr>
+    <tr>
+      <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Frontend Console Icon"></td>
+      <td><img src="Documentation/Images/preview-console.png" width="320" alt="Frontend Console Preview"></td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Console.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console on page load.</td>
+    </tr>
+    <tr>
       <th colspan="3" align="left">Backend</th>
     </tr>
     <tr>
@@ -114,8 +129,10 @@ This extension provides several features to show an environment indicator in the
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)
-> and will not show on the live production site. They do show in `Production/Staging` and `Production/Standby`
-> application contexts, where they help distinguish those systems from the live site.
+> and will not show on the live production site by default. They do show in `Production/Staging` and `Production/Standby`
+> application contexts, where they help distinguish those systems from the live site. Indicators you register yourself,
+> such as the [robots header](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html),
+> can still affect live production if you explicitly configure their triggers to do so.
 
 ## 🔥 Installation
 

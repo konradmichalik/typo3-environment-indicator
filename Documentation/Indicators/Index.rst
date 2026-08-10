@@ -93,6 +93,21 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-HTTPHeader.png
+                :alt: Frontend HTTP Header Icon
+                :width: 80px
+        -   :ref:`frontend-http-header`
+        -   Add a configurable HTTP response header with the current application context to frontend responses.
+    *   -   ..  image:: /Images/Extension-EI-XRobots.png
+                :alt: Frontend Robots Icon
+                :width: 80px
+        -   :ref:`frontend-robots`
+        -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
+    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
+                :alt: Frontend Console Icon
+                :width: 80px
+        -   :ref:`console`
+        -   Print a styled environment badge to the browser console on page load.
 
 Backend
 -------
@@ -164,6 +179,9 @@ Misc
     Console
     FrontendHint
     FrontendImage
+    FrontendHttpHeader
+    FrontendRobots
+    Console
     BackendToolbar
     BackendTopbar
     BackendLogo

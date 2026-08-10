@@ -25,6 +25,12 @@ return [
                 'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
+        'konradmichalik/typo3-environment-indicator/response-headers' => [
+            'target' => KonradMichalik\Typo3EnvironmentIndicator\Middleware\ResponseHeadersMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/prepare-tsfe-rendering',
+            ],
+        ],
     ],
     'backend' => [
         'konradmichalik/typo3-environment-indicator/backend-favicon' => [
