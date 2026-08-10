@@ -10,9 +10,9 @@ Color Scheme
 
     Requires TYPO3 v13.3 or later, where the backend color scheme switch was introduced.
 
-The :code:`ColorScheme` trigger is used to show the indicators depending on the color scheme (light or dark mode) the backend user has selected.
+The :code:`ColorScheme` trigger is used to show the indicators depending on the color scheme (:code:`light`, :code:`dark` or :code:`auto`) the backend user has selected.
 
-This is mainly useful for image based indicators such as :ref:`backend-logo` or :ref:`favicon`. Those indicators are rendered into a raster image, so a single fixed appearance cannot adapt to the backend theme on its own. Registering one configuration per color scheme produces a separate image for each.
+This is mainly useful for image-based indicators such as :ref:`backend-logo` or :ref:`favicon`. Those indicators are rendered into a raster image, so a single fixed appearance cannot adapt to the backend theme on its own. Registering one configuration per color scheme produces a separate image for each.
 
 ..  code-block:: php
     :caption: ext_localconf.php
@@ -57,7 +57,7 @@ The configuration supports multiple color schemes as separate arguments. Allowed
 
 ..  note::
 
-    Switching the color scheme does not update image based indicators right away — they change with the next full page load.
+    Switching the color scheme does not update image-based indicators right away — they change with the next full page load.
 
     TYPO3 applies the switch on the client by toggling CSS only; it neither re-renders the topbar nor requests a new logo. The generated image is referenced as :code:`<img src="...">` from markup that was rendered server-side, so it keeps pointing at the previous variant until the page is requested again.
 
