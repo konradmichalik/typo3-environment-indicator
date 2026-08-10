@@ -20,6 +20,9 @@ The indicator adds a configurable header to every frontend response:
 
     X-TYPO3-Environment: Development
 
+..  image:: /Images/preview-header-environment.png
+    :alt: Browser devtools network panel showing the X-Typo3-Environment response header
+
 You can register the indicator in your :code:`ext_localconf.php`:
 
 ..  code-block:: php

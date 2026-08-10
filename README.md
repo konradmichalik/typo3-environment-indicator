@@ -60,7 +60,7 @@ This extension provides several features to show an environment indicator in the
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-HTTPHeader.png" width="80" alt="Frontend HTTP Header Icon"></td>
-      <td></td>
+      <td><img src="Documentation/Images/preview-header-environment.png" width="320" alt="Frontend HTTP Header Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHttpHeader.html">HTTP response header</a></strong><br/><br/>Add a configurable HTTP response header with the current application context to frontend responses.</td>
     </tr>
     <tr>
