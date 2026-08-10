@@ -38,3 +38,4 @@ There are several triggers available, which can be used to show the indicators i
     Custom
     FrontendUserGroups
     Ip
+    Theme
