@@ -15,6 +15,11 @@ a styled environment badge to the console on every page load — more subtle tha
 the visible :ref:`frontend-hint`, but unambiguous for the "developer view", and
 it never covers page content.
 
+..  figure:: /Images/preview-console.png
+    :alt: Environment badge printed to the browser console
+
+    Console badge
+
 ..  code-block:: text
 
     DEVELOPMENT
