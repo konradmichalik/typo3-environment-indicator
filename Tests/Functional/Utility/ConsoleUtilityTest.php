@@ -90,6 +90,13 @@ class ConsoleUtilityTest extends FunctionalTestCase
         self::assertSame('', (new ConsoleUtility())->getText());
     }
 
+    public function testInactiveIndicatorFallsBackToNeutralColor(): void
+    {
+        $this->configure(null);
+
+        self::assertSame('#767676', (new ConsoleUtility())->getColor());
+    }
+
     /**
      * @param array<string, string>|null $indicatorConfiguration Null registers no indicator at all
      */

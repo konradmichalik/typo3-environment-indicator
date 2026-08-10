@@ -52,7 +52,12 @@ class ConsoleUtility
     #[AsAllowedCallable]
     public function getColor(): string
     {
-        return (string) (($this->getConfiguration()['color'] ?? null) ?? self::FALLBACK_COLOR);
+        $configuration = $this->getConfiguration();
+        if (null === $configuration) {
+            return self::FALLBACK_COLOR;
+        }
+
+        return (string) ($configuration['color'] ?? self::FALLBACK_COLOR);
     }
 
     #[AsAllowedCallable]
