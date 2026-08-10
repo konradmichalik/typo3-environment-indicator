@@ -66,8 +66,8 @@ final readonly class LoginBadgeListener
         $position = 'bottom' === ($configuration['position'] ?? 'top') ? 'bottom' : 'top';
         $textColor = ColorUtility::getOptimalTextColor($color, fallbackColor: '#ffffff');
 
-        $this->pageRenderer->addCssInlineBlock(Configuration::EXT_KEY.'_login', $this->buildCss($color, $textColor, $position), null, false, true);
-        $this->pageRenderer->addJsFooterInlineCode(Configuration::EXT_KEY.'_login', $this->buildScript($text, $description, $position), null, false, true);
+        GeneralHelper::addNonceGuardedCssInlineBlock($this->pageRenderer, Configuration::EXT_KEY.'_login', $this->buildCss($color, $textColor, $position));
+        GeneralHelper::addNonceGuardedJsInlineCode($this->pageRenderer, Configuration::EXT_KEY.'_login', $this->buildScript($text, $description, $position), footer: true);
     }
 
     private function buildCss(string $color, string $textColor, string $position): string

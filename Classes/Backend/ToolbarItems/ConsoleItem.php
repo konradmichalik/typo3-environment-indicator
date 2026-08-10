@@ -59,16 +59,14 @@ class ConsoleItem implements ToolbarItemInterface
             return '';
         }
 
-        // addJsInlineCode() routes through PageRenderer, which applies the
-        // backend CSP nonce itself. A hand-written nonce attribute would be
-        // dropped and the script blocked - the backend enforces a nonce-based
-        // policy by default, unlike the frontend.
-        $this->pageRenderer->addJsInlineCode(
+        // Routes through PageRenderer, which applies the backend CSP nonce
+        // itself. A hand-written nonce attribute would be dropped and the
+        // script blocked - the backend enforces a nonce-based policy by
+        // default, unlike the frontend.
+        GeneralHelper::addNonceGuardedJsInlineCode(
+            $this->pageRenderer,
             Configuration::EXT_KEY.'_console',
             $this->buildScript($badgeText, $this->consoleUtility->getStyle()),
-            null,
-            false,
-            true,
         );
 
         return '';

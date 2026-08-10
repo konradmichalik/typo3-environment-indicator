@@ -75,7 +75,7 @@ final class LoginBadgeListenerTest extends TestCase
                     self::stringContains('#00ACC1'),
                     self::stringContains('body>.typo3-environment-indicator-login{position:fixed;left:0;right:0;top:0;'),
                 ),
-                null,
+                false,
                 false,
                 true,
             );
@@ -84,7 +84,7 @@ final class LoginBadgeListenerTest extends TestCase
             ->with(
                 Configuration::EXT_KEY.'_login',
                 self::callback(static fn (string $js): bool => str_contains($js, 'STAGING') && str_contains($js, 'DB synced nightly')),
-                null,
+                true,
                 false,
                 true,
             );
@@ -110,7 +110,7 @@ final class LoginBadgeListenerTest extends TestCase
                     self::logicalNot(self::stringContains('border-top-left-radius:inherit')),
                     self::stringContains('body>.typo3-environment-indicator-login{position:fixed;left:0;right:0;bottom:0;'),
                 ),
-                null,
+                false,
                 false,
                 true,
             );
@@ -122,7 +122,7 @@ final class LoginBadgeListenerTest extends TestCase
                     self::stringContains('c.appendChild(b);'),
                     self::logicalNot(self::stringContains('c.insertBefore(b,c.firstChild);')),
                 ),
-                null,
+                true,
                 false,
                 true,
             );

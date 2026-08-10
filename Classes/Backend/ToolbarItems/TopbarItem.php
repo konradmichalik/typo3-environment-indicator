@@ -73,13 +73,14 @@ class TopbarItem implements ToolbarItemInterface
 
         $description = trim((string) ($this->getBackendTopbarConfiguration()['description'] ?? ''));
         if ('' !== $description) {
-            $this->pageRenderer->addJsFooterInlineCode(
+            GeneralHelper::addNonceGuardedJsInlineCode(
+                $this->pageRenderer,
                 Configuration::EXT_KEY.'_topbar',
                 sprintf(
                     'document.querySelector(".topbar")?.setAttribute("title",%s);',
                     json_encode($description, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR),
                 ),
-                csp: true,
+                footer: true,
             );
         }
 

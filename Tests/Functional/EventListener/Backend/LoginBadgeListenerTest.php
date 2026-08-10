@@ -67,7 +67,7 @@ class LoginBadgeListenerTest extends FunctionalTestCase
             ->with(
                 Configuration::EXT_KEY.'_login',
                 self::callback(static fn (string $js): bool => str_contains($js, 'Testing')),
-                null,
+                true,
                 false,
                 true,
             );

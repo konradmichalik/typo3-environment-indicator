@@ -22,6 +22,7 @@ use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function array_key_exists;
@@ -93,6 +94,32 @@ class GeneralHelper
     public static function isMinimumTypo3Version(int $version): bool
     {
         return GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= $version;
+    }
+
+    /**
+     * The fifth parameter enables the backend nonce/CSP handling on both
+     * supported core versions, but under a different name and with an
+     * incompatible third parameter: TYPO3 v13 requires a real bool there
+     * (`$compress`) and calls the fifth one `$useNonce`, while v14 ignores
+     * the third one entirely (`mixed $_`) and calls the fifth one `$csp`.
+     * Passing `true` positionally for the third parameter is v13's own
+     * default, so behaviour does not change there, and v14 ignores it.
+     */
+    public static function addNonceGuardedJsInlineCode(PageRenderer $pageRenderer, string $name, string $block, bool $footer = false): void
+    {
+        if ($footer) {
+            $pageRenderer->addJsFooterInlineCode($name, $block, true, false, true);
+        } else {
+            $pageRenderer->addJsInlineCode($name, $block, true, false, true);
+        }
+    }
+
+    /**
+     * @see self::addNonceGuardedJsInlineCode()
+     */
+    public static function addNonceGuardedCssInlineBlock(PageRenderer $pageRenderer, string $name, string $block): void
+    {
+        $pageRenderer->addCssInlineBlock($name, $block, false, false, true);
     }
 
     public static function supportFormat(ImageManagerInterface $manager, string $format): bool
