@@ -70,7 +70,7 @@ This extension provides several features to show an environment indicator in the
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-BrowserConsole.png" width="80" alt="Frontend Console Icon"></td>
-      <td></td>
+      <td><img src="Documentation/Images/preview-console.png" width="320" alt="Frontend Console Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/Console.html">Browser console badge</a></strong><br/><br/>Print a styled environment badge to the browser console on page load.</td>
     </tr>
     <tr>
