@@ -275,6 +275,57 @@ Configuration\Handler::addIndicator(
 );
 
 /*
+ * Context "Development/ColorScheme"
+ *
+ * Two registrations for the same context, separated only by the color scheme.
+ * Switch it in the backend via the user menu to see the logo and toolbar change.
+ * Requires TYPO3 v13.3 or later; "auto" is grouped with "light" here.
+ */
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ColorScheme'),
+        new Trigger\ColorScheme('light', 'auto'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'LIGHT',
+                'color' => '#0277BD',
+                'stroke' => [
+                    'color' => '#ffffff',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#0277BD',
+        ]),
+    ],
+);
+
+Configuration\Handler::addIndicator(
+    triggers: [
+        new Trigger\ApplicationContext('Development/ColorScheme'),
+        new Trigger\ColorScheme('dark'),
+    ],
+    indicators: [
+        new Indicator\Backend\Logo([
+            new Image\Modifier\TextModifier([
+                'text' => 'DARK',
+                'color' => '#FFB300',
+                'stroke' => [
+                    'color' => '#000000',
+                    'width' => 3,
+                ],
+            ]),
+        ]),
+        new Indicator\Backend\Toolbar([
+            'color' => '#FFB300',
+        ]),
+    ],
+);
+
+/*
  * Context "Development/Custom"
  */
 Configuration\Handler::addIndicator(
