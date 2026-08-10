@@ -88,6 +88,16 @@ Frontend
                 :width: 80px
         -   :ref:`frontend-image`
         -   Modify a frontend image based on the original image, the current application context and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-HTTPHeader.png
+                :alt: Frontend HTTP Header Icon
+                :width: 80px
+        -   :ref:`frontend-http-header`
+        -   Add a configurable HTTP response header with the current application context to frontend responses.
+    *   -   ..  image:: /Images/Extension-EI-XRobots.png
+                :alt: Frontend Robots Icon
+                :width: 80px
+        -   :ref:`frontend-robots`
+        -   Send an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
 
 Backend
 -------
@@ -158,6 +168,8 @@ Misc
     Favicon
     FrontendHint
     FrontendImage
+    FrontendHttpHeader
+    FrontendRobots
     BackendToolbar
     BackendTopbar
     BackendLogo
