@@ -81,8 +81,14 @@ class ResponseHeadersMiddleware implements MiddlewareInterface
             return [];
         }
 
-        if (1 !== preg_match(self::HEADER_NAME_PATTERN, $name) || 1 !== preg_match(self::HEADER_VALUE_PATTERN, $value)) {
-            $this->logger->warning('Ignoring invalid HTTP header "{name}" from the HttpHeader indicator configuration.', ['name' => $name]);
+        if (1 !== preg_match(self::HEADER_NAME_PATTERN, $name)) {
+            $this->logger->warning('Ignoring HTTP header with invalid name "{name}" from the HttpHeader indicator configuration.', ['name' => $name]);
+
+            return [];
+        }
+
+        if (1 !== preg_match(self::HEADER_VALUE_PATTERN, $value)) {
+            $this->logger->warning('Ignoring HTTP header "{name}" with invalid value "{value}" from the HttpHeader indicator configuration.', ['name' => $name, 'value' => $value]);
 
             return [];
         }
