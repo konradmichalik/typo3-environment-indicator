@@ -50,3 +50,26 @@ lib.technicalContext {
 
 page.1740392890 =< lib.technicalContext
 [GLOBAL]
+
+[enableEnvironmentConsole()]
+lib.environmentConsoleBadgeText = USER
+lib.environmentConsoleBadgeText {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getBadgeText
+}
+
+lib.environmentConsoleBadgeStyle = USER
+lib.environmentConsoleBadgeStyle {
+    userFunc = KonradMichalik\Typo3EnvironmentIndicator\Utility\ConsoleUtility->getStyle
+}
+
+lib.environmentConsole = FLUIDTEMPLATE
+lib.environmentConsole {
+    file = EXT:typo3_environment_indicator/Resources/Private/Templates/EnvironmentConsole.html
+    variables {
+        badgeText < lib.environmentConsoleBadgeText
+        badgeStyle < lib.environmentConsoleBadgeStyle
+    }
+}
+
+page.1754500143 =< lib.environmentConsole
+[GLOBAL]

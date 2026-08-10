@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\{ContextItem, PageTitleItem, ThemeItem, TopbarItem};
+use KonradMichalik\Typo3EnvironmentIndicator\Backend\ToolbarItems\{ConsoleItem, ContextItem, PageTitleItem, ThemeItem, TopbarItem};
 
 /**
  * Configuration.
@@ -33,5 +33,6 @@ class Configuration
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392104] = TopbarItem::class;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392105] = ThemeItem::class;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392106] = PageTitleItem::class;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392107] = ConsoleItem::class;
     }
 }

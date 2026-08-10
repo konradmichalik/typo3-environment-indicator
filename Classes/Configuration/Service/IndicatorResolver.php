@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Service;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{Backend, Favicon, Frontend, IndicatorInterface};
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{Backend, Favicon, Frontend, General, IndicatorInterface};
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\{ModifierInterface, TextModifier};
 use Psr\Log\{LoggerInterface, NullLogger};
 use Throwable;
@@ -37,6 +37,7 @@ class IndicatorResolver
      */
     private const COLOR_TARGETS = [
         Frontend\Hint::class,
+        General\Console::class,
         Backend\Toolbar::class,
         Backend\Topbar::class,
         Backend\Widget::class,
@@ -47,6 +48,7 @@ class IndicatorResolver
      * Indicator classes whose configuration carries a plain 'text' key.
      */
     private const TEXT_TARGETS = [
+        General\Console::class,
         Backend\Toolbar::class,
         Backend\Widget::class,
     ];

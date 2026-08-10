@@ -15,6 +15,8 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\TypoScript;
 
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Hint;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\General\Console;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\GeneralHelper;
 use Symfony\Component\ExpressionLanguage\{ExpressionFunction, ExpressionFunctionProviderInterface};
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -35,21 +37,38 @@ class TechnicalContextConditionFunctionsProvider implements ExpressionFunctionPr
     {
         return [
             $this->getWebserviceFunction(),
+            $this->getConsoleFunction(),
         ];
+    }
+
+    protected function getConsoleFunction(): ExpressionFunction
+    {
+        return $this->createIndicatorCondition('enableEnvironmentConsole', 'console', Console::class);
     }
 
     protected function getWebserviceFunction(): ExpressionFunction
     {
+        return $this->createIndicatorCondition('enableTechnicalContext', 'context', Hint::class);
+    }
+
+    /**
+     * A frontend condition is always the same pair of checks: the extension
+     * feature toggle and whether the indicator resolved for this request.
+     *
+     * @param class-string<IndicatorInterface> $indicatorClass
+     */
+    private function createIndicatorCondition(string $name, string $featureKey, string $indicatorClass): ExpressionFunction
+    {
         $extensionConfiguration = $this->extensionConfiguration;
 
         return new ExpressionFunction(
-            'enableTechnicalContext',
+            $name,
             static fn () => null,
-            static function () use ($extensionConfiguration) {
+            static function () use ($extensionConfiguration, $featureKey, $indicatorClass) {
                 $extensionConfig = $extensionConfiguration->get(Configuration::EXT_KEY);
 
-                return true === (bool) ($extensionConfig['frontend']['context'] ?? false)
-                    && GeneralHelper::isCurrentIndicator(Hint::class);
+                return true === (bool) ($extensionConfig['frontend'][$featureKey] ?? false)
+                    && GeneralHelper::isCurrentIndicator($indicatorClass);
             },
         );
     }
