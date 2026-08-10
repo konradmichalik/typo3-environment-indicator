@@ -54,9 +54,9 @@ Additional optional configuration keys:
 
 ..  note::
     The badge is printed by a regular external JavaScript file that reads the
-    text and colors from data attributes. No inline script is involved, so the
-    indicator needs no CSP nonce and works unchanged on installations with an
-    enforced Content Security Policy.
+    text and colors from data attributes. No inline script is involved, but the
+    script tag still carries a CSP nonce, so it works unchanged on installations
+    with an enforced, nonce-based Content Security Policy.
 
 ..  note::
     A percent sign in the badge text is escaped automatically. Without that,
