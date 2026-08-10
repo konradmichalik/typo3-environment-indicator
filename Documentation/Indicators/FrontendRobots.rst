@@ -22,6 +22,9 @@ It adds an :code:`X-Robots-Tag` header to every frontend response:
 
     X-Robots-Tag: noindex, nofollow
 
+..  image:: /Images/preview-header-x-robots.png
+    :alt: Browser devtools network panel showing the X-Robots-Tag response header
+
 You can register the indicator in your :code:`ext_localconf.php`:
 
 ..  code-block:: php

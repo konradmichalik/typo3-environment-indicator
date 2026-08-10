@@ -65,7 +65,7 @@ This extension provides several features to show an environment indicator in the
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-XRobots.png" width="80" alt="Frontend Robots Icon"></td>
-      <td></td>
+      <td><img src="Documentation/Images/preview-header-x-robots.png" width="320" alt="Frontend Robots Preview"></td>
       <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
     </tr>
     <tr>
