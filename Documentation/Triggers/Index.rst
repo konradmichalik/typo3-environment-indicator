@@ -34,6 +34,7 @@ There are several triggers available, which can be used to show the indicators i
     Admin
     ApplicationContext
     BackendUserGroups
+    ColorScheme
     Custom
     FrontendUserGroups
     Ip
