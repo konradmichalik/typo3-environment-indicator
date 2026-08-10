@@ -54,6 +54,13 @@ Moving the hint out of the way
     Dragging the hint to another corner and closing it for the session were
     added in TYPO3 Environment Indicator 3.5.
 
+..  warning::
+    This version also removed the internal :php:`ContextUtility::getPositionX()`
+    and :php:`getPositionY()` userFuncs in favor of a single
+    :php:`getPositionClass()`. A stale TypoScript cache still referencing the
+    removed userFuncs causes a 500 error, so flush the TYPO3 caches right after
+    updating.
+
 ..  figure:: /Images/screencast-draggable-frontend-hint.gif
     :alt: Screencast showing the frontend hint being dragged to another corner and closed
 
