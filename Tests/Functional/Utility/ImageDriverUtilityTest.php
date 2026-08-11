@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Utility;
 
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageDriverUtility;
+use RuntimeException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -67,5 +69,26 @@ class ImageDriverUtilityTest extends FunctionalTestCase
     public function testResolveDriverReturnsGdDriverByDefault(): void
     {
         self::assertInstanceOf(GdDriver::class, ImageDriverUtility::resolveDriver());
+    }
+
+    public function testResolveDriverReturnsImagickDriverWhenConfigured(): void
+    {
+        $this->setTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => [
+            'general' => ['imageDriver' => ImageDriverUtility::IMAGE_DRIVER_IMAGICK],
+        ]]]);
+
+        self::assertInstanceOf(ImagickDriver::class, ImageDriverUtility::resolveDriver());
+    }
+
+    public function testResolveDriverThrowsExceptionWhenVipsDriverUnavailable(): void
+    {
+        $this->setTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => [
+            'general' => ['imageDriver' => ImageDriverUtility::IMAGE_DRIVER_VIPS],
+        ]]]);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionCode(1741785476);
+
+        ImageDriverUtility::resolveDriver();
     }
 }
