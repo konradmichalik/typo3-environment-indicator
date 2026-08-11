@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\ViewHelpers;
 
+use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Image;
@@ -54,6 +55,10 @@ class ImageViewHelperTest extends FunctionalTestCase
 
     public function testRenderReturnsUnmodifiedImageWhenNoModifiersConfigured(): void
     {
+        // A plain [] override can't clear an already-resolved 'current' entry
+        // (merging [] onto an existing array subtree is a no-op), so the prior
+        // state is unset first to guarantee Image::class truly has no modifiers.
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => Typo3ConfVarsSentinel::Unset]]]);
         $this->setTypo3ConfVars([
             'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['image' => '1']]],
             'EXTCONF' => [Configuration::EXT_KEY => [
