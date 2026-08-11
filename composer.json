@@ -29,10 +29,10 @@
 		"symfony/console": "^7.0 || ^8.0",
 		"symfony/expression-language": "^7.0 || ^8.0",
 		"symfony/mime": "^7.0 || ^8.0",
-		"typo3/cms-backend": "^13.4 || ^14.3",
-		"typo3/cms-core": "^13.4 || ^14.3",
-		"typo3/cms-dashboard": "^13.4 || ^14.3",
-		"typo3/cms-fluid": "^13.4 || ^14.3",
+		"typo3/cms-backend": "^13.4.23 || ^14.3",
+		"typo3/cms-core": "^13.4.23 || ^14.3",
+		"typo3/cms-dashboard": "^13.4.23 || ^14.3",
+		"typo3/cms-fluid": "^13.4.23 || ^14.3",
 		"typo3fluid/fluid": "^4.2 || ^5.0"
 	},
 	"require-dev": {
