@@ -18,6 +18,11 @@ configuration.
 
     Frontend Image Example
 
+..  note::
+    Unlike most other indicators, this one is **not** part of the default
+    configuration presets. It only does something once you register it
+    yourself, as shown below.
+
 The image path can be adjusted via the :code:`ImageViewHelper`:
 
 

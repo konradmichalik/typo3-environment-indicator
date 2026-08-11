@@ -22,6 +22,12 @@ The dashboard widget can be placed to the TYPO3 backend dashboard. It shows the 
 
     Dashboard Widget Selection
 
+..  note::
+    Unlike most other indicators, this one is part of the default
+    configuration presets only for the :code:`Development*` application
+    context, not for :code:`Testing*` or the production-related contexts. To
+    show it elsewhere, register it yourself as shown below.
+
 The widget is registered with its own icon (identifier :code:`environment-indicator-widget`), which is shown in the widget selection dialog:
 
 ..  image:: /Images/environment-indicator-widget.svg

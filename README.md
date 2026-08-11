@@ -61,17 +61,17 @@ This extension provides several features to show an environment indicator in the
     <tr>
       <td><img src="Documentation/Images/Extension-EI-FrontendImage.png" width="80" alt="Frontend Image Icon"></td>
       <td><img src="Documentation/Images/preview-frontend-image.jpg" width="320" alt="Frontend Image Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendImage.html">Modified frontend image</a></strong> <em>(opt-in)</em><br/><br/>Modify frontend image based on the original image, the current application context and your configuration.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-HTTPHeader.png" width="80" alt="Frontend HTTP Header Icon"></td>
       <td><img src="Documentation/Images/preview-header-environment.png" width="320" alt="Frontend HTTP Header Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHttpHeader.html">HTTP response header</a></strong><br/><br/>Add a configurable HTTP response header with the current application context to frontend responses.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendHttpHeader.html">HTTP response header</a></strong> <em>(opt-in)</em><br/><br/>Add a configurable HTTP response header with the current application context to frontend responses.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-XRobots.png" width="80" alt="Frontend Robots Icon"></td>
       <td><img src="Documentation/Images/preview-header-x-robots.png" width="320" alt="Frontend Robots Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/FrontendRobots.html">Robots header</a></strong> <em>(opt-in)</em><br/><br/>Send an <code>X-Robots-Tag</code> header to keep non-production environments out of search engines.</td>
     </tr>
     <tr>
       <th colspan="3" align="left">Backend</th>
@@ -84,7 +84,7 @@ This extension provides several features to show an environment indicator in the
     <tr>
       <td><img src="Documentation/Images/Extension-EI-BackendTopbar.png" width="80" alt="Backend Topbar Icon"></td>
       <td><img src="Documentation/Images/preview-backend-topbar.jpg" width="320" alt="Backend Topbar Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTopbar.html">Backend topbar</a></strong><br/><br/>Colorize the backend header topbar regarding the application context.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTopbar.html">Backend topbar</a></strong> <em>(opt-in)</em><br/><br/>Colorize the backend header topbar regarding the application context.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-BackendLogo.png" width="80" alt="Backend Logo Icon"></td>
@@ -99,7 +99,7 @@ This extension provides several features to show an environment indicator in the
     <tr>
       <td><img src="Documentation/Images/Extension-EI-BackendTheme.png" width="80" alt="Backend Theme Icon"></td>
       <td><img src="Documentation/Images/preview-theme.jpg" width="320" alt="Backend Theme Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/BackendTheme.html">Backend theme</a></strong> <em>(experimental, opt-in)</em><br/><br/>Colorize the entire TYPO3 v14+ backend (primary color, header, sidebar) based on the environment.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-BackendLogin.png" width="80" alt="Backend Login Icon"></td>
@@ -112,7 +112,7 @@ This extension provides several features to show an environment indicator in the
     <tr>
       <td><img src="Documentation/Images/Extension-EI-CLI.png" width="80" alt="CLI Banner Icon"></td>
       <td><img src="Documentation/Images/preview-cli-banner.jpg" width="320" alt="CLI Banner Preview"></td>
-      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/CliBanner.html">CLI banner</a></strong><br/><br/>Print a colored environment banner to stderr before an interactive console command runs.</td>
+      <td><strong><a href="https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Indicators/CliBanner.html">CLI banner</a></strong> <em>(opt-in)</em><br/><br/>Print a colored environment banner to stderr before an interactive console command runs.</td>
     </tr>
     <tr>
       <td><img src="Documentation/Images/Extension-EI-MailSubjectPrefix.png" width="80" alt="Mail Subject Prefix Icon"></td>
@@ -121,6 +121,8 @@ This extension provides several features to show an environment indicator in the
     </tr>
   </tbody>
 </table>
+
+Indicators marked **(opt-in)** are not part of the default configuration presets: either the extension configuration switch for them is off by default (CLI banner, backend theme), or they only ever do something once you [register them yourself](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Configuration/Index.html) (frontend image, HTTP response header, robots header, backend topbar). Everything else works out of the box.
 
 > [!NOTE]
 > These environment indicators are mainly for development purposes (e.g. distinguishing between different test systems)

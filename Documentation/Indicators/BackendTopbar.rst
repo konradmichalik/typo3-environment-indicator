@@ -18,6 +18,11 @@ The backend toolbar item will show the current project version and environment.
 
     Backend topbar
 
+..  note::
+    Unlike most other indicators, this one is **not** part of the default
+    configuration presets. It only does something once you register it
+    yourself, as shown below.
+
 You can adjust the color of the topbar in your :code:`ext_localconf.php`:
 
 ..  code-block:: php

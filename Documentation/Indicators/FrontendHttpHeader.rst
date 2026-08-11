@@ -53,6 +53,11 @@ A name or value that is not valid per :rfc:`9110` is ignored and logged as a
 warning, so a misconfiguration cannot break frontend rendering.
 
 ..  note::
+    Unlike most other indicators, this one is **not** part of the default
+    configuration presets. It only does something once you register it
+    yourself, as shown above.
+
+..  note::
     The indicator only applies to frontend responses. Backend responses are
     rarely inspected via :code:`curl` or tooling and are left untouched.
 
