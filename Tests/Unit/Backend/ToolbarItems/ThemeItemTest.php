@@ -40,6 +40,7 @@ final class ThemeItemTest extends TestCase
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
     public function testCheckAccessReturnsFalseWhenNotApplicable(): void
     {
+        $this->mockTypo3Version(13);
         $item = new ThemeItem($this->createStub(PageRenderer::class));
 
         self::assertFalse($item->checkAccess());

@@ -47,8 +47,6 @@ final class ThemeInfoElementTest extends TestCase
 {
     protected function setUp(): void
     {
-        parent::setUp();
-
         // Normally defined by TYPO3's full bootstrap (SystemEnvironmentBuilder),
         // which the Unit test bootstrap does not run.
         defined('LF') || define('LF', chr(10));
@@ -65,12 +63,12 @@ final class ThemeInfoElementTest extends TestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['LANG'], $GLOBALS['BE_USER']);
-        parent::tearDown();
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
     public function testRenderReturnsUnmodifiedResultArrayWhenNotApplicable(): void
     {
+        $this->mockTypo3Version(13);
         $element = new ThemeInfoElement();
         $element->setData([]);
 
