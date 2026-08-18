@@ -130,6 +130,38 @@ final class LoginBadgeListenerTest extends TestCase
         (new LoginBadgeListener($pageRenderer))($this->buildEvent());
     }
 
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Login::class => ['text' => '   ']],
+        'resolved' => true,
+    ]]])]
+    public function testNothingIsInjectedWhenConfiguredTextIsBlank(): void
+    {
+        $this->mockExtensionConfiguration(true);
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::never())->method('addCssInlineBlock');
+        $pageRenderer->expects(self::never())->method('addJsFooterInlineCode');
+
+        (new LoginBadgeListener($pageRenderer))($this->buildEvent());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Login::class => ['text' => 'STAGING', 'color' => 'not-a-color']],
+        'resolved' => true,
+    ]]])]
+    public function testInvalidConfiguredColorFallsBackToDefault(): void
+    {
+        $this->mockExtensionConfiguration(true);
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::once())
+            ->method('addCssInlineBlock')
+            ->with(self::anything(), self::stringContains('#bd593a'), false, false, true);
+        $pageRenderer->expects(self::once())->method('addJsFooterInlineCode');
+
+        (new LoginBadgeListener($pageRenderer))($this->buildEvent());
+    }
+
     private function mockExtensionConfiguration(bool $enabled): void
     {
         $mock = $this->createMock(ExtensionConfiguration::class);
