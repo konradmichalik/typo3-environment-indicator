@@ -186,6 +186,19 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertStringEndsWith('.png', $result);
     }
 
+    public function testProcessReturnsOriginalPathWhenSvgIsMalformed(): void
+    {
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $svgPath = $svgDir.'test_malformed.svg';
+        GeneralUtility::mkdir_deep($svgDir);
+        copy(__DIR__.'/Fixtures/test-malformed.svg', $svgPath);
+
+        $handler = new FaviconHandler();
+        $result = $handler->process($svgPath);
+
+        self::assertSame($svgPath, $result);
+    }
+
     public function testConvertSvgToPngLeavesNoTemporaryFilesBehind(): void
     {
         $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
@@ -241,6 +254,22 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $result = (new FaviconHandler())->process($this->testImagePath);
 
         self::assertSame([0, 0, 255], $this->getPixelColor(Environment::getPublicPath().'/'.$result));
+    }
+
+    public function testReplaceModifierKeepsOriginalImageWhenSvgReplacementIsMalformed(): void
+    {
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        GeneralUtility::mkdir_deep($svgDir);
+        $replacementPath = $svgDir.'test_malformed.svg';
+        copy(__DIR__.'/Fixtures/test-malformed.svg', $replacementPath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new ReplaceModifier(['path' => $replacementPath])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+
+        self::assertSame([255, 0, 0], $this->getPixelColor(Environment::getPublicPath().'/'.$result), 'original red favicon must be kept when the SVG replacement cannot be rasterized');
     }
 
     public function testReplaceModifierPreservesSvgTransparency(): void

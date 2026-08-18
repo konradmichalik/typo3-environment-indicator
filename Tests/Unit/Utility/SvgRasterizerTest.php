@@ -35,6 +35,13 @@ class SvgRasterizerTest extends TestCase
         self::assertNull($result);
     }
 
+    public function testRasterizeReturnsNullForMalformedXml(): void
+    {
+        $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/malformed.svg');
+
+        self::assertNull($result);
+    }
+
     public function testRasterizeUsesExplicitWidthAndHeight(): void
     {
         $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/test.svg');
