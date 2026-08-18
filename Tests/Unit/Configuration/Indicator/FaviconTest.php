@@ -16,6 +16,8 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indi
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Enum\Scope;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 
 /**
  * FaviconTest.
@@ -26,6 +28,11 @@ use PHPUnit\Framework\TestCase;
 class FaviconTest extends TestCase
 {
     protected function setUp(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+    }
+
+    protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
     }
@@ -62,5 +69,27 @@ class FaviconTest extends TestCase
         $config = ['color' => '#ff0000'];
         $favicon = new Favicon($config, Scope::Frontend);
         self::assertEquals([], $favicon->getConfiguration());
+    }
+
+    public function testGetConfigurationWithBackendScopeAndBackendRequest(): void
+    {
+        $config = ['color' => '#ff0000'];
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $favicon = new Favicon($config, Scope::Backend);
+        self::assertEquals($config, $favicon->getConfiguration());
+    }
+
+    public function testGetConfigurationWithFrontendScopeAndFrontendRequest(): void
+    {
+        $config = ['color' => '#ff0000'];
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $favicon = new Favicon($config, Scope::Frontend);
+        self::assertEquals($config, $favicon->getConfiguration());
     }
 }

@@ -101,4 +101,37 @@ final class BackendFaviconMiddlewareTest extends TestCase
         self::assertSame($response, $result);
         self::assertSame('/processed/favicon.ico', $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['backend']['backendFavicon']);
     }
+
+    public function testProcessUsesConfiguredCustomFaviconAsInput(): void
+    {
+        $extConfigMock = $this->createMock(ExtensionConfiguration::class);
+        $extConfigMock->method('get')
+            ->willReturnCallback(static function (string $ext, string $path = '') {
+                if (Configuration::EXT_KEY === $ext) {
+                    return ['backend' => ['favicon' => true]];
+                }
+                if ('backend' === $ext && 'backendFavicon' === $path) {
+                    return 'EXT:site/Resources/Public/custom-favicon.ico';
+                }
+
+                return null;
+            });
+
+        $faviconHandlerMock = $this->createMock(FaviconHandler::class);
+        $faviconHandlerMock->expects(self::once())
+            ->method('process')
+            ->with('EXT:site/Resources/Public/custom-favicon.ico')
+            ->willReturn('/processed/custom-favicon.ico');
+        GeneralUtility::addInstance(FaviconHandler::class, $faviconHandlerMock);
+
+        $middleware = new BackendFaviconMiddleware($extConfigMock);
+
+        $request = $this->createStub(ServerRequestInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $response = $this->createStub(ResponseInterface::class);
+
+        $handler->expects(self::once())->method('handle')->willReturn($response);
+
+        $middleware->process($request, $handler);
+    }
 }

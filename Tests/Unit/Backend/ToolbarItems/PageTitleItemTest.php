@@ -103,6 +103,11 @@ class PageTitleItemTest extends TestCase
         self::assertSame(0, $this->buildItem()->getIndex());
     }
 
+    public function testGetAdditionalAttributesReturnsEmptyArray(): void
+    {
+        self::assertSame([], $this->buildItem()->getAdditionalAttributes());
+    }
+
     public function testImplementsToolbarItemInterface(): void
     {
         self::assertInstanceOf(ToolbarItemInterface::class, $this->buildItem());

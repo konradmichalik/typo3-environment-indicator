@@ -18,7 +18,7 @@ use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
-use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\{ReplaceModifier, TriangleModifier};
+use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\{OverlayModifier, ReplaceModifier, TriangleModifier};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -141,6 +141,21 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertNotSame($firstResult, $secondResult);
     }
 
+    public function testProcessIncludesRawNonModifierConfigurationEntriesInGeneratedFilename(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new TriangleModifier(['color' => '#ff0000']), '_meta' => 'first'],
+        ];
+        $firstResult = (new FaviconHandler())->process($this->testImagePath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new TriangleModifier(['color' => '#ff0000']), '_meta' => 'second'],
+        ];
+        $secondResult = (new FaviconHandler())->process($this->testImagePath);
+
+        self::assertNotSame($firstResult, $secondResult, 'the raw "_meta" entry must be part of the hashed filename even though it is not a ModifierInterface');
+    }
+
     public function testProcessReturnsCachedPathOnSecondCall(): void
     {
         $handler = new FaviconHandler();
@@ -214,6 +229,39 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertSame([], glob($processedFolder.'.tmp-*') ?: []);
     }
 
+    public function testConvertSvgToPngReusesCachedIntermediateOnRetryAfterFinalOutputWasLost(): void
+    {
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $svgPath = $svgDir.'test_favicon_retry.svg';
+        GeneralUtility::mkdir_deep($svgDir);
+        copy(__DIR__.'/Fixtures/test.svg', $svgPath);
+
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        $intermediateFilesBefore = glob($processedFolder.'*') ?: [];
+
+        $firstResult = (new FaviconHandler())->process($svgPath);
+        $finalOutputPath = Environment::getPublicPath().'/'.$firstResult;
+        self::assertFileExists($finalOutputPath);
+
+        $newIntermediateFiles = array_diff(glob($processedFolder.'*') ?: [], $intermediateFilesBefore);
+        self::assertCount(1, $newIntermediateFiles, 'exactly one new intermediate SVG->PNG cache file must be created');
+        $intermediatePath = array_values($newIntermediateFiles)[0];
+        $intermediateMtimeBeforeRetry = filemtime($intermediatePath);
+
+        // Simulate the final output being lost (e.g. a prior attempt failed
+        // after the intermediate SVG->PNG cache was already written) so the
+        // retry below must reuse that intermediate cache instead of
+        // re-rasterizing it.
+        unlink($finalOutputPath);
+        self::assertFileDoesNotExist($finalOutputPath);
+
+        $secondResult = (new FaviconHandler())->process($svgPath);
+
+        self::assertSame($firstResult, $secondResult);
+        self::assertFileExists(Environment::getPublicPath().'/'.$secondResult);
+        self::assertSame($intermediateMtimeBeforeRetry, filemtime($intermediatePath), 'the intermediate cache must be reused untouched, not re-rasterized');
+    }
+
     public function testConvertIcoToPngLeavesNoTemporaryFilesBehind(): void
     {
         $icoDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
@@ -227,6 +275,58 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
         $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
         self::assertSame([], glob($processedFolder.'.tmp-*') ?: []);
+    }
+
+    public function testConvertIcoToPngCreatesProcessedFolderWhenMissing(): void
+    {
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        if (is_dir($processedFolder)) {
+            GeneralUtility::rmdir($processedFolder, true);
+        }
+        self::assertDirectoryDoesNotExist($processedFolder);
+
+        $icoDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $icoPath = $icoDir.'test_favicon_mkdir.ico';
+        GeneralUtility::mkdir_deep($icoDir);
+        copy(__DIR__.'/../../../Resources/Public/Icons/favicon.ico', $icoPath);
+
+        $result = (new FaviconHandler())->process($icoPath);
+
+        self::assertDirectoryExists($processedFolder);
+        self::assertFileExists(Environment::getPublicPath().'/'.$result);
+    }
+
+    public function testConvertIcoToPngReusesCachedIntermediateOnRetryAfterFinalOutputWasLost(): void
+    {
+        $icoDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $icoPath = $icoDir.'test_favicon_retry.ico';
+        GeneralUtility::mkdir_deep($icoDir);
+        copy(__DIR__.'/../../../Resources/Public/Icons/favicon.ico', $icoPath);
+
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        $intermediateFilesBefore = glob($processedFolder.'*') ?: [];
+
+        $firstResult = (new FaviconHandler())->process($icoPath);
+        $finalOutputPath = Environment::getPublicPath().'/'.$firstResult;
+        self::assertFileExists($finalOutputPath);
+
+        $newIntermediateFiles = array_diff(glob($processedFolder.'*') ?: [], $intermediateFilesBefore);
+        self::assertCount(1, $newIntermediateFiles, 'exactly one new intermediate ICO->PNG cache file must be created');
+        $intermediatePath = array_values($newIntermediateFiles)[0];
+        $intermediateMtimeBeforeRetry = filemtime($intermediatePath);
+
+        // Simulate the final output being lost (e.g. a prior attempt failed
+        // after the intermediate ICO->PNG cache was already written) so the
+        // retry below must reuse that intermediate cache instead of
+        // re-rendering it.
+        unlink($finalOutputPath);
+        self::assertFileDoesNotExist($finalOutputPath);
+
+        $secondResult = (new FaviconHandler())->process($icoPath);
+
+        self::assertSame($firstResult, $secondResult);
+        self::assertFileExists(Environment::getPublicPath().'/'.$secondResult);
+        self::assertSame($intermediateMtimeBeforeRetry, filemtime($intermediatePath), 'the intermediate cache must be reused untouched, not re-rendered');
     }
 
     public function testProcessReturnsOriginalPathForUnsupportedFormat(): void
@@ -311,6 +411,26 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
         self::assertSame(127, $this->getPixelAlpha($resultPath, 0, 0), 'left half of the SVG is transparent and must stay transparent with the Imagick driver');
         self::assertSame(0, $this->getPixelAlpha($resultPath, 12, 0), 'right half of the SVG is opaque white and must stay opaque with the Imagick driver');
+    }
+
+    public function testOverlayModifierPlacesOverlayOnTopOfImage(): void
+    {
+        $overlayPath = Environment::getPublicPath().'/typo3temp/assets/test-handler/overlay.png';
+        ImageFixtures::createPng(8, 8, [0, 255, 0], $overlayPath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new OverlayModifier([
+                'path' => $overlayPath,
+                'size' => 0.5,
+                'position' => 'top left',
+                'padding' => 0,
+            ])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+        $resultPath = Environment::getPublicPath().'/'.$result;
+
+        self::assertSame([0, 255, 0], $this->getPixelColor($resultPath), 'overlay placed at top left must cover the original pixel there');
     }
 
     /**

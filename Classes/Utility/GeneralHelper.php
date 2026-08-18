@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
 use Exception;
+use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageManagerInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
@@ -132,6 +133,16 @@ class GeneralHelper
             return $manager->driver()->supports($format);
         }
 
+        // @codeCoverageIgnoreStart
+        // v4-only path: intervention/image ^4.0 replaced the driver() method with a
+        // public $driver property on the concrete ImageManager class, which
+        // ImageManagerInterface does not declare; this project's test environment
+        // runs against v3, where the method_exists() branch above always matches.
+        if ($manager instanceof ImageManager) {
+            return $manager->driver->supports($format); // @phpstan-ignore-line property.private
+        }
+
         return true;
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -19,6 +19,8 @@ use RuntimeException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use function extension_loaded;
+
 /**
  * ColorizeModifierTest.
  *
@@ -69,6 +71,26 @@ class ColorizeModifierTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionCode(1741785764);
         $modifier->modify($image);
+    }
+
+    public function testModifyAppliesColorizeWithImagickDriver(): void
+    {
+        if (!extension_loaded('imagick')) {
+            self::markTestSkipped('Imagick extension is not available.');
+        }
+
+        $extConfigMock = $this->createMock(ExtensionConfiguration::class);
+        $extConfigMock->method('get')->willReturn(['general' => ['imageDriver' => 'imagick']]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $extConfigMock);
+
+        $image = $this->createImagickImage()->fill('#000000');
+        $originalColor = $image->pickColor(32, 32)->toHex();
+
+        $modifier = new ColorizeModifier(['color' => '#ff0000', 'opacity' => 0.5, 'brightness' => 10, 'contrast' => 5]);
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+        self::assertNotSame($originalColor, $image->pickColor(32, 32)->toHex(), 'colorizing an opaque black canvas must actually change its pixel color');
     }
 
     public function testValidateConfigurationReturnsTrueForFullConfiguration(): void

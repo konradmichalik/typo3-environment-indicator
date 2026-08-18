@@ -17,6 +17,7 @@ use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
+use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\TriangleModifier;
 use KonradMichalik\Typo3EnvironmentIndicator\ViewHelpers\FaviconViewHelper;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -64,7 +65,7 @@ class FaviconViewHelperTest extends FunctionalTestCase
         // state is unset first to guarantee Favicon::class truly has no modifiers.
         $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => Typo3ConfVarsSentinel::Unset]]]);
         $this->setTypo3ConfVars([
-            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => '1']]],
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => true]]],
             'EXTCONF' => [Configuration::EXT_KEY => [
                 'current' => [Favicon::class => []],
                 'resolved' => true,
@@ -72,6 +73,81 @@ class FaviconViewHelperTest extends FunctionalTestCase
         ]);
 
         self::assertSame(self::FAVICON_PATH, $this->createSubject()->render());
+    }
+
+    public function testRenderResolvesAndProcessesFaviconWhenFeatureEnabled(): void
+    {
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => true]]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        $result = $this->createSubject()->render();
+
+        self::assertNotSame(self::FAVICON_PATH, $result);
+        self::assertStringEndsWith('.png', $result);
+    }
+
+    public function testRenderResolvesAndProcessesFaviconWhenFeatureFlagIsPersistedAsStringOne(): void
+    {
+        // TYPO3 persists ext_conf_template.txt boolean settings saved through the
+        // backend Settings module as the string '1', not a real bool, so this
+        // guards the fix for the strict `!== true` comparison bug.
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => '1']]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        $result = $this->createSubject()->render();
+
+        self::assertNotSame(self::FAVICON_PATH, $result);
+        self::assertStringEndsWith('.png', $result);
+    }
+
+    public function testRenderReturnsUnmodifiedFaviconWhenFeatureFlagIsPersistedAsStringZero(): void
+    {
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => '0']]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        self::assertSame(self::FAVICON_PATH, $this->createSubject()->render());
+    }
+
+    public function testRenderResolvesFaviconPathWithQueryString(): void
+    {
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => true]]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        $relativeFaviconPath = 'typo3conf/ext/typo3_environment_indicator/Resources/Public/Icons/favicon.ico?1234567890';
+
+        $viewHelper = $this->createSubject();
+        $viewHelper->setRenderChildrenClosure(static fn () => $relativeFaviconPath);
+
+        $result = $viewHelper->render();
+
+        self::assertSame($relativeFaviconPath, $result, 'original reference must be kept when process() leaves the resolved (query-stripped) path unchanged');
+    }
+
+    public function testInitializeArgumentsRegistersFaviconArgument(): void
+    {
+        $viewHelper = new FaviconViewHelper($this->get(ExtensionConfiguration::class));
+
+        self::assertArrayHasKey('favicon', $viewHelper->prepareArguments());
     }
 
     private function createSubject(): FaviconViewHelper

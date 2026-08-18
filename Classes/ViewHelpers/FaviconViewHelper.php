@@ -54,7 +54,7 @@ class FaviconViewHelper extends AbstractViewHelper
         $favicon = $this->renderChildren();
 
         $extensionConfig = $this->extensionConfiguration->get(Configuration::EXT_KEY);
-        if (($extensionConfig[$applicationType->value]['favicon'] ?? false) !== true
+        if (true !== (bool) ($extensionConfig[$applicationType->value]['favicon'] ?? false)
             || !GeneralHelper::isCurrentIndicator(Favicon::class)
         ) {
             return $favicon;

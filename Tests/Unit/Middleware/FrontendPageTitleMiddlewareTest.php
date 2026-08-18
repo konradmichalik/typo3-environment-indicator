@@ -20,8 +20,11 @@ use KonradMichalik\Typo3EnvironmentIndicator\Middleware\FrontendPageTitleMiddlew
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionMethod;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse, StreamFactory};
+
+use function strlen;
 
 /**
  * FrontendPageTitleMiddlewareTest.
@@ -113,6 +116,68 @@ final class FrontendPageTitleMiddlewareTest extends TestCase
         $response = $this->process(new HtmlResponse($html));
 
         self::assertSame($html, (string) $response->getBody());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        PageTitle::class => [],
+    ]]]])]
+    public function testResponseIsUntouchedWhenNoPrefixOrSuffixConfigured(): void
+    {
+        $html = '<html><head><title>Home</title></head></html>';
+
+        $response = $this->process(new HtmlResponse($html));
+
+        self::assertSame($html, (string) $response->getBody());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        PageTitle::class => ['prefix' => '[STG] '],
+    ]]]])]
+    public function testResponseIsUntouchedWhenNoTitleTagPresent(): void
+    {
+        $html = '<html><head></head><body>No title here</body></html>';
+
+        $response = $this->process(new HtmlResponse($html));
+
+        self::assertSame($html, (string) $response->getBody());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        PageTitle::class => ['prefix' => '[STG] '],
+    ]]]])]
+    public function testResponseIsUntouchedWhenTitleTagHasNoClosingTag(): void
+    {
+        // DOMDocument's lenient HTML5 parser still resolves the title text
+        // ("Home") without a closing tag, but the exact-match regex used to
+        // splice the decorated title back into the byte-identical body
+        // requires a literal "</title>" and finds none.
+        $html = '<html><head><title>Home</head><body>Text</body></html>';
+
+        $response = $this->process(new HtmlResponse($html));
+
+        self::assertSame($html, (string) $response->getBody());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => [
+        PageTitle::class => ['prefix' => '[STG] '],
+    ]]]])]
+    public function testContentLengthHeaderIsUpdatedToMatchDecoratedBodyLength(): void
+    {
+        $original = (new HtmlResponse('<html><head><title>Home</title></head></html>'))
+            ->withHeader('Content-Length', '1');
+
+        $response = $this->process($original);
+
+        self::assertSame((string) strlen((string) $response->getBody()), $response->getHeaderLine('Content-Length'));
+    }
+
+    public function testDecorateMatchingTitleOccurrenceReturnsNullWhenNoOccurrenceMatchesActualTitle(): void
+    {
+        $method = new ReflectionMethod(FrontendPageTitleMiddleware::class, 'decorateMatchingTitleOccurrence');
+
+        $result = $method->invoke(null, '<html><head><title>Other</title></head></html>', 'Home', '[STG] ', '');
+
+        self::assertNull($result);
     }
 
     private function process(ResponseInterface $response): ResponseInterface

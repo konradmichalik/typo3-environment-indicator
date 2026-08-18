@@ -31,10 +31,18 @@ class ViewFactoryHelper
      */
     public static function renderView(string $template, array $values, ?ServerRequestInterface $request = null): string
     {
+        // render() treats its argument as a controller action name resolved against
+        // templateRootPaths, never as a file path, so an EXT: path must instead be
+        // handed to the view factory as templatePathAndFilename.
+        $absoluteTemplatePath = PathUtility::isExtensionPath($template)
+            ? GeneralUtility::getFileAbsFileName($template)
+            : null;
+
         $viewFactoryData = new ViewFactoryData(
             templateRootPaths: ['EXT:'.Configuration::EXT_KEY.'/Resources/Private/Templates/'],
             partialRootPaths: ['EXT:'.Configuration::EXT_KEY.'/Resources/Private/Partials/'],
             layoutRootPaths: ['EXT:'.Configuration::EXT_KEY.'/Resources/Private/Layouts/'],
+            templatePathAndFilename: $absoluteTemplatePath,
             request: $request,
         );
 
@@ -42,10 +50,6 @@ class ViewFactoryHelper
         $view = $viewFactory->create($viewFactoryData);
         $view->assignMultiple($values);
 
-        if (PathUtility::isExtensionPath($template)) {
-            $template = GeneralUtility::getFileAbsFileName($template);
-        }
-
-        return $view->render($template);
+        return $view->render(null === $absoluteTemplatePath ? $template : '');
     }
 }

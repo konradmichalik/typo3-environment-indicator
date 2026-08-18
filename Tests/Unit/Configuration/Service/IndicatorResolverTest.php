@@ -234,6 +234,38 @@ final class IndicatorResolverTest extends TestCase
         $resolver->resolveIndicators();
     }
 
+    public function testInstanceLabelWithoutColorFallsBackToDefaultColorWhenNoneCanBeDerived(): void
+    {
+        $current = [
+            Favicon::class => [$this->createStub(IndicatorInterface::class)],
+        ];
+
+        $storage = $this->createMock(ConfigurationStorage::class);
+        $storage->method('hasCurrentIndicators')->willReturn(false);
+        $storage->method('getConfigurations')->willReturn([]);
+        $storage->method('getCurrentIndicators')->willReturn($current);
+
+        $storage->expects(self::once())
+            ->method('setCurrentIndicator')
+            ->with(
+                Favicon::class,
+                self::callback(static function (array $configuration): bool {
+                    $modifier = $configuration[0] ?? null;
+                    if (1 !== count($configuration) || !$modifier instanceof TextModifier) {
+                        return false;
+                    }
+
+                    $reflection = new ReflectionProperty($modifier, 'configuration');
+                    $modifierConfiguration = $reflection->getValue($modifier);
+
+                    return '#bd593a' === $modifierConfiguration['color'];
+                }),
+            );
+
+        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1']));
+        $resolver->resolveIndicators();
+    }
+
     public function testInstanceOverrideDoesNotActivateIndicators(): void
     {
         $storage = $this->createMock(ConfigurationStorage::class);
