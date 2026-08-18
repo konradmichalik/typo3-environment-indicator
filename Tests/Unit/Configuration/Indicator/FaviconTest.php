@@ -32,6 +32,11 @@ class FaviconTest extends TestCase
         unset($GLOBALS['TYPO3_REQUEST']);
     }
 
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+    }
+
     public function testConstructorWithDefaultValues(): void
     {
         $favicon = new Favicon();
