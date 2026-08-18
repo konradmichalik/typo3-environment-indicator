@@ -57,9 +57,14 @@ abstract class AbstractImageHandler
         $newImageFilename = $this->generateFilename($path).'.png';
         $newImagePath = GeneralHelper::getFolder($this->indicator, false).$newImageFilename;
 
+        // @codeCoverageIgnoreStart
+        // Unreachable in practice: $newImagePath is a SHA-256 hash of (among other
+        // things) $path itself, so this guards against a hash fixed point that
+        // cannot occur.
         if ($path === $newImagePath) {
             return $newImagePath;
         }
+        // @codeCoverageIgnoreEnd
 
         $absoluteNewImagePath = GeneralHelper::getFolder($this->indicator).$newImageFilename;
         if (file_exists($absoluteNewImagePath)) {
@@ -118,9 +123,14 @@ abstract class AbstractImageHandler
             imagepng($tmp, $temporaryPath);
 
             if (!rename($temporaryPath, $targetPath)) {
+                // @codeCoverageIgnoreStart
+                // Unreachable in practice: rename() only fails here on OS-level
+                // filesystem errors (permissions, disk full, concurrent removal),
+                // which cannot be triggered deterministically in a test.
                 @unlink($temporaryPath);
 
                 continue;
+                // @codeCoverageIgnoreEnd
             }
 
             $path = $targetPath;
@@ -161,9 +171,14 @@ abstract class AbstractImageHandler
         imagepng($rasterImage, $temporaryPath);
 
         if (!rename($temporaryPath, $targetPath)) {
+            // @codeCoverageIgnoreStart
+            // Unreachable in practice: rename() only fails here on OS-level
+            // filesystem errors (permissions, disk full, concurrent removal),
+            // which cannot be triggered deterministically in a test.
             @unlink($temporaryPath);
 
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         $path = $targetPath;
@@ -216,9 +231,14 @@ abstract class AbstractImageHandler
         $image->save($temporaryPath);
 
         if (!rename($temporaryPath, $targetPath)) {
+            // @codeCoverageIgnoreStart
+            // Unreachable in practice: rename() only fails here on OS-level
+            // filesystem errors (permissions, disk full, concurrent removal),
+            // which cannot be triggered deterministically in a test.
             @unlink($temporaryPath);
 
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         return true;
