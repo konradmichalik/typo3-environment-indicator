@@ -91,6 +91,38 @@ class FaviconViewHelperTest extends FunctionalTestCase
         self::assertStringEndsWith('.png', $result);
     }
 
+    public function testRenderResolvesAndProcessesFaviconWhenFeatureFlagIsPersistedAsStringOne(): void
+    {
+        // TYPO3 persists ext_conf_template.txt boolean settings saved through the
+        // backend Settings module as the string '1', not a real bool, so this
+        // guards the fix for the strict `!== true` comparison bug.
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => '1']]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        $result = $this->createSubject()->render();
+
+        self::assertNotSame(self::FAVICON_PATH, $result);
+        self::assertStringEndsWith('.png', $result);
+    }
+
+    public function testRenderReturnsUnmodifiedFaviconWhenFeatureFlagIsPersistedAsStringZero(): void
+    {
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['backend' => ['favicon' => '0']]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Favicon::class => [new TriangleModifier(['color' => '#ff0000'])]],
+                'resolved' => true,
+            ]],
+        ]);
+
+        self::assertSame(self::FAVICON_PATH, $this->createSubject()->render());
+    }
+
     public function testRenderResolvesFaviconPathWithQueryString(): void
     {
         $this->setTypo3ConfVars([
