@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\Image\Modifier;
 
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\ImageManager;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\TextModifier;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +37,9 @@ final class TextModifierTest extends FunctionalTestCase
         $fontPath = GeneralUtility::getFileAbsFileName('EXT:core/Resources/Private/Font/nimbus.ttf');
         self::assertFileExists($fontPath);
 
-        $image = (new ImageManager(new Driver()))->create(64, 64);
+        $image = (new ImageManager(new Driver()))->create(64, 64)->fill('#000000');
+        $blankImageData = (string) $image->encode(new PngEncoder());
+
         $modifier = new TextModifier([
             'text' => 'DEV',
             'color' => '#ffffff',
@@ -46,5 +49,6 @@ final class TextModifierTest extends FunctionalTestCase
         $modifier->modify($image);
 
         self::assertSame(64, $image->width());
+        self::assertNotSame($blankImageData, (string) $image->encode(new PngEncoder()), 'rendering the text must actually change pixel data, not leave the canvas untouched');
     }
 }
