@@ -15,7 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper};
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function is_string;
@@ -33,7 +33,19 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         $manager = new ImageManager(
             ImageDriverUtility::resolveDriver(),
         );
-        $image = ImageManagerHelper::readImage($manager, GeneralUtility::getFileAbsFileName($this->configuration['path']));
+        $path = GeneralUtility::getFileAbsFileName($this->configuration['path']);
+
+        if ('svg' === pathinfo($path, \PATHINFO_EXTENSION)) {
+            $replacement = $this->readSvg($manager, $path);
+
+            if (null !== $replacement) {
+                $image = $replacement;
+            }
+
+            return;
+        }
+
+        $image = ImageManagerHelper::readImage($manager, $path);
     }
 
     /**
@@ -46,5 +58,36 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         }
 
         return true;
+    }
+
+    /**
+     * Rasterizes SVG sources through meyfa/php-svg before handing them to
+     * Intervention: GD cannot decode SVG at all, and Imagick's generic SVG
+     * decoding flattens transparency onto an opaque background.
+     *
+     * Returns null when the SVG cannot be rasterized or cached, so the caller
+     * can keep the original image instead of handing the raw SVG to
+     * Intervention, which would reintroduce exactly those two problems.
+     */
+    private function readSvg(ImageManager $manager, string $path): ?ImageInterface
+    {
+        $rasterImage = SvgRasterizer::rasterize($path);
+
+        if (null === $rasterImage) {
+            return null;
+        }
+
+        $temporaryPath = tempnam(sys_get_temp_dir(), 'typo3_environment_indicator_svg_');
+        if (false === $temporaryPath) {
+            return null;
+        }
+
+        try {
+            imagepng($rasterImage, $temporaryPath);
+
+            return ImageManagerHelper::readImage($manager, $temporaryPath);
+        } finally {
+            unlink($temporaryPath);
+        }
     }
 }

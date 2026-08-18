@@ -18,7 +18,7 @@ use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper};
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
 
@@ -98,68 +98,77 @@ abstract class AbstractImageHandler
         $icoImage = $loader->fromFile($path);
 
         foreach ($icoImage as $idx => $image) {
-            $tmp = $loader->renderImage($image);
-
             $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
             if (!file_exists($basePath)) {
                 GeneralUtility::mkdir_deep($basePath);
             }
 
-            $path = $basePath.$idx.'--'.$filename;
+            $targetPath = $basePath.$idx.'--'.$filename;
 
-            if (file_exists($path)) {
+            if (file_exists($targetPath)) {
+                $path = $targetPath;
                 continue;
             }
-            imagepng($tmp, $path);
+
+            $tmp = $loader->renderImage($image);
+
+            // Write to a temporary file first and move it into place atomically, so
+            // concurrent requests never read a half-written image as a cache hit.
+            $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'-'.$idx.'--'.$filename;
+            imagepng($tmp, $temporaryPath);
+
+            if (!rename($temporaryPath, $targetPath)) {
+                @unlink($temporaryPath);
+
+                continue;
+            }
+
+            $path = $targetPath;
         }
     }
 
-    /*
-    * @see https://github.com/meyfa/php-svg?tab=readme-ov-file#rasterizing
-    * Notes from the author:
-    * This feature in particular is very much work-in-progress. Many things will look wrong and rendering large images may be very slow.
-    */
-    protected function convertSvgToPng(string &$path, string $filename): void
+    /**
+     * @return bool false when the SVG could not be rasterized or cached, meaning $path
+     *              was left untouched and must not be handed to Intervention: GD cannot
+     *              decode raw SVG at all, and Imagick's generic SVG decoding flattens
+     *              transparency onto an opaque background
+     */
+    protected function convertSvgToPng(string &$path, string $filename): bool
     {
-        $loader = new \SVG\SVG();
-        $svgImage = $loader::fromFile($path);
-
-        if (null === $svgImage) {
-            return;
-        }
-
-        $document = $svgImage->getDocument();
-        $width = (int) $document->getWidth();
-        $height = (int) $document->getHeight();
-
-        // Try to extract dimensions from viewBox if width/height are not set
-        if ($width <= 0 || $height <= 0) {
-            $viewBox = $document->getViewBox();
-            if (null !== $viewBox) {
-                $width = (int) $viewBox[2];
-                $height = (int) $viewBox[3];
-            }
-        }
-
-        // Fallback to default size if still invalid
-        if ($width <= 0 || $height <= 0) {
-            $width = 64;
-            $height = 64;
-        }
-
         $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
         if (!file_exists($basePath)) {
             GeneralUtility::mkdir_deep($basePath);
         }
 
-        $path = $basePath.'--'.$filename;
+        $svgPath = $path;
+        $targetPath = $basePath.'--'.$filename;
 
-        if (file_exists($path)) {
-            return;
+        if (file_exists($targetPath)) {
+            $path = $targetPath;
+
+            return true;
         }
 
-        $rasterImage = $svgImage->toRasterImage($width, $height);
-        imagepng($rasterImage, $path); // @phpstan-ignore-line
+        $rasterImage = SvgRasterizer::rasterize($svgPath);
+
+        if (null === $rasterImage) {
+            return false;
+        }
+
+        // Write to a temporary file first and move it into place atomically, so
+        // concurrent requests never read a half-written image as a cache hit.
+        $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'--'.$filename;
+        imagepng($rasterImage, $temporaryPath);
+
+        if (!rename($temporaryPath, $targetPath)) {
+            @unlink($temporaryPath);
+
+            return false;
+        }
+
+        $path = $targetPath;
+
+        return true;
     }
 
     /**
@@ -191,7 +200,9 @@ abstract class AbstractImageHandler
             return false;
         }
 
-        $this->preProcessImage($absolutePath, $newImageFilename, $format);
+        if (!$this->preProcessImage($absolutePath, $newImageFilename, $format)) {
+            return false;
+        }
 
         $image = ImageManagerHelper::readImage($manager, $absolutePath);
         $this->applyImageModifiers($image);
@@ -228,7 +239,7 @@ abstract class AbstractImageHandler
         }
     }
 
-    private function preProcessImage(string &$absolutePath, string &$newImageFilename, string $format): void
+    private function preProcessImage(string &$absolutePath, string &$newImageFilename, string $format): bool
     {
         /*
         * GD driver does not support .ico files, so we need to convert them to .png before processing them
@@ -238,7 +249,9 @@ abstract class AbstractImageHandler
         }
 
         if ('svg' === $format) {
-            $this->convertSvgToPng($absolutePath, $newImageFilename);
+            return $this->convertSvgToPng($absolutePath, $newImageFilename);
         }
+
+        return true;
     }
 }
