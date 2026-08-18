@@ -59,4 +59,13 @@ class SvgRasterizerTest extends TestCase
         self::assertSame(32, imagesx($result));
         self::assertSame(32, imagesy($result));
     }
+
+    public function testRasterizeFallsBackToDefaultSizeWhenNeitherDimensionsNorViewBoxArePresent(): void
+    {
+        $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/test-no-dims-no-viewbox.svg');
+
+        self::assertInstanceOf(GdImage::class, $result);
+        self::assertSame(64, imagesx($result));
+        self::assertSame(64, imagesy($result));
+    }
 }
