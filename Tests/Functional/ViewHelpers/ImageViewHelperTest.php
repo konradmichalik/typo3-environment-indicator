@@ -70,6 +70,34 @@ class ImageViewHelperTest extends FunctionalTestCase
         self::assertSame(self::IMAGE_PATH, $this->createSubject()->render());
     }
 
+    public function testInitializeArgumentsRegistersPathArgument(): void
+    {
+        $viewHelper = new ImageViewHelper($this->get(ExtensionConfiguration::class));
+
+        self::assertArrayHasKey('_path', $viewHelper->prepareArguments());
+    }
+
+    public function testRenderResolvesRelativeImagePathWithQueryString(): void
+    {
+        $relativeImagePath = 'typo3conf/ext/typo3_environment_indicator/Resources/Public/Icons/Extension.png?1234567890';
+
+        $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => Typo3ConfVarsSentinel::Unset]]]);
+        $this->setTypo3ConfVars([
+            'EXTENSIONS' => [Configuration::EXT_KEY => ['frontend' => ['image' => true]]],
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [Image::class => []],
+                'resolved' => true,
+            ]],
+        ]);
+
+        $viewHelper = new ImageViewHelper($this->get(ExtensionConfiguration::class));
+        $viewHelper->setRenderChildrenClosure(static fn () => $relativeImagePath);
+
+        $result = $viewHelper->render();
+
+        self::assertSame($relativeImagePath, $result, 'original reference must be kept when process() leaves the resolved (query-stripped) path unchanged');
+    }
+
     private function createSubject(): ImageViewHelper
     {
         $viewHelper = new ImageViewHelper($this->get(ExtensionConfiguration::class));
