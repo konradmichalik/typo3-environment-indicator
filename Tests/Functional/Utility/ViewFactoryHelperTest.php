@@ -43,4 +43,18 @@ class ViewFactoryHelperTest extends FunctionalTestCase
         self::assertStringContainsString('color: #ffffff;', $result);
         self::assertStringContainsString('color: #eeeeee;', $result);
     }
+
+    public function testRenderViewResolvesExtensionPathTemplate(): void
+    {
+        $result = ViewFactoryHelper::renderView(
+            template: 'EXT:typo3_environment_indicator/Resources/Private/Templates/ToolbarItems/TopbarItem.html',
+            values: [
+                'color' => '#bd593a',
+                'textColor' => '#ffffff',
+                'subTextColor' => '#eeeeee',
+            ],
+        );
+
+        self::assertStringContainsString('background-color: #bd593a;', $result);
+    }
 }
