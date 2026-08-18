@@ -132,6 +132,10 @@ class GeneralHelper
             return $manager->driver()->supports($format);
         }
 
+        // @codeCoverageIgnoreStart
+        // v4-only path: driver() is only absent from ImageManagerInterface with
+        // intervention/image ^4.0 installed; this project's test environment runs against v3.
         return true;
+        // @codeCoverageIgnoreEnd
     }
 }
