@@ -127,7 +127,13 @@ abstract class AbstractImageHandler
         }
     }
 
-    protected function convertSvgToPng(string &$path, string $filename): void
+    /**
+     * @return bool false when the SVG could not be rasterized or cached, meaning $path
+     *              was left untouched and must not be handed to Intervention: GD cannot
+     *              decode raw SVG at all, and Imagick's generic SVG decoding flattens
+     *              transparency onto an opaque background
+     */
+    protected function convertSvgToPng(string &$path, string $filename): bool
     {
         $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
         if (!file_exists($basePath)) {
@@ -140,13 +146,13 @@ abstract class AbstractImageHandler
         if (file_exists($targetPath)) {
             $path = $targetPath;
 
-            return;
+            return true;
         }
 
         $rasterImage = SvgRasterizer::rasterize($svgPath);
 
         if (null === $rasterImage) {
-            return;
+            return false;
         }
 
         // Write to a temporary file first and move it into place atomically, so
@@ -157,10 +163,12 @@ abstract class AbstractImageHandler
         if (!rename($temporaryPath, $targetPath)) {
             @unlink($temporaryPath);
 
-            return;
+            return false;
         }
 
         $path = $targetPath;
+
+        return true;
     }
 
     /**
@@ -192,7 +200,9 @@ abstract class AbstractImageHandler
             return false;
         }
 
-        $this->preProcessImage($absolutePath, $newImageFilename, $format);
+        if (!$this->preProcessImage($absolutePath, $newImageFilename, $format)) {
+            return false;
+        }
 
         $image = ImageManagerHelper::readImage($manager, $absolutePath);
         $this->applyImageModifiers($image);
@@ -229,7 +239,7 @@ abstract class AbstractImageHandler
         }
     }
 
-    private function preProcessImage(string &$absolutePath, string &$newImageFilename, string $format): void
+    private function preProcessImage(string &$absolutePath, string &$newImageFilename, string $format): bool
     {
         /*
         * GD driver does not support .ico files, so we need to convert them to .png before processing them
@@ -239,7 +249,9 @@ abstract class AbstractImageHandler
         }
 
         if ('svg' === $format) {
-            $this->convertSvgToPng($absolutePath, $newImageFilename);
+            return $this->convertSvgToPng($absolutePath, $newImageFilename);
         }
+
+        return true;
     }
 }

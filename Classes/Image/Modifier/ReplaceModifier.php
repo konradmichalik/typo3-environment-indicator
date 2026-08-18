@@ -36,7 +36,11 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         $path = GeneralUtility::getFileAbsFileName($this->configuration['path']);
 
         if ('svg' === pathinfo($path, \PATHINFO_EXTENSION)) {
-            $image = $this->readSvg($manager, $path);
+            $replacement = $this->readSvg($manager, $path);
+
+            if (null !== $replacement) {
+                $image = $replacement;
+            }
 
             return;
         }
@@ -60,18 +64,22 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
      * Rasterizes SVG sources through meyfa/php-svg before handing them to
      * Intervention: GD cannot decode SVG at all, and Imagick's generic SVG
      * decoding flattens transparency onto an opaque background.
+     *
+     * Returns null when the SVG cannot be rasterized or cached, so the caller
+     * can keep the original image instead of handing the raw SVG to
+     * Intervention, which would reintroduce exactly those two problems.
      */
-    private function readSvg(ImageManager $manager, string $path): ImageInterface
+    private function readSvg(ImageManager $manager, string $path): ?ImageInterface
     {
         $rasterImage = SvgRasterizer::rasterize($path);
 
         if (null === $rasterImage) {
-            return ImageManagerHelper::readImage($manager, $path);
+            return null;
         }
 
         $temporaryPath = tempnam(sys_get_temp_dir(), 'typo3_environment_indicator_svg_');
         if (false === $temporaryPath) {
-            return ImageManagerHelper::readImage($manager, $path);
+            return null;
         }
 
         try {

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
 use GdImage;
+use SVG\SVG;
+use TypeError;
 
 /**
  * SvgRasterizer.
@@ -35,7 +37,7 @@ class SvgRasterizer
      */
     public static function rasterize(string $svgPath): ?GdImage
     {
-        $loader = \SVG\SVG::fromFile($svgPath);
+        $loader = self::loadSvg($svgPath);
 
         if (null === $loader) {
             return null;
@@ -63,5 +65,25 @@ class SvgRasterizer
         // meyfa/php-svg's docblock still says "resource", but GD functions
         // return GdImage objects since PHP 8.1.
         return $loader->toRasterImage($width, $height); // @phpstan-ignore-line
+    }
+
+    /**
+     * meyfa/php-svg's SVGReader passes simplexml_load_file()'s result straight
+     * into a SimpleXMLElement-typed parameter without checking it first, so
+     * malformed XML (valid XML with an unknown root element aside) surfaces as
+     * an uncaught TypeError instead of the documented null return.
+     */
+    private static function loadSvg(string $svgPath): ?SVG
+    {
+        $previousSetting = libxml_use_internal_errors(true);
+
+        try {
+            return SVG::fromFile($svgPath);
+        } catch (TypeError) {
+            return null;
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousSetting);
+        }
     }
 }
