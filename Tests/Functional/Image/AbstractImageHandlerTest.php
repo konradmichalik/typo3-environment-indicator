@@ -213,6 +213,47 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertSame([0, 0, 255], $this->getPixelColor(Environment::getPublicPath().'/'.$result));
     }
 
+    public function testReplaceModifierPreservesSvgTransparency(): void
+    {
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        GeneralUtility::mkdir_deep($svgDir);
+        $replacementPath = $svgDir.'test_transparent.svg';
+        copy(__DIR__.'/Fixtures/test-transparent.svg', $replacementPath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new ReplaceModifier(['path' => $replacementPath])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+        $resultPath = Environment::getPublicPath().'/'.$result;
+
+        self::assertSame(127, $this->getPixelAlpha($resultPath, 0, 0), 'left half of the SVG is transparent and must stay transparent');
+        self::assertSame(0, $this->getPixelAlpha($resultPath, 12, 0), 'right half of the SVG is opaque white and must stay opaque');
+    }
+
+    public function testReplaceModifierPreservesSvgTransparencyWithImagickDriver(): void
+    {
+        if (!extension_loaded('imagick')) {
+            self::markTestSkipped('Imagick extension is not available.');
+        }
+
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        GeneralUtility::mkdir_deep($svgDir);
+        $replacementPath = $svgDir.'test_transparent_imagick.svg';
+        copy(__DIR__.'/Fixtures/test-transparent.svg', $replacementPath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']['imageDriver'] = 'imagick';
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new ReplaceModifier(['path' => $replacementPath])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+        $resultPath = Environment::getPublicPath().'/'.$result;
+
+        self::assertSame(127, $this->getPixelAlpha($resultPath, 0, 0), 'left half of the SVG is transparent and must stay transparent with the Imagick driver');
+        self::assertSame(0, $this->getPixelAlpha($resultPath, 12, 0), 'right half of the SVG is opaque white and must stay opaque with the Imagick driver');
+    }
+
     /**
      * @return array{int, int, int}
      */
@@ -224,5 +265,15 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $rgb = imagecolorsforindex($image, imagecolorat($image, 0, 0));
 
         return [$rgb['red'], $rgb['green'], $rgb['blue']];
+    }
+
+    private function getPixelAlpha(string $path, int $x, int $y): int
+    {
+        $image = imagecreatefrompng($path);
+        self::assertNotFalse($image);
+
+        $rgb = imagecolorsforindex($image, imagecolorat($image, $x, $y));
+
+        return $rgb['alpha'];
     }
 }
