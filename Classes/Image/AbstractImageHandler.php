@@ -98,19 +98,32 @@ abstract class AbstractImageHandler
         $icoImage = $loader->fromFile($path);
 
         foreach ($icoImage as $idx => $image) {
-            $tmp = $loader->renderImage($image);
-
             $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
             if (!file_exists($basePath)) {
                 GeneralUtility::mkdir_deep($basePath);
             }
 
-            $path = $basePath.$idx.'--'.$filename;
+            $targetPath = $basePath.$idx.'--'.$filename;
 
-            if (file_exists($path)) {
+            if (file_exists($targetPath)) {
+                $path = $targetPath;
                 continue;
             }
-            imagepng($tmp, $path);
+
+            $tmp = $loader->renderImage($image);
+
+            // Write to a temporary file first and move it into place atomically, so
+            // concurrent requests never read a half-written image as a cache hit.
+            $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'-'.$idx.'--'.$filename;
+            imagepng($tmp, $temporaryPath);
+
+            if (!rename($temporaryPath, $targetPath)) {
+                @unlink($temporaryPath);
+
+                continue;
+            }
+
+            $path = $targetPath;
         }
     }
 
@@ -122,9 +135,11 @@ abstract class AbstractImageHandler
         }
 
         $svgPath = $path;
-        $path = $basePath.'--'.$filename;
+        $targetPath = $basePath.'--'.$filename;
 
-        if (file_exists($path)) {
+        if (file_exists($targetPath)) {
+            $path = $targetPath;
+
             return;
         }
 
@@ -134,7 +149,18 @@ abstract class AbstractImageHandler
             return;
         }
 
-        imagepng($rasterImage, $path);
+        // Write to a temporary file first and move it into place atomically, so
+        // concurrent requests never read a half-written image as a cache hit.
+        $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'--'.$filename;
+        imagepng($rasterImage, $temporaryPath);
+
+        if (!rename($temporaryPath, $targetPath)) {
+            @unlink($temporaryPath);
+
+            return;
+        }
+
+        $path = $targetPath;
     }
 
     /**
