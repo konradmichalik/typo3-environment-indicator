@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Functional\EventListener\Mail;
 
+use KonradMichalik\Ttt\Attribute\Typo3ConfVarsSentinel;
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Mail\SubjectPrefix;
@@ -124,6 +125,28 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
         $this->dispatch($email);
 
         self::assertSame('[Testing] Lazily rendered subject', $email->getSubject());
+    }
+
+    public function testSubjectAndHeaderAreUntouchedWhenNotConfigured(): void
+    {
+        $this->setTypo3ConfVars([
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [SubjectPrefix::class => Typo3ConfVarsSentinel::Unset],
+                'resolved' => true,
+            ]],
+        ]);
+        $this->setTypo3ConfVars([
+            'EXTCONF' => [Configuration::EXT_KEY => [
+                'current' => [SubjectPrefix::class => []],
+            ]],
+        ]);
+
+        $email = (new Email())->subject('Hello');
+
+        $this->dispatch($email);
+
+        self::assertSame('Hello', $email->getSubject());
+        self::assertFalse($email->getHeaders()->has('X-Environment'));
     }
 
     private function dispatch(Email $email): void
