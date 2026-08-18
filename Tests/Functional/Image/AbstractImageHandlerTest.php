@@ -186,6 +186,36 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         self::assertStringEndsWith('.png', $result);
     }
 
+    public function testConvertSvgToPngLeavesNoTemporaryFilesBehind(): void
+    {
+        $svgDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $svgPath = $svgDir.'test_favicon.svg';
+        GeneralUtility::mkdir_deep($svgDir);
+        copy(__DIR__.'/Fixtures/test.svg', $svgPath);
+
+        $result = (new FaviconHandler())->process($svgPath);
+
+        self::assertFileExists(Environment::getPublicPath().'/'.$result);
+
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        self::assertSame([], glob($processedFolder.'.tmp-*') ?: []);
+    }
+
+    public function testConvertIcoToPngLeavesNoTemporaryFilesBehind(): void
+    {
+        $icoDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
+        $icoPath = $icoDir.'test_favicon.ico';
+        GeneralUtility::mkdir_deep($icoDir);
+        copy(__DIR__.'/../../../Resources/Public/Icons/favicon.ico', $icoPath);
+
+        $result = (new FaviconHandler())->process($icoPath);
+
+        self::assertFileExists(Environment::getPublicPath().'/'.$result);
+
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        self::assertSame([], glob($processedFolder.'.tmp-*') ?: []);
+    }
+
     public function testProcessReturnsOriginalPathForUnsupportedFormat(): void
     {
         $unsupportedDir = Environment::getPublicPath().'/typo3temp/assets/test-handler/';
