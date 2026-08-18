@@ -48,7 +48,11 @@ class Custom implements TriggerInterface
 
         $parts = explode('::', $function, 2);
         if (2 !== count($parts)) {
+            // @codeCoverageIgnoreStart
+            // Unreachable: the str_contains() check above guarantees at least
+            // one '::' occurrence, so explode() with limit 2 always yields 2 parts.
             throw new InvalidArgumentException('Invalid static method format. Expected ClassName::methodName', 1726357767);
+            // @codeCoverageIgnoreEnd
         }
 
         [$className, $methodName] = $parts;
