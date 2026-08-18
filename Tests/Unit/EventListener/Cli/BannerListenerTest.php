@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\{ArrayInput, InputInterface};
-use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\{BufferedOutput, StreamOutput};
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -118,6 +118,37 @@ final class BannerListenerTest extends TestCase
         (new BannerListener())($this->buildEvent($output, command: new Command('cache:flush')));
 
         self::assertStringContainsString('STAGING', $output->fetch());
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Banner::class => ['text' => 'STAGING']],
+        'resolved' => true,
+    ]]])]
+    public function testNothingIsPrintedWhenStreamOutputIsNotARealTerminal(): void
+    {
+        $this->mockExtensionConfiguration(true);
+        $stream = fopen('php://memory', 'w+');
+        self::assertNotFalse($stream);
+        $output = new StreamOutput($stream);
+
+        (new BannerListener())(new ConsoleCommandEvent(null, $this->input(true), $output));
+
+        rewind($stream);
+        self::assertSame('', stream_get_contents($stream));
+    }
+
+    #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => [
+        'current' => [Banner::class => ['text' => 'STAGING', 'commands' => ['cache:*']]],
+        'resolved' => true,
+    ]]])]
+    public function testBannerIsNotPrintedWhenCommandIsNullAndWhitelistIsConfigured(): void
+    {
+        $this->mockExtensionConfiguration(true);
+        $output = new BufferedOutput();
+
+        (new BannerListener())($this->buildEvent($output, command: null));
+
+        self::assertSame('', $output->fetch());
     }
 
     private function mockExtensionConfiguration(bool $enabled): void
