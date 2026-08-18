@@ -71,6 +71,20 @@ class ColorizeModifierTest extends TestCase
         $modifier->modify($image);
     }
 
+    public function testModifyAppliesColorizeWithImagickDriver(): void
+    {
+        $extConfigMock = $this->createMock(ExtensionConfiguration::class);
+        $extConfigMock->method('get')->willReturn(['general' => ['imageDriver' => 'imagick']]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $extConfigMock);
+
+        $image = $this->createImagickImage();
+        $modifier = new ColorizeModifier(['color' => '#ff0000', 'opacity' => 0.5, 'brightness' => 10, 'contrast' => 5]);
+
+        $modifier->modify($image);
+
+        self::assertSame(64, $image->width());
+    }
+
     public function testValidateConfigurationReturnsTrueForFullConfiguration(): void
     {
         $modifier = new ColorizeModifier(['color' => '#fff']);
