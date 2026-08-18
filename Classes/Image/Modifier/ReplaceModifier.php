@@ -79,7 +79,12 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
 
         $temporaryPath = tempnam(sys_get_temp_dir(), 'typo3_environment_indicator_svg_');
         if (false === $temporaryPath) {
+            // @codeCoverageIgnoreStart
+            // Unreachable in practice: tempnam() only fails here on OS-level
+            // filesystem errors (permissions, disk full), which cannot be
+            // triggered deterministically in a test.
             return null;
+            // @codeCoverageIgnoreEnd
         }
 
         try {
