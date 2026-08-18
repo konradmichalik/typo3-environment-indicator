@@ -39,8 +39,12 @@ class ImageManagerHelper
     {
         $callback = static function (object $circle) use ($x, $y, $radius, $color): void {
             if (method_exists($circle, 'at')) {
+                // @codeCoverageIgnoreStart
+                // v4-only path: only reachable with intervention/image ^4.0 installed;
+                // this project's test environment runs against v3.
                 $circle->at($x, $y);
                 $circle->diameter($radius * 2);
+            // @codeCoverageIgnoreEnd
             } else {
                 $circle->radius($radius);
             }
@@ -48,9 +52,13 @@ class ImageManagerHelper
         };
 
         if (self::isVersion4()) {
+            // @codeCoverageIgnoreStart
+            // v4-only path: only reachable with intervention/image ^4.0 installed;
+            // this project's test environment runs against v3.
             $image->{'drawCircle'}($callback);
 
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $image->drawCircle($x, $y, $callback);
@@ -63,16 +71,24 @@ class ImageManagerHelper
     {
         $callback = static function (object $rectangle) use ($x, $y, $width, $height, $borderColor, $borderSize): void {
             if (method_exists($rectangle, 'at')) {
+                // @codeCoverageIgnoreStart
+                // v4-only path: only reachable with intervention/image ^4.0 installed;
+                // this project's test environment runs against v3.
                 $rectangle->at($x, $y);
+                // @codeCoverageIgnoreEnd
             }
             $rectangle->size($width, $height);
             $rectangle->border($borderColor, $borderSize);
         };
 
         if (self::isVersion4()) {
+            // @codeCoverageIgnoreStart
+            // v4-only path: only reachable with intervention/image ^4.0 installed;
+            // this project's test environment runs against v3.
             $image->{'drawRectangle'}($callback);
 
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $image->drawRectangle($x, $y, $callback);
@@ -84,9 +100,13 @@ class ImageManagerHelper
     public static function placeImage(ImageInterface $image, ImageInterface $overlay, string $position, int $offsetX, int $offsetY): void
     {
         if (self::isVersion4()) {
+            // @codeCoverageIgnoreStart
+            // v4-only path: only reachable with intervention/image ^4.0 installed;
+            // this project's test environment runs against v3.
             $image->{'insert'}($overlay, $offsetX, $offsetY, $position);
 
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $image->{'place'}($overlay, $position, $offsetX, $offsetY);
@@ -98,9 +118,13 @@ class ImageManagerHelper
     public static function setFontAlignment(FontFactory $font, string $horizontal, string $vertical): void
     {
         if (self::isVersion4()) {
+            // @codeCoverageIgnoreStart
+            // v4-only path: only reachable with intervention/image ^4.0 installed;
+            // this project's test environment runs against v3.
             $font->{'align'}($horizontal, $vertical);
 
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $font->align($horizontal);
