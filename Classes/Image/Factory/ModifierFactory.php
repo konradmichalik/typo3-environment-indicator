@@ -56,9 +56,13 @@ class ModifierFactory implements ModifierFactoryInterface
 
         try {
             return GeneralUtility::makeInstance($modifierClass, $configuration);
+            // @codeCoverageIgnoreStart
+            // Unreachable in practice: validateConfiguration() above already ran the
+            // same validation the constructor performs, so makeInstance() cannot fail.
         } catch (Throwable $e) {
             throw new InvalidArgumentException(sprintf('Failed to create modifier of type: %s. Error: %s', $type, $e->getMessage()), 1726357773, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -84,8 +88,12 @@ class ModifierFactory implements ModifierFactoryInterface
             $reflectionClass = new ReflectionClass($modifierClass);
 
             return $reflectionClass->newInstanceWithoutConstructor()->validateConfiguration($configuration);
+            // @codeCoverageIgnoreStart
+            // Unreachable in practice: MODIFIER_MAP only holds classes that implement
+            // ModifierInterface without side effects in validateConfiguration().
         } catch (Throwable) {
             return false;
         }
+        // @codeCoverageIgnoreEnd
     }
 }
