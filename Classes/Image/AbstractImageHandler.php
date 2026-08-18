@@ -213,7 +213,7 @@ abstract class AbstractImageHandler
         return true;
     }
 
-    private function applyImageModifiers(ImageInterface $image): void
+    private function applyImageModifiers(ImageInterface &$image): void
     {
         foreach ($this->imageModifiers as $key => $modifier) {
             if (is_string($key) && str_starts_with($key, '_')) {
