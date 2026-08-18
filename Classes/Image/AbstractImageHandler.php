@@ -18,7 +18,7 @@ use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper};
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
 
@@ -114,52 +114,27 @@ abstract class AbstractImageHandler
         }
     }
 
-    /*
-    * @see https://github.com/meyfa/php-svg?tab=readme-ov-file#rasterizing
-    * Notes from the author:
-    * This feature in particular is very much work-in-progress. Many things will look wrong and rendering large images may be very slow.
-    */
     protected function convertSvgToPng(string &$path, string $filename): void
     {
-        $loader = new \SVG\SVG();
-        $svgImage = $loader::fromFile($path);
-
-        if (null === $svgImage) {
-            return;
-        }
-
-        $document = $svgImage->getDocument();
-        $width = (int) $document->getWidth();
-        $height = (int) $document->getHeight();
-
-        // Try to extract dimensions from viewBox if width/height are not set
-        if ($width <= 0 || $height <= 0) {
-            $viewBox = $document->getViewBox();
-            if (null !== $viewBox) {
-                $width = (int) $viewBox[2];
-                $height = (int) $viewBox[3];
-            }
-        }
-
-        // Fallback to default size if still invalid
-        if ($width <= 0 || $height <= 0) {
-            $width = 64;
-            $height = 64;
-        }
-
         $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
         if (!file_exists($basePath)) {
             GeneralUtility::mkdir_deep($basePath);
         }
 
+        $svgPath = $path;
         $path = $basePath.'--'.$filename;
 
         if (file_exists($path)) {
             return;
         }
 
-        $rasterImage = $svgImage->toRasterImage($width, $height);
-        imagepng($rasterImage, $path); // @phpstan-ignore-line
+        $rasterImage = SvgRasterizer::rasterize($svgPath);
+
+        if (null === $rasterImage) {
+            return;
+        }
+
+        imagepng($rasterImage, $path);
     }
 
     /**

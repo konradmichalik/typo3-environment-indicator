@@ -15,7 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
-use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper};
+use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use function is_string;
@@ -33,7 +33,15 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         $manager = new ImageManager(
             ImageDriverUtility::resolveDriver(),
         );
-        $image = ImageManagerHelper::readImage($manager, GeneralUtility::getFileAbsFileName($this->configuration['path']));
+        $path = GeneralUtility::getFileAbsFileName($this->configuration['path']);
+
+        if ('svg' === pathinfo($path, \PATHINFO_EXTENSION)) {
+            $image = $this->readSvg($manager, $path);
+
+            return;
+        }
+
+        $image = ImageManagerHelper::readImage($manager, $path);
     }
 
     /**
@@ -46,5 +54,32 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
         }
 
         return true;
+    }
+
+    /**
+     * Rasterizes SVG sources through meyfa/php-svg before handing them to
+     * Intervention: GD cannot decode SVG at all, and Imagick's generic SVG
+     * decoding flattens transparency onto an opaque background.
+     */
+    private function readSvg(ImageManager $manager, string $path): ImageInterface
+    {
+        $rasterImage = SvgRasterizer::rasterize($path);
+
+        if (null === $rasterImage) {
+            return ImageManagerHelper::readImage($manager, $path);
+        }
+
+        $temporaryPath = tempnam(sys_get_temp_dir(), 'typo3_environment_indicator_svg_');
+        if (false === $temporaryPath) {
+            return ImageManagerHelper::readImage($manager, $path);
+        }
+
+        try {
+            imagepng($rasterImage, $temporaryPath);
+
+            return ImageManagerHelper::readImage($manager, $temporaryPath);
+        } finally {
+            unlink($temporaryPath);
+        }
     }
 }
