@@ -18,12 +18,15 @@ use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
-use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\TriangleModifier;
+use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\{ReplaceModifier, TriangleModifier};
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 use function extension_loaded;
+use function imagecolorat;
+use function imagecolorsforindex;
+use function imagecreatefrompng;
 
 /**
  * AbstractImageHandlerTest.
@@ -194,5 +197,32 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $result = $handler->process($unsupportedPath);
 
         self::assertSame($unsupportedPath, $result);
+    }
+
+    public function testReplaceModifierSwapsOutTheOriginalImage(): void
+    {
+        $replacementPath = Environment::getPublicPath().'/typo3temp/assets/test-handler/replacement.png';
+        ImageFixtures::createPng(16, 16, [0, 0, 255], $replacementPath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] = [
+            Favicon::class => [new ReplaceModifier(['path' => $replacementPath])],
+        ];
+
+        $result = (new FaviconHandler())->process($this->testImagePath);
+
+        self::assertSame([0, 0, 255], $this->getPixelColor(Environment::getPublicPath().'/'.$result));
+    }
+
+    /**
+     * @return array{int, int, int}
+     */
+    private function getPixelColor(string $path): array
+    {
+        $image = imagecreatefrompng($path);
+        self::assertNotFalse($image);
+
+        $rgb = imagecolorsforindex($image, imagecolorat($image, 0, 0));
+
+        return [$rgb['red'], $rgb['green'], $rgb['blue']];
     }
 }
