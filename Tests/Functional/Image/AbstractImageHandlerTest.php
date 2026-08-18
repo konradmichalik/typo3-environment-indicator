@@ -236,9 +236,17 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($svgDir);
         copy(__DIR__.'/Fixtures/test.svg', $svgPath);
 
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        $intermediateFilesBefore = glob($processedFolder.'*') ?: [];
+
         $firstResult = (new FaviconHandler())->process($svgPath);
         $finalOutputPath = Environment::getPublicPath().'/'.$firstResult;
         self::assertFileExists($finalOutputPath);
+
+        $newIntermediateFiles = array_diff(glob($processedFolder.'*') ?: [], $intermediateFilesBefore);
+        self::assertCount(1, $newIntermediateFiles, 'exactly one new intermediate SVG->PNG cache file must be created');
+        $intermediatePath = array_values($newIntermediateFiles)[0];
+        $intermediateMtimeBeforeRetry = filemtime($intermediatePath);
 
         // Simulate the final output being lost (e.g. a prior attempt failed
         // after the intermediate SVG->PNG cache was already written) so the
@@ -251,6 +259,7 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
         self::assertSame($firstResult, $secondResult);
         self::assertFileExists(Environment::getPublicPath().'/'.$secondResult);
+        self::assertSame($intermediateMtimeBeforeRetry, filemtime($intermediatePath), 'the intermediate cache must be reused untouched, not re-rasterized');
     }
 
     public function testConvertIcoToPngLeavesNoTemporaryFilesBehind(): void
@@ -281,9 +290,10 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($icoDir);
         copy(__DIR__.'/../../../Resources/Public/Icons/favicon.ico', $icoPath);
 
-        (new FaviconHandler())->process($icoPath);
+        $result = (new FaviconHandler())->process($icoPath);
 
         self::assertDirectoryExists($processedFolder);
+        self::assertFileExists(Environment::getPublicPath().'/'.$result);
     }
 
     public function testConvertIcoToPngReusesCachedIntermediateOnRetryAfterFinalOutputWasLost(): void
@@ -293,9 +303,17 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep($icoDir);
         copy(__DIR__.'/../../../Resources/Public/Icons/favicon.ico', $icoPath);
 
+        $processedFolder = Environment::getPublicPath().'/typo3temp/assets/environment-indicator-test/processed/';
+        $intermediateFilesBefore = glob($processedFolder.'*') ?: [];
+
         $firstResult = (new FaviconHandler())->process($icoPath);
         $finalOutputPath = Environment::getPublicPath().'/'.$firstResult;
         self::assertFileExists($finalOutputPath);
+
+        $newIntermediateFiles = array_diff(glob($processedFolder.'*') ?: [], $intermediateFilesBefore);
+        self::assertCount(1, $newIntermediateFiles, 'exactly one new intermediate ICO->PNG cache file must be created');
+        $intermediatePath = array_values($newIntermediateFiles)[0];
+        $intermediateMtimeBeforeRetry = filemtime($intermediatePath);
 
         // Simulate the final output being lost (e.g. a prior attempt failed
         // after the intermediate ICO->PNG cache was already written) so the
@@ -308,6 +326,7 @@ class AbstractImageHandlerTest extends FunctionalTestCase
 
         self::assertSame($firstResult, $secondResult);
         self::assertFileExists(Environment::getPublicPath().'/'.$secondResult);
+        self::assertSame($intermediateMtimeBeforeRetry, filemtime($intermediatePath), 'the intermediate cache must be reused untouched, not re-rendered');
     }
 
     public function testProcessReturnsOriginalPathForUnsupportedFormat(): void
