@@ -6,7 +6,6 @@ services:
             - PACKAGE_NAME=konradmichalik/typo3-environment-indicator
             - TYPO3_VERSIONS=13 14
             - SYMLINK_EXCLUSIONS=Documentation Documentation-GENERATED-temp var vendor public
-            - TYPO3_CONTEXT=Development
 
             - TYPO3_DB_DRIVER=mysqli
             - TYPO3_DB_USERNAME=root
