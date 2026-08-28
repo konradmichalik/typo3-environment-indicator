@@ -13,6 +13,14 @@ parameters:
 			message: "#^Call to function method_exists\\(\\) with Intervention\\\\Image\\\\Interfaces\\\\ImageManagerInterface and 'driver' will always evaluate to true\\.$#"
 			path: ../../Classes/Utility/GeneralHelper.php
 			reportUnmatched: false
+		# Same v4-only path as above: intervention/image ^4.0 replaced driver() with
+		# a public $driver property that ImageManagerInterface does not declare, so
+		# PHPStan (analysing against the installed v3) sees it as private on the
+		# concrete ImageManager class.
+		-
+			message: "#^Access to private property Intervention\\\\Image\\\\ImageManager::\\$driver\\.$#"
+			path: ../../Classes/Utility/GeneralHelper.php
+			reportUnmatched: false
 		# be_users.php TCA override uses method_exists() for a v14.2+-only API.
 		# Only flagged as "already narrowed" when TYPO3 v14 is the resolved core version.
 		-
@@ -26,4 +34,23 @@ parameters:
 		-
 			identifier: identical.alwaysFalse
 			path: ../../Classes/ViewHelpers/FaviconViewHelper.php
+			reportUnmatched: false
+		# Vips\Driver only exists when the optional intervention/image-driver-vips
+		# package is installed, which it never is in this project's test environment.
+		-
+			identifier: return.type
+			path: ../../Classes/Utility/ImageDriverUtility.php
+			reportUnmatched: false
+		# The Ip trigger reads $_SERVER['REMOTE_ADDR'] directly on purpose: it must
+		# resolve the raw connecting IP regardless of whether a PSR-7 request has
+		# been built yet, and the unit tests set/restore this superglobal directly.
+		-
+			identifier: disallowed.variable
+			path: ../../Classes/Configuration/Trigger/Ip.php
+			reportUnmatched: false
+		# meyfa/php-svg's docblock still says "resource", but GD functions return
+		# GdImage objects since PHP 8.1.
+		-
+			identifier: return.type
+			path: ../../Classes/Utility/SvgRasterizer.php
 			reportUnmatched: false

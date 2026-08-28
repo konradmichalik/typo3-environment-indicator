@@ -64,7 +64,7 @@ class SvgRasterizer
 
         // meyfa/php-svg's docblock still says "resource", but GD functions
         // return GdImage objects since PHP 8.1.
-        return $loader->toRasterImage($width, $height); // @phpstan-ignore-line
+        return $loader->toRasterImage($width, $height);
     }
 
     /**
