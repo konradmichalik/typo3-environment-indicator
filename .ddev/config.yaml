@@ -6,9 +6,6 @@ webserver_type: apache-fpm
 router_http_port: "80"
 router_https_port: "443"
 xdebug_enabled: false
-additional_hostnames:
-  - 13.typo3-environment-indicator
-  - 14.typo3-environment-indicator
 additional_fqdns: []
 database:
   type: mariadb
