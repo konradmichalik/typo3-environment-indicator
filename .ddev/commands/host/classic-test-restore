@@ -1,0 +1,18 @@
+#!/bin/bash
+
+## Description: Revert the composer.json bundling from 'ddev classic-test' and reinstall the normal Composer-mode TYPO3 instances.
+## Usage: classic-test-restore [version|all]
+## Example: "ddev classic-test-restore" or "ddev classic-test-restore 13"
+
+set -eo pipefail
+
+VERSION="${1:-all}"
+
+echo "Reverting bundled composer.json..."
+git checkout -- composer.json
+rm -rf Resources/Private/Libs
+
+echo "Reinstalling TYPO3 ${VERSION} in Composer mode..."
+ddev install "$VERSION"
+
+echo "Restored - composer.json and Resources/Private/Libs are back to the committed state."

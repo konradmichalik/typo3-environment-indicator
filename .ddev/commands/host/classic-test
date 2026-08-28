@@ -1,0 +1,35 @@
+#!/bin/bash
+
+## Description: Bundle third-party dependencies and install a TYPO3 version in classic (non-Composer/TER-style) mode, for local compatibility testing.
+## Usage: classic-test <version>
+## Example: "ddev classic-test 13" or "ddev classic-test 14"
+
+set -eo pipefail
+
+VERSION="${1:-}"
+if [ -z "$VERSION" ] || [ "$VERSION" = "all" ]; then
+    echo "Usage: ddev classic-test <version>"
+    echo "Classic mode is per-version only (matches 'ddev install <version> --classic')."
+    exit 1
+fi
+
+if [ -n "$(git status --porcelain composer.json 2>/dev/null)" ]; then
+    echo "composer.json already has uncommitted changes - commit or stash them first."
+    echo "'ddev classic-test-restore' reverts composer.json with 'git checkout', which would discard that work."
+    exit 1
+fi
+
+echo "Bundling third-party dependencies into composer.json (eliashaeussler/typo3-vendor-bundler)..."
+ddev composer bundle -v
+
+echo "Installing TYPO3 ${VERSION} in classic mode..."
+ddev install "$VERSION" --classic
+
+cat <<EOF
+
+Classic-mode install ready - browse it to test.
+composer.json is temporarily bundled for this: don't commit it, and don't run a
+plain Composer-mode 'ddev install' while it's in this state.
+When done, run 'ddev classic-test-restore' to revert composer.json and reinstall
+the normal Composer-mode instances.
+EOF
