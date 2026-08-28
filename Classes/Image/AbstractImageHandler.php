@@ -78,7 +78,7 @@ abstract class AbstractImageHandler
         return $newImagePath;
     }
 
-    protected function generateFilename(string $originalPath): string
+    final protected function generateFilename(string $originalPath): string
     {
         $parts = [
             $originalPath,
@@ -97,7 +97,7 @@ abstract class AbstractImageHandler
         return hash('sha256', implode('_', $parts));
     }
 
-    protected function convertIcoToPng(string &$path, string $filename): void
+    final protected function convertIcoToPng(string $path, string $filename): string
     {
         $loader = new IcoFileService();
         $icoImage = $loader->fromFile($path);
@@ -127,7 +127,9 @@ abstract class AbstractImageHandler
                 // Unreachable in practice: rename() only fails here on OS-level
                 // filesystem errors (permissions, disk full, concurrent removal),
                 // which cannot be triggered deterministically in a test.
-                @unlink($temporaryPath);
+                if (is_file($temporaryPath)) {
+                    unlink($temporaryPath);
+                }
 
                 continue;
                 // @codeCoverageIgnoreEnd
@@ -135,15 +137,18 @@ abstract class AbstractImageHandler
 
             $path = $targetPath;
         }
+
+        return $path;
     }
 
     /**
-     * @return bool false when the SVG could not be rasterized or cached, meaning $path
-     *              was left untouched and must not be handed to Intervention: GD cannot
-     *              decode raw SVG at all, and Imagick's generic SVG decoding flattens
-     *              transparency onto an opaque background
+     * @return string|null null when the SVG could not be rasterized or cached, meaning
+     *                     $path was left untouched and must not be handed to
+     *                     Intervention: GD cannot decode raw SVG at all, and Imagick's
+     *                     generic SVG decoding flattens transparency onto an opaque
+     *                     background
      */
-    protected function convertSvgToPng(string &$path, string $filename): bool
+    final protected function convertSvgToPng(string $path, string $filename): ?string
     {
         $basePath = Environment::getPublicPath().'/'.GeneralHelper::getFolder($this->indicator, false).'processed/';
         if (!file_exists($basePath)) {
@@ -154,15 +159,13 @@ abstract class AbstractImageHandler
         $targetPath = $basePath.'--'.$filename;
 
         if (file_exists($targetPath)) {
-            $path = $targetPath;
-
-            return true;
+            return $targetPath;
         }
 
         $rasterImage = SvgRasterizer::rasterize($svgPath);
 
         if (null === $rasterImage) {
-            return false;
+            return null;
         }
 
         // Write to a temporary file first and move it into place atomically, so
@@ -175,15 +178,15 @@ abstract class AbstractImageHandler
             // Unreachable in practice: rename() only fails here on OS-level
             // filesystem errors (permissions, disk full, concurrent removal),
             // which cannot be triggered deterministically in a test.
-            @unlink($temporaryPath);
+            if (is_file($temporaryPath)) {
+                unlink($temporaryPath);
+            }
 
-            return false;
+            return null;
             // @codeCoverageIgnoreEnd
         }
 
-        $path = $targetPath;
-
-        return true;
+        return $targetPath;
     }
 
     /**
@@ -215,11 +218,12 @@ abstract class AbstractImageHandler
             return false;
         }
 
-        if (!$this->preProcessImage($absolutePath, $newImageFilename, $format)) {
+        $resolvedPath = $this->preProcessImage($absolutePath, $newImageFilename, $format);
+        if (null === $resolvedPath) {
             return false;
         }
 
-        $image = ImageManagerHelper::readImage($manager, $absolutePath);
+        $image = ImageManagerHelper::readImage($manager, $resolvedPath);
         $this->applyImageModifiers($image);
 
         $folder = GeneralHelper::getFolder($this->indicator);
@@ -235,7 +239,9 @@ abstract class AbstractImageHandler
             // Unreachable in practice: rename() only fails here on OS-level
             // filesystem errors (permissions, disk full, concurrent removal),
             // which cannot be triggered deterministically in a test.
-            @unlink($temporaryPath);
+            if (is_file($temporaryPath)) {
+                unlink($temporaryPath);
+            }
 
             return false;
             // @codeCoverageIgnoreEnd
@@ -244,7 +250,7 @@ abstract class AbstractImageHandler
         return true;
     }
 
-    private function applyImageModifiers(ImageInterface &$image): void
+    private function applyImageModifiers(ImageInterface $image): void
     {
         foreach ($this->imageModifiers as $key => $modifier) {
             if (is_string($key) && str_starts_with($key, '_')) {
@@ -259,19 +265,19 @@ abstract class AbstractImageHandler
         }
     }
 
-    private function preProcessImage(string &$absolutePath, string &$newImageFilename, string $format): bool
+    private function preProcessImage(string $absolutePath, string $newImageFilename, string $format): ?string
     {
         /*
         * GD driver does not support .ico files, so we need to convert them to .png before processing them
         */
         if (ImageDriverUtility::IMAGE_DRIVER_GD === ImageDriverUtility::getImageDriverConfiguration() && 'ico' === $format) {
-            $this->convertIcoToPng($absolutePath, $newImageFilename);
+            $absolutePath = $this->convertIcoToPng($absolutePath, $newImageFilename);
         }
 
         if ('svg' === $format) {
             return $this->convertSvgToPng($absolutePath, $newImageFilename);
         }
 
-        return true;
+        return $absolutePath;
     }
 }

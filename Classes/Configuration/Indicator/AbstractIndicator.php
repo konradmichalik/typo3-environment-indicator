@@ -49,7 +49,7 @@ abstract class AbstractIndicator
      *
      * @return array<string|int, mixed|ModifierInterface>
      */
-    protected function mergeGlobalConfiguration(array $configuration): array
+    final protected function mergeGlobalConfiguration(array $configuration): array
     {
         $globalConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] ?? [];
 

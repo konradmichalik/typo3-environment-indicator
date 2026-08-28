@@ -27,7 +27,7 @@ use function is_string;
  */
 class CircleModifier extends AbstractModifier implements ModifierInterface
 {
-    public function modify(ImageInterface &$image): void
+    public function modify(ImageInterface $image): void
     {
         $width = $image->width();
         $height = $image->height();
@@ -39,26 +39,12 @@ class CircleModifier extends AbstractModifier implements ModifierInterface
         $paddingX = (int) ($width * $paddingPercent);
         $paddingY = (int) ($height * $paddingPercent);
 
-        $x = $width - $radius - $paddingX;
-        $y = $height - $radius - $paddingY;
-
-        switch ($this->configuration['position']) {
-            case 'top left':
-                $x = $radius + $paddingX;
-                $y = $radius + $paddingY;
-                break;
-            case 'top right':
-                $x = $width - $radius - $paddingX;
-                $y = $radius + $paddingY;
-                break;
-            case 'bottom left':
-                $x = $radius + $paddingX;
-                $y = $height - $radius - $paddingY;
-                break;
-            case 'bottom right':
-            default:
-                break;
-        }
+        [$x, $y] = match ($this->configuration['position']) {
+            'top left' => [$radius + $paddingX, $radius + $paddingY],
+            'top right' => [$width - $radius - $paddingX, $radius + $paddingY],
+            'bottom left' => [$radius + $paddingX, $height - $radius - $paddingY],
+            default => [$width - $radius - $paddingX, $height - $radius - $paddingY],
+        };
 
         ImageManagerHelper::drawCircle($image, $x, $y, $radius, $this->configuration['color']);
     }

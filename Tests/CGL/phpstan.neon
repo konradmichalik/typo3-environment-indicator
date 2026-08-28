@@ -18,3 +18,25 @@ parameters:
 
 	type_coverage:
 		constant: 0 # TODO: Set to 100, when PHP 8.3 is minimum requirement
+
+	ignoreErrors:
+		# The Trigger/Indicator/Modifier configuration API is intentionally built
+		# around optional constructor arguments (e.g. `new Favicon()`), and TYPO3
+		# core value objects like ViewFactoryData are deliberately called with
+		# named arguments to stay resilient to constructor argument reordering
+		# across the supported v13/v14 range. Both conflict with this project's
+		# design, so they are disabled instead of rewritten.
+		- identifier: ergebnis.noConstructorParameterWithDefaultValue
+		- identifier: ergebnis.noNamedArgument
+
+		# AbstractIndicator::getConfiguration() has a genuine subclass override
+		# (Favicon adds scope-based visibility), so it cannot be made final.
+		- identifier: ergebnis.finalInAbstractClass
+		  path: ../../Classes/Configuration/Indicator/AbstractIndicator.php
+
+		# AbstractImageHandler::process() is stubbed via createMock() in the
+		# middleware unit tests (FaviconHandler/BackendLogoHandler), which
+		# PHPUnit cannot do on a final method.
+		-
+			message: '#^Method KonradMichalik\\Typo3EnvironmentIndicator\\Image\\AbstractImageHandler\:\:process\(\)#'
+			path: ../../Classes/Image/AbstractImageHandler.php

@@ -23,7 +23,7 @@ use Intervention\Image\Interfaces\ImageInterface;
  */
 interface ModifierInterface
 {
-    public function modify(ImageInterface &$image): void;
+    public function modify(ImageInterface $image): void;
 
     /**
      * Returns the resolved configuration of this modifier.

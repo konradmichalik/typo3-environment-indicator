@@ -28,7 +28,7 @@ use function is_string;
  */
 class ReplaceModifier extends AbstractModifier implements ModifierInterface
 {
-    public function modify(ImageInterface &$image): void
+    public function modify(ImageInterface $image): void
     {
         $manager = new ImageManager(
             ImageDriverUtility::resolveDriver(),

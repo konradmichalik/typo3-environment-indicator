@@ -43,7 +43,7 @@ class Ip implements TriggerInterface
 
     public function check(): bool
     {
-        $currentIp = $_SERVER['REMOTE_ADDR'] ?? ''; // @phpstan-ignore-line disallowed.variable
+        $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
 
         if (false === filter_var($currentIp, \FILTER_VALIDATE_IP)) {
             return false;

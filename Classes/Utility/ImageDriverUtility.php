@@ -38,22 +38,23 @@ class ImageDriverUtility
 
     public static function resolveDriver(): DriverInterface
     {
-        switch (self::getImageDriverConfiguration()) {
-            case self::IMAGE_DRIVER_IMAGICK:
-                return new \Intervention\Image\Drivers\Imagick\Driver();
-            case self::IMAGE_DRIVER_VIPS:
-                if (!class_exists('\\Intervention\\Image\\Drivers\\Vips\\Driver')) {
-                    throw new RuntimeException('Vips intervention image driver not available, you need intervention/image-driver-vips', 1741785476);
-                }
+        return match (self::getImageDriverConfiguration()) {
+            self::IMAGE_DRIVER_IMAGICK => new \Intervention\Image\Drivers\Imagick\Driver(),
+            self::IMAGE_DRIVER_VIPS => self::resolveVipsDriver(),
+            default => new \Intervention\Image\Drivers\Gd\Driver(),
+        };
+    }
 
-                // @codeCoverageIgnoreStart
-                // Only reachable with the optional intervention/image-driver-vips
-                // package installed; not part of this project's test environment.
-                return new \Intervention\Image\Drivers\Vips\Driver(); // @phpstan-ignore-line
-                // @codeCoverageIgnoreEnd
-            case self::IMAGE_DRIVER_GD:
-            default:
-                return new \Intervention\Image\Drivers\Gd\Driver();
+    private static function resolveVipsDriver(): DriverInterface
+    {
+        if (!class_exists('\\Intervention\\Image\\Drivers\\Vips\\Driver')) {
+            throw new RuntimeException('Vips intervention image driver not available, you need intervention/image-driver-vips', 1741785476);
         }
+
+        // @codeCoverageIgnoreStart
+        // Only reachable with the optional intervention/image-driver-vips
+        // package installed; not part of this project's test environment.
+        return new \Intervention\Image\Drivers\Vips\Driver();
+        // @codeCoverageIgnoreEnd
     }
 }
