@@ -33,7 +33,7 @@ use function sprintf;
  */
 class ColorizeModifier extends AbstractModifier implements ModifierInterface
 {
-    public function modify(ImageInterface $image): void
+    public function modify(ImageInterface &$image): void
     {
         if ('imagick' !== ImageDriverUtility::getImageDriverConfiguration()) {
             throw new RuntimeException('This modifier requires the Imagick driver', 1741785764);

@@ -29,6 +29,13 @@ parameters:
 		- identifier: ergebnis.noConstructorParameterWithDefaultValue
 		- identifier: ergebnis.noNamedArgument
 
+		# ModifierInterface::modify() takes $image by reference because
+		# ReplaceModifier swaps the image object outright (e.g. loading a
+		# replacement from disk); a return value cannot express that through the
+		# shared interface without breaking every other modifier that mutates
+		# $image in place and returns nothing.
+		- identifier: ergebnis.noParameterPassedByReference
+
 		# AbstractIndicator::getConfiguration() has a genuine subclass override
 		# (Favicon adds scope-based visibility), so it cannot be made final.
 		- identifier: ergebnis.finalInAbstractClass

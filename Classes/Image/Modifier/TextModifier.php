@@ -39,7 +39,7 @@ class TextModifier extends AbstractModifier implements ModifierInterface
     private const LINE_HEIGHT_MULTIPLIER = 1.2;
     private const MAX_FONT_SIZE = 50;
 
-    public function modify(ImageInterface $image): void
+    public function modify(ImageInterface &$image): void
     {
         $padding = self::DEFAULT_PADDING;
         $maxWidth = $image->width() - self::TEXT_MARGIN;

@@ -26,7 +26,7 @@ use function is_string;
  */
 class FrameModifier extends AbstractModifier implements ModifierInterface
 {
-    public function modify(ImageInterface $image): void
+    public function modify(ImageInterface &$image): void
     {
         $width = $image->width();
         $height = $image->height();
