@@ -139,7 +139,7 @@ class GeneralHelper
         // ImageManagerInterface does not declare; this project's test environment
         // runs against v3, where the method_exists() branch above always matches.
         if ($manager instanceof ImageManager) {
-            return $manager->driver->supports($format); // @phpstan-ignore-line property.private
+            return $manager->driver->supports($format);
         }
 
         return true;

@@ -36,7 +36,7 @@ class AbstractModifier
      */
     public function __construct(array $configuration)
     {
-        $this->mergeGlobalConfiguration($configuration);
+        $configuration = $this->mergeGlobalConfiguration($configuration);
 
         $validationResult = $this->validateConfigurationWithErrors($configuration);
         if (!$validationResult['valid']) {
@@ -85,12 +85,14 @@ class AbstractModifier
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array<string, mixed>
      */
-    protected function mergeGlobalConfiguration(array &$configuration): void
+    protected function mergeGlobalConfiguration(array $configuration): array
     {
         /** @var array<string, mixed> $globalConfiguration */
         $globalConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'][static::class] ?? [];
-        /** @phpstan-ignore parameterByRef.type */
-        $configuration = array_replace_recursive($globalConfiguration, $configuration);
+
+        return array_replace_recursive($globalConfiguration, $configuration);
     }
 }

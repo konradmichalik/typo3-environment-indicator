@@ -45,22 +45,11 @@ class Favicon extends AbstractIndicator implements IndicatorInterface
         $request = $this->getRequest();
         $applicationType = null !== $request ? ApplicationType::fromRequest($request) : null;
 
-        switch ($this->scope) {
-            case Scope::Global:
-                return $this->configuration;
-            case Scope::Backend:
-                if (null !== $applicationType && $applicationType->isBackend()) {
-                    return $this->configuration;
-                }
-                break;
-            case Scope::Frontend:
-                if (null !== $applicationType && $applicationType->isFrontend()) {
-                    return $this->configuration;
-                }
-                break;
-        }
-
-        return [];
+        return match ($this->scope) {
+            Scope::Global => $this->configuration,
+            Scope::Backend => null !== $applicationType && $applicationType->isBackend() ? $this->configuration : [],
+            Scope::Frontend => null !== $applicationType && $applicationType->isFrontend() ? $this->configuration : [],
+        };
     }
 
     protected function getRequest(): ?ServerRequestInterface
