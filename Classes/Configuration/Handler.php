@@ -98,9 +98,7 @@ class Handler
      */
     private static function getConfigurationStorage(): ConfigurationStorage
     {
-        if (null === self::$configurationStorage) {
-            self::$configurationStorage = GeneralUtility::makeInstance(ConfigurationStorage::class);
-        }
+        self::$configurationStorage ??= GeneralUtility::makeInstance(ConfigurationStorage::class);
 
         return self::$configurationStorage;
     }
@@ -110,9 +108,7 @@ class Handler
      */
     private static function getTriggerEvaluator(): TriggerEvaluator
     {
-        if (null === self::$triggerEvaluator) {
-            self::$triggerEvaluator = GeneralUtility::makeInstance(TriggerEvaluator::class);
-        }
+        self::$triggerEvaluator ??= GeneralUtility::makeInstance(TriggerEvaluator::class);
 
         return self::$triggerEvaluator;
     }
