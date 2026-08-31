@@ -15,9 +15,8 @@
 		"konradmichalik/phpstan-typo3-preset": "^0.4.0",
 		"phpstan/phpstan-phpunit": "^1.0 || ^2.0",
 		"psr/http-message": "^1.0 || ^2.0",
-		"rector/rector": "^2.5.2 <2.6.0",
 		"shipmonk/composer-dependency-analyser": "1.8.4",
-		"ssch/typo3-rector": "^2.10 || ^3.0",
+		"ssch/typo3-rector": "^2.10 || ^3.15",
 		"typo3/coding-standards": "^0.7 || ^0.8 || ^0.9"
 	},
 	"replace": {
