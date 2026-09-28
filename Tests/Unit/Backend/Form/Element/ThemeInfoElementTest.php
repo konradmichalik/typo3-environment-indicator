@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Backend\Form\Element;
 
-use KonradMichalik\Ttt\Attribute\WithTypo3ConfVars;
+use KonradMichalik\Ttt\Attribute\{WithBackendUser, WithTypo3ConfVars};
 use KonradMichalik\Typo3EnvironmentIndicator\Backend\Form\Element\ThemeInfoElement;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Theme;
 use PHPUnit\Framework\TestCase;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,9 +29,12 @@ use function defined;
 /**
  * ThemeInfoElementTest.
  *
- * getLanguageService()/getBackendUser() on AbstractFormElement read the
- * $GLOBALS['LANG']/$GLOBALS['BE_USER'] singletons directly, so those are
- * stubbed here instead of going through a Functional bootstrap.
+ * getLanguageService() on AbstractFormElement reads the $GLOBALS['LANG']
+ * singleton directly, so it's stubbed here instead of going through a
+ * Functional bootstrap. getBackendUser() reads $GLOBALS['BE_USER'], covered
+ * by #[WithBackendUser] below - its default (non-admin) user combined with
+ * the unset TYPO3_CONF_VARS.BE.debug in this Unit bootstrap already makes
+ * shallDisplayDebugInformation() return false, same as production.
  *
  * The EXTENSIONS[EXT_KEY] override must stay an array, not null:
  * ExtensionConfiguration::hasConfiguration() checks it via isset(), which
@@ -43,6 +45,7 @@ use function defined;
  * @license GPL-2.0-or-later
  */
 #[WithTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]])]
+#[WithBackendUser]
 final class ThemeInfoElementTest extends TestCase
 {
     protected function setUp(): void
@@ -54,15 +57,11 @@ final class ThemeInfoElementTest extends TestCase
         $languageService = $this->createStub(LanguageService::class);
         $languageService->method('sL')->willReturn('Theme info message');
         $GLOBALS['LANG'] = $languageService;
-
-        $backendUser = $this->createStub(BackendUserAuthentication::class);
-        $backendUser->method('shallDisplayDebugInformation')->willReturn(false);
-        $GLOBALS['BE_USER'] = $backendUser;
     }
 
     protected function tearDown(): void
     {
-        unset($GLOBALS['LANG'], $GLOBALS['BE_USER']);
+        unset($GLOBALS['LANG']);
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['current' => null]]])]
