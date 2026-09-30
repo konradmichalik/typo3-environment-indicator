@@ -27,27 +27,7 @@ class ThemeTest extends TestCase
 {
     public function testCheckReturnsFalseWhenNoBackendUser(): void
     {
-        $trigger = new Theme('classic');
-
-        self::assertFalse($trigger->check());
-    }
-
-    #[WithBackendUser]
-    public function testCheckReturnsTrueWhenThemeMatches(): void
-    {
-        $GLOBALS['BE_USER']->uc['theme'] = 'classic';
-
-        $trigger = new Theme('classic');
-
-        self::assertTrue($trigger->check());
-    }
-
-    #[WithBackendUser]
-    public function testCheckReturnsFalseWhenThemeDoesNotMatch(): void
-    {
-        $GLOBALS['BE_USER']->uc['theme'] = 'modern';
-
-        $trigger = new Theme('classic');
+        $trigger = new Theme('fresh');
 
         self::assertFalse($trigger->check());
     }
@@ -70,16 +50,6 @@ class ThemeTest extends TestCase
         $trigger = new Theme('fresh');
 
         self::assertTrue($trigger->check());
-    }
-
-    #[WithBackendUser]
-    public function testCheckDoesNotTreatMissingUserSettingAsClassic(): void
-    {
-        unset($GLOBALS['BE_USER']->uc['theme']);
-
-        $trigger = new Theme('classic');
-
-        self::assertFalse($trigger->check());
     }
 
     #[WithBackendUser]

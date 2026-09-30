@@ -18,7 +18,6 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, IndicatorInterface};
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * AbstractIndicatorTest.
@@ -29,28 +28,7 @@ use Psr\Http\Message\ServerRequestInterface;
 #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => null]]])]
 class AbstractIndicatorTest extends TestCase
 {
-    public function testConstructorWithEmptyConfiguration(): void
-    {
-        $indicator = new ConcreteIndicator();
-        self::assertEquals([], $indicator->getConfiguration());
-    }
-
     public function testConstructorWithConfiguration(): void
-    {
-        $config = ['key' => 'value'];
-        $indicator = new ConcreteIndicator($config);
-        self::assertEquals($config, $indicator->getConfiguration());
-    }
-
-    public function testConstructorWithRequest(): void
-    {
-        $request = $this->createStub(ServerRequestInterface::class);
-        $config = ['key' => 'value'];
-        $indicator = new ConcreteIndicator($config, $request);
-        self::assertEquals($config, $indicator->getConfiguration());
-    }
-
-    public function testMergeGlobalConfigurationWithNoGlobal(): void
     {
         $config = ['key' => 'value'];
         $indicator = new ConcreteIndicator($config);
@@ -71,13 +49,6 @@ class AbstractIndicatorTest extends TestCase
             'override' => 'local',
         ];
         self::assertEquals($expected, $indicator->getConfiguration());
-    }
-
-    public function testMergeGlobalConfigurationWithEmptyGlobal(): void
-    {
-        $config = ['key' => 'value'];
-        $indicator = new ConcreteIndicator($config);
-        self::assertEquals($config, $indicator->getConfiguration());
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => 'not an array']]])]

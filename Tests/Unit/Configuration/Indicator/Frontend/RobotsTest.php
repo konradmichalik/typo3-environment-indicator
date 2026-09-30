@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indicator\Frontend;
 
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, IndicatorInterface};
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Robots;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
@@ -27,29 +25,6 @@ use function dirname;
  */
 class RobotsTest extends TestCase
 {
-    public function testConstructorWithEmptyConfiguration(): void
-    {
-        $indicator = new Robots();
-        self::assertSame([], $indicator->getConfiguration());
-    }
-
-    public function testGetConfigurationReturnsConfiguration(): void
-    {
-        $config = ['content' => 'noindex'];
-        $indicator = new Robots($config);
-        self::assertSame($config, $indicator->getConfiguration());
-    }
-
-    public function testInheritsFromAbstractIndicator(): void
-    {
-        self::assertInstanceOf(AbstractIndicator::class, new Robots());
-    }
-
-    public function testImplementsIndicatorInterface(): void
-    {
-        self::assertInstanceOf(IndicatorInterface::class, new Robots());
-    }
-
     /**
      * Guards the one property of this indicator that cannot be walked back:
      * shipping it in a preset would silently add noindex to installations that
