@@ -47,6 +47,7 @@ return [
         '.env',
         'gitattributes',
         'gitignore',
+        'infection.json5',
         'package.json',
         'package-lock.json',
         'packaging_exclude.php',

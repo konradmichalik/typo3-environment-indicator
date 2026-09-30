@@ -16,6 +16,7 @@
 /composer-require-checker.json export-ignore
 /CONTRIBUTING.md             export-ignore
 /docker-compose.yml          export-ignore
+/infection.json5             export-ignore
 /package.json                export-ignore
 /package-lock.json           export-ignore
 /packaging_exclude.php       export-ignore

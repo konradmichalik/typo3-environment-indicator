@@ -38,6 +38,7 @@
 	"require-dev": {
 		"eliashaeussler/typo3-vendor-bundler": "^4.1.1",
 		"eliashaeussler/version-bumper": "^4.1.2",
+		"infection/infection": "^0.32.6",
 		"konradmichalik/ttt": "^0.4.0",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^13.0",
 		"phpunit/phpunit": "^11.0 || ^12.0 || ^13.0",
@@ -75,6 +76,7 @@
 			"eliashaeussler/version-bumper": true,
 			"ergebnis/composer-normalize": true,
 			"helhum/dotenv-connector": true,
+			"infection/extension-installer": false,
 			"php-http/discovery": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true

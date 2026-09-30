@@ -1,0 +1,38 @@
+name: Mutation
+on:
+  pull_request:
+    paths:
+      - 'Classes/**'
+      - 'Tests/Unit/**'
+      - 'composer.lock'
+      - 'infection.json5'
+
+permissions:
+  contents: read
+
+jobs:
+  infection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.2'
+          coverage: pcov
+
+      - run: composer install --no-interaction --no-progress
+
+      - name: Infection on changed lines
+        run: >
+          vendor/bin/infection
+          --git-diff-lines
+          --git-diff-base=origin/${{ github.base_ref }}
+          --map-source-class-to-test
+          --min-covered-msi=65
+          --ignore-msi-with-no-mutations
+          --threads=max
+          --no-progress
+          --show-mutations=20
