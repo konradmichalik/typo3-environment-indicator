@@ -61,6 +61,9 @@ ddev composer test
 
 # All tests with code coverage
 ddev composer test:coverage
+
+# Mutation testing on lines changed against main (same check as the "Mutation" workflow on pull requests)
+ddev exec vendor/bin/infection --git-diff-lines --git-diff-base=main --map-source-class-to-test --min-covered-msi=65
 ```
 
 ## TYPO3 Setup

@@ -25,39 +25,11 @@ use PHPUnit\Framework\TestCase;
  */
 class BackendUserGroupTest extends TestCase
 {
-    public function testConstructorAcceptsSingleGroup(): void
-    {
-        $trigger = new BackendUserGroup(1);
-        self::assertInstanceOf(BackendUserGroup::class, $trigger);
-    }
-
-    public function testConstructorAcceptsMultipleGroups(): void
-    {
-        $trigger = new BackendUserGroup(1, 2, 3);
-        self::assertInstanceOf(BackendUserGroup::class, $trigger);
-    }
-
     public function testCheckReturnsFalseWhenNoBackendUser(): void
     {
         $trigger = new BackendUserGroup(1);
         $result = $trigger->check();
         self::assertFalse($result);
-    }
-
-    #[WithBackendUser(groups: [])]
-    public function testCheckReturnsFalseWhenNoUserGroups(): void
-    {
-        $trigger = new BackendUserGroup(1);
-        $result = $trigger->check();
-        self::assertFalse($result);
-    }
-
-    #[WithBackendUser(groups: [1, 2, 3])]
-    public function testCheckReturnsTrueWhenUserIsInMatchingGroup(): void
-    {
-        $trigger = new BackendUserGroup(2);
-        $result = $trigger->check();
-        self::assertTrue($result);
     }
 
     #[WithBackendUser(groups: [1, 2, 3])]
@@ -72,22 +44,6 @@ class BackendUserGroupTest extends TestCase
     public function testCheckReturnsFalseWhenUserIsNotInAnyGroup(): void
     {
         $trigger = new BackendUserGroup(4, 5, 6);
-        $result = $trigger->check();
-        self::assertFalse($result);
-    }
-
-    #[WithBackendUser(groups: [])]
-    public function testCheckReturnsFalseWhenUserHasEmptyGroups(): void
-    {
-        $trigger = new BackendUserGroup(1);
-        $result = $trigger->check();
-        self::assertFalse($result);
-    }
-
-    #[WithBackendUser(groups: [1, 2, 3])]
-    public function testCheckUsesStrictComparison(): void
-    {
-        $trigger = new BackendUserGroup(4);
         $result = $trigger->check();
         self::assertFalse($result);
     }

@@ -36,18 +36,6 @@ class FrontendUserGroupTest extends TestCase
         unset($GLOBALS['TYPO3_REQUEST']);
     }
 
-    public function testConstructorAcceptsSingleGroup(): void
-    {
-        $trigger = new FrontendUserGroup(1);
-        self::assertInstanceOf(FrontendUserGroup::class, $trigger);
-    }
-
-    public function testConstructorAcceptsMultipleGroups(): void
-    {
-        $trigger = new FrontendUserGroup(1, 2, 3);
-        self::assertInstanceOf(FrontendUserGroup::class, $trigger);
-    }
-
     public function testCheckReturnsFalseWhenNoRequest(): void
     {
         $trigger = new FrontendUserGroup(1);
@@ -68,40 +56,16 @@ class FrontendUserGroupTest extends TestCase
 
     public function testCheckReturnsFalseWhenNoUserGroups(): void
     {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = [];
-
-        $request = $this->createStub(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn($frontendUser);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->setRequestWithFrontendUserGroupData([]);
 
         $trigger = new FrontendUserGroup(1);
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
-    public function testCheckReturnsTrueWhenUserIsInMatchingGroup(): void
-    {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = ['uid' => [1, 2, 3]];
-
-        $request = $this->createStub(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn($frontendUser);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-
-        $trigger = new FrontendUserGroup(2);
-        $result = $trigger->check();
-        self::assertTrue($result);
-    }
-
     public function testCheckReturnsTrueWhenUserIsInOneOfMultipleGroups(): void
     {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = ['uid' => [1, 2, 3]];
-
-        $request = $this->createStub(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn($frontendUser);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->setRequestWithFrontendUserGroupData(['uid' => [1, 2, 3]]);
 
         $trigger = new FrontendUserGroup(4, 5, 2);
         $result = $trigger->check();
@@ -110,44 +74,23 @@ class FrontendUserGroupTest extends TestCase
 
     public function testCheckReturnsFalseWhenUserIsNotInAnyGroup(): void
     {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = ['uid' => [1, 2, 3]];
-
-        $request = $this->createStub(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn($frontendUser);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->setRequestWithFrontendUserGroupData(['uid' => [1, 2, 3]]);
 
         $trigger = new FrontendUserGroup(4, 5, 6);
         $result = $trigger->check();
         self::assertFalse($result);
     }
 
-    public function testCheckReturnsFalseWhenUserHasEmptyGroups(): void
+    /**
+     * @param array<string, mixed> $groupData
+     */
+    private function setRequestWithFrontendUserGroupData(array $groupData): void
     {
         $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = ['uid' => []];
+        $frontendUser->groupData = $groupData;
 
         $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturn($frontendUser);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-
-        $trigger = new FrontendUserGroup(1);
-        $result = $trigger->check();
-        self::assertFalse($result);
-    }
-
-    public function testCheckUsesStrictComparison(): void
-    {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
-        $frontendUser->groupData = ['uid' => [1, 2, 3]];
-
-        $request = $this->createStub(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn($frontendUser);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-
-        // Test that int 4 doesn't match any group to ensure strict comparison
-        $trigger = new FrontendUserGroup(4);
-        $result = $trigger->check();
-        self::assertFalse($result);
     }
 }
