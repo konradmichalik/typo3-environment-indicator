@@ -94,41 +94,11 @@ class Ip implements TriggerInterface
         $maskInt = (int) $mask;
 
         if (false !== filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-            if ($maskInt < 0 || $maskInt > 32) {
-                return false;
-            }
-
-            $ipLong = ip2long($ip);
-            $subnetLong = ip2long($subnet);
-
-            if (false === $ipLong || false === $subnetLong) {
-                return false;
-            }
-
-            $maskBits = ~((1 << (32 - $maskInt)) - 1);
-
-            return ($ipLong & $maskBits) === ($subnetLong & $maskBits);
+            return $this->ipv4CidrMatch($ip, $subnet, $maskInt);
         }
 
         if (false !== filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-            if ($maskInt < 0 || $maskInt > 128) {
-                return false;
-            }
-
-            $ipBinary = inet_pton($ip);
-            $subnetBinary = inet_pton($subnet);
-
-            if (false === $ipBinary || false === $subnetBinary) {
-                return false;
-            }
-
-            $maskBinary = str_repeat("\xff", (int) ($maskInt / 8));
-            if (0 !== $maskInt % 8) {
-                $maskBinary .= chr((0xFF << (8 - ($maskInt % 8))) & 0xFF);
-            }
-            $maskBinary = str_pad($maskBinary, 16, "\x00");
-
-            return substr($ipBinary & $maskBinary, 0, 16) === substr($subnetBinary & $maskBinary, 0, 16);
+            return $this->ipv6CidrMatch($ip, $subnet, $maskInt);
         }
 
         return false;
@@ -167,5 +137,45 @@ class Ip implements TriggerInterface
 
         // Check if it's a valid IP address
         return false !== filter_var($ip, \FILTER_VALIDATE_IP);
+    }
+
+    private function ipv4CidrMatch(string $ip, string $subnet, int $maskInt): bool
+    {
+        if ($maskInt < 0 || $maskInt > 32) {
+            return false;
+        }
+
+        $ipLong = ip2long($ip);
+        $subnetLong = ip2long($subnet);
+
+        if (false === $ipLong || false === $subnetLong) {
+            return false;
+        }
+
+        $maskBits = ~((1 << (32 - $maskInt)) - 1);
+
+        return ($ipLong & $maskBits) === ($subnetLong & $maskBits);
+    }
+
+    private function ipv6CidrMatch(string $ip, string $subnet, int $maskInt): bool
+    {
+        if ($maskInt < 0 || $maskInt > 128) {
+            return false;
+        }
+
+        $ipBinary = inet_pton($ip);
+        $subnetBinary = inet_pton($subnet);
+
+        if (false === $ipBinary || false === $subnetBinary) {
+            return false;
+        }
+
+        $maskBinary = str_repeat("\xff", (int) ($maskInt / 8));
+        if (0 !== $maskInt % 8) {
+            $maskBinary .= chr((0xFF << (8 - ($maskInt % 8))) & 0xFF);
+        }
+        $maskBinary = str_pad($maskBinary, 16, "\x00");
+
+        return substr($ipBinary & $maskBinary, 0, 16) === substr($subnetBinary & $maskBinary, 0, 16);
     }
 }
