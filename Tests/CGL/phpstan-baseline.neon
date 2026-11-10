@@ -1,56 +1,133 @@
 parameters:
 	ignoreErrors:
-		# ImageManagerHelper is a compat layer for intervention/image v3 and v4.
-		# Errors differ depending on which version is installed — both are expected.
 		-
-			path: ../../Classes/Utility/ImageManagerHelper.php
-			reportUnmatched: false
-			messages:
-				- '#.*#'
-		# GeneralHelper::supportFormat() uses method_exists() for intervention/image v3/v4 compat.
-		# Which branch is "always true" depends on the installed version.
-		-
-			message: "#^Call to function method_exists\\(\\) with Intervention\\\\Image\\\\Interfaces\\\\ImageManagerInterface and 'driver' will always evaluate to true\\.$#"
-			path: ../../Classes/Utility/GeneralHelper.php
-			reportUnmatched: false
-		# Same v4-only path as above: intervention/image ^4.0 replaced driver() with
-		# a public $driver property that ImageManagerInterface does not declare, so
-		# PHPStan (analysing against the installed v3) sees it as private on the
-		# concrete ImageManager class.
-		-
-			message: "#^Access to private property Intervention\\\\Image\\\\ImageManager::\\$driver\\.$#"
-			path: ../../Classes/Utility/GeneralHelper.php
-			reportUnmatched: false
-		# be_users.php TCA override uses method_exists() for a v14.2+-only API.
-		# Only flagged as "already narrowed" when TYPO3 v14 is the resolved core version.
-		-
-			identifier: function.alreadyNarrowedType
-			path: ../../Configuration/TCA/Overrides/be_users.php
-			reportUnmatched: false
-		# AbstractViewHelper::$renderingContext has an imprecise, non-nullable
-		# @var tag on fluid ^4.2 (paired with TYPO3 v13), even though it can be
-		# null before setRenderingContext() runs. Only flagged there - fluid
-		# ^5.0 (paired with TYPO3 v14) types the property as genuinely nullable.
-		-
-			identifier: identical.alwaysFalse
-			path: ../../Classes/ViewHelpers/FaviconViewHelper.php
-			reportUnmatched: false
-		# Vips\Driver only exists when the optional intervention/image-driver-vips
-		# package is installed, which it never is in this project's test environment.
-		-
-			identifier: return.type
-			path: ../../Classes/Utility/ImageDriverUtility.php
-			reportUnmatched: false
-		# The Ip trigger reads $_SERVER['REMOTE_ADDR'] directly on purpose: it must
-		# resolve the raw connecting IP regardless of whether a PSR-7 request has
-		# been built yet, and the unit tests set/restore this superglobal directly.
-		-
+			message: '#^Using \$_SERVER is forbidden, Use PSR\-7 API instead\.$#'
 			identifier: disallowed.variable
+			count: 1
 			path: ../../Classes/Configuration/Trigger/Ip.php
-			reportUnmatched: false
-		# meyfa/php-svg's docblock still says "resource", but GD functions return
-		# GdImage objects since PHP 8.1.
+
 		-
+			message: '#^Access to private property Intervention\\Image\\ImageManager\:\:\$driver\.$#'
+			identifier: property.private
+			count: 1
+			path: ../../Classes/Utility/GeneralHelper.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Intervention\\Image\\Interfaces\\ImageManagerInterface and ''driver'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../Classes/Utility/GeneralHelper.php
+
+		-
+			message: '#^Method KonradMichalik\\Typo3EnvironmentIndicator\\Utility\\ImageDriverUtility\:\:resolveVipsDriver\(\) should return Intervention\\Image\\Interfaces\\DriverInterface but returns Intervention\\Image\\Drivers\\Vips\\Driver\.$#'
 			identifier: return.type
+			count: 1
+			path: ../../Classes/Utility/ImageDriverUtility.php
+
+		-
+			message: '#^Call to an undefined method Intervention\\Image\\Interfaces\\ImageInterface\:\:insert\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method Intervention\\Image\\Interfaces\\ImageManagerInterface\:\:decode\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method object\:\:background\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method object\:\:border\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method object\:\:diameter\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method object\:\:radius\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to an undefined method object\:\:size\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Call to function method_exists\(\) with ''Intervention\\\\Image\\\\ImageManager'' and ''decode'' will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Method Intervention\\Image\\Interfaces\\ImageInterface\:\:drawCircle\(\) invoked with 1 parameter, 3 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Method Intervention\\Image\\Interfaces\\ImageInterface\:\:drawRectangle\(\) invoked with 1 parameter, 3 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Method Intervention\\Image\\Typography\\FontFactory\:\:align\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Parameter \#1 \$x of method Intervention\\Image\\Interfaces\\ImageInterface\:\:drawCircle\(\) expects int, Closure given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Parameter \#1 \$x of method Intervention\\Image\\Interfaces\\ImageInterface\:\:drawRectangle\(\) expects int, Closure given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Variable method call on Intervention\\Image\\Interfaces\\ImageInterface\.$#'
+			identifier: method.dynamicName
+			count: 4
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Variable method call on Intervention\\Image\\Interfaces\\ImageManagerInterface\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Variable method call on Intervention\\Image\\Typography\\FontFactory\.$#'
+			identifier: method.dynamicName
+			count: 2
+			path: ../../Classes/Utility/ImageManagerHelper.php
+
+		-
+			message: '#^Method KonradMichalik\\Typo3EnvironmentIndicator\\Utility\\SvgRasterizer\:\:rasterize\(\) should return GdImage\|null but returns resource\.$#'
+			identifier: return.type
+			count: 1
 			path: ../../Classes/Utility/SvgRasterizer.php
-			reportUnmatched: false
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and TYPO3Fluid\\Fluid\\Core\\Rendering\\RenderingContextInterface will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../Classes/ViewHelpers/FaviconViewHelper.php
