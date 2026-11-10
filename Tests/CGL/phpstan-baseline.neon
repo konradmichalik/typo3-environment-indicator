@@ -1,22 +1,10 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Cognitive complexity for "KonradMichalik\\Typo3EnvironmentIndicator\\Configuration\\Trigger\\Ip\:\:cidrMatch\(\)" is 17, keep it under 10$#'
-			identifier: complexity.functionLike
-			count: 1
-			path: ../../Classes/Configuration/Trigger/Ip.php
-
-		-
 			message: '#^Using \$_SERVER is forbidden, Use PSR\-7 API instead\.$#'
 			identifier: disallowed.variable
 			count: 1
 			path: ../../Classes/Configuration/Trigger/Ip.php
-
-		-
-			message: '#^Class cognitive complexity is 42, keep it under 40$#'
-			identifier: complexity.classLike
-			count: 1
-			path: ../../Classes/Image/AbstractImageHandler.php
 
 		-
 			message: '#^Access to private property Intervention\\Image\\ImageManager\:\:\$driver\.$#'
