@@ -122,17 +122,8 @@ abstract class AbstractImageHandler
             $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'-'.$idx.'--'.$filename;
             imagepng($tmp, $temporaryPath);
 
-            if (!rename($temporaryPath, $targetPath)) {
-                // @codeCoverageIgnoreStart
-                // Unreachable in practice: rename() only fails here on OS-level
-                // filesystem errors (permissions, disk full, concurrent removal),
-                // which cannot be triggered deterministically in a test.
-                if (is_file($temporaryPath)) {
-                    unlink($temporaryPath);
-                }
-
+            if (!$this->moveIntoPlace($temporaryPath, $targetPath)) {
                 continue;
-                // @codeCoverageIgnoreEnd
             }
 
             $path = $targetPath;
@@ -173,17 +164,8 @@ abstract class AbstractImageHandler
         $temporaryPath = $basePath.'.tmp-'.bin2hex(random_bytes(8)).'--'.$filename;
         imagepng($rasterImage, $temporaryPath);
 
-        if (!rename($temporaryPath, $targetPath)) {
-            // @codeCoverageIgnoreStart
-            // Unreachable in practice: rename() only fails here on OS-level
-            // filesystem errors (permissions, disk full, concurrent removal),
-            // which cannot be triggered deterministically in a test.
-            if (is_file($temporaryPath)) {
-                unlink($temporaryPath);
-            }
-
+        if (!$this->moveIntoPlace($temporaryPath, $targetPath)) {
             return null;
-            // @codeCoverageIgnoreEnd
         }
 
         return $targetPath;
@@ -234,20 +216,25 @@ abstract class AbstractImageHandler
         $temporaryPath = $folder.'.tmp-'.bin2hex(random_bytes(8)).'-'.$newImageFilename;
         $image->save($temporaryPath);
 
-        if (!rename($temporaryPath, $targetPath)) {
-            // @codeCoverageIgnoreStart
-            // Unreachable in practice: rename() only fails here on OS-level
-            // filesystem errors (permissions, disk full, concurrent removal),
-            // which cannot be triggered deterministically in a test.
-            if (is_file($temporaryPath)) {
-                unlink($temporaryPath);
-            }
+        return $this->moveIntoPlace($temporaryPath, $targetPath);
+    }
 
-            return false;
-            // @codeCoverageIgnoreEnd
+    private function moveIntoPlace(string $temporaryPath, string $targetPath): bool
+    {
+        if (rename($temporaryPath, $targetPath)) {
+            return true;
         }
 
-        return true;
+        // @codeCoverageIgnoreStart
+        // Unreachable in practice: rename() only fails here on OS-level
+        // filesystem errors (permissions, disk full, concurrent removal),
+        // which cannot be triggered deterministically in a test.
+        if (is_file($temporaryPath)) {
+            unlink($temporaryPath);
+        }
+
+        return false;
+        // @codeCoverageIgnoreEnd
     }
 
     private function applyImageModifiers(ImageInterface &$image): void

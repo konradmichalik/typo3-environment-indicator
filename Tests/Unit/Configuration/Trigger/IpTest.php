@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Trig
 
 use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Ip;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -195,5 +196,50 @@ class IpTest extends TestCase
 
         $trigger = new Ip('192.168.1.1');
         self::assertFalse($trigger->check());
+    }
+
+    /**
+     * @return iterable<string, array{string, string, bool}>
+     */
+    public static function cidrMatchProvider(): iterable
+    {
+        yield 'ipv4 mask 0 matches any address' => ['10.20.30.40', '192.168.1.1/0', true];
+        yield 'ipv4 mask 32 exact match' => ['192.168.1.1', '192.168.1.1/32', true];
+        yield 'ipv4 mask 32 differs in last bit' => ['192.168.1.1', '192.168.1.0/32', false];
+        yield 'ipv4 mask 31 matches neighbour' => ['192.168.1.1', '192.168.1.0/31', true];
+        yield 'ipv4 mask 24 outside subnet' => ['192.168.2.1', '192.168.1.0/24', false];
+        yield 'ipv4 negative mask' => ['10.0.0.1', '10.0.0.1/-1', false];
+        yield 'ipv4 mask above 32' => ['10.0.0.1', '10.0.0.1/33', false];
+        yield 'ipv4 invalid subnet' => ['10.0.0.1', 'foo/8', false];
+        yield 'ipv6 mask 0 matches any address' => ['2001:db8::1', 'fe80::/0', true];
+        yield 'ipv6 mask 128 exact match' => ['2001:db8::1', '2001:db8::1/128', true];
+        yield 'ipv6 mask 128 differs in last bit' => ['2001:db8::1', '2001:db8::/128', false];
+        yield 'ipv6 mask 127 matches neighbour' => ['2001:db8::1', '2001:db8::/127', true];
+        yield 'ipv6 mask 127 differs above last bit' => ['2001:db8::2', '2001:db8::/127', false];
+        yield 'ipv6 mask 8 byte aligned match' => ['2001:db8::1', '2001:ffff::/8', true];
+        yield 'ipv6 mask 8 byte aligned mismatch' => ['2001:db8::1', '2101::/8', false];
+        yield 'ipv6 mask 16 byte aligned mismatch' => ['2001:db8::1', '2002::/16', false];
+        yield 'ipv6 mask 1 partial byte match' => ['8000::1', 'ffff::/1', true];
+        yield 'ipv6 mask 1 partial byte mismatch' => ['8000::1', '7fff::/1', false];
+        yield 'ipv6 mask 12 partial byte mismatch' => ['2001:db8::1', '2011::/12', false];
+        yield 'ipv6 mask 12 partial byte match' => ['2001:db8::1', '2001:0fff::/12', true];
+        yield 'ipv6 mask 120 ignores last byte' => ['2001:db8::1', '2001:db8::ff/120', true];
+        yield 'ipv6 mask 120 mismatch in byte 15' => ['2001:db8::100', '2001:db8::/120', false];
+        yield 'ipv6 negative mask' => ['2001:db8::1', '2001:db8::1/-1', false];
+        yield 'ipv6 mask above 128' => ['2001:db8::1', '2001:db8::1/129', false];
+        yield 'ipv6 invalid subnet' => ['2001:db8::1', 'zz::/16', false];
+    }
+
+    #[DataProvider('cidrMatchProvider')]
+    public function testCidrMatch(string $ip, string $cidr, bool $expected): void
+    {
+        $trigger = new class('192.168.1.1') extends Ip {
+            public function match(string $ip, string $cidr): bool
+            {
+                return $this->cidrMatch($ip, $cidr);
+            }
+        };
+
+        self::assertSame($expected, $trigger->match($ip, $cidr));
     }
 }

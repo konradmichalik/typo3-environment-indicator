@@ -17,7 +17,7 @@ TYPO3 extension (`typo3_environment_indicator`) that shows visual environment in
 - `ext_localconf.php` default presets and configuration
 - `Resources/` templates, language files, CSS, JavaScript, fonts, icons
 - `Tests/Unit/` and `Tests/Functional/` PHPUnit tests, mirror `Classes/`
-- `Tests/CGL/` separate Composer project with code style, static analysis and migration tooling
+- `Tests/CGL/` separate Composer project with code style, static analysis and migration tooling. Its `composer.lock` is committed and updated by Renovate, so tool releases only reach CI through a Renovate PR
 - `Documentation/` reStructuredText docs, rendered with `docker-compose.yml`
 - `.ddev/` DDEV setup and commands to install TYPO3 13 and 14 test instances
 
