@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91853a698598fcca1b2ffa8971a093c5",
+    "content-hash": "5e722e5d3e499a059cbd5f6d8ceae068",
     "packages": [],
     "packages-dev": [
         {
@@ -1668,16 +1668,16 @@
         },
         {
             "name": "konradmichalik/phpstan-typo3-preset",
-            "version": "0.6.0",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/konradmichalik/phpstan-typo3-preset.git",
-                "reference": "f1ec30e3e66721c95eea3df84cbaca9c0bd32622"
+                "reference": "33629b68195b5965a4a7037be3678187e79f03a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/konradmichalik/phpstan-typo3-preset/zipball/f1ec30e3e66721c95eea3df84cbaca9c0bd32622",
-                "reference": "f1ec30e3e66721c95eea3df84cbaca9c0bd32622",
+                "url": "https://api.github.com/repos/konradmichalik/phpstan-typo3-preset/zipball/33629b68195b5965a4a7037be3678187e79f03a6",
+                "reference": "33629b68195b5965a4a7037be3678187e79f03a6",
                 "shasum": ""
             },
             "require": {
@@ -1717,10 +1717,10 @@
             "description": "TYPO3 preset configuration for PHPStan",
             "support": {
                 "issues": "https://github.com/konradmichalik/phpstan-typo3-preset/issues",
-                "source": "https://github.com/konradmichalik/phpstan-typo3-preset/tree/0.6.0"
+                "source": "https://github.com/konradmichalik/phpstan-typo3-preset/tree/0.6.1"
             },
-            "time": "2026-11-09T16:06:22+00:00",
-            "published-time": "2026-11-09T16:07:12+00:00"
+            "time": "2026-11-10T09:01:58+00:00",
+            "published-time": "2026-11-10T09:02:32+00:00"
         },
         {
             "name": "league/flysystem",
