@@ -27,6 +27,12 @@ use function sprintf;
 class ConfigurationUtility
 {
     /**
+     * Kept so that outdated configurations fail with a pointer to Handler::addIndicator().
+     *
+     * @api
+     *
+     * @deprecated Use {@see Configuration\Handler::addIndicator()} instead
+     *
      * @param array<string, mixed>|null $frontendHintConfiguration
      * @param array<string, mixed>|null $backendToolbarConfiguration
      * @param array<string, mixed>|null $backendTopbarConfiguration
