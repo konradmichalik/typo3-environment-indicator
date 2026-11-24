@@ -58,21 +58,11 @@ class ConfigurationStorage
     }
 
     /**
-     * Checks if any current indicators have been resolved for this request.
-     *
-     * @return bool True if there is at least one resolved indicator, false otherwise
-     */
-    public function hasCurrentIndicators(): bool
-    {
-        return ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['current'] ?? []) !== [];
-    }
-
-    /**
      * Checks whether indicator resolution has already run for this request.
      *
-     * Unlike {@see hasCurrentIndicators()} this also returns true when
-     * resolution produced no matching indicators (e.g. on production), so the
-     * result can be memoized instead of being recomputed on every call.
+     * Also true when resolution produced no matching indicators (e.g. on
+     * production), so the result can be memoized instead of being recomputed
+     * on every call.
      */
     public function isResolved(): bool
     {

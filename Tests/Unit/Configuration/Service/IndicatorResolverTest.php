@@ -183,7 +183,6 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
         $storage->method('getConfigurations')->willReturn([]);
         $storage->method('getCurrentIndicators')->willReturn($current);
 
@@ -208,7 +207,6 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
         $storage->method('getConfigurations')->willReturn([]);
         $storage->method('getCurrentIndicators')->willReturn($current);
 
@@ -241,7 +239,6 @@ final class IndicatorResolverTest extends TestCase
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
         $storage->method('getConfigurations')->willReturn([]);
         $storage->method('getCurrentIndicators')->willReturn($current);
 
@@ -269,7 +266,6 @@ final class IndicatorResolverTest extends TestCase
     public function testInstanceOverrideDoesNotActivateIndicators(): void
     {
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
         $storage->method('getConfigurations')->willReturn([]);
         $storage->method('getCurrentIndicators')->willReturn([]);
         $storage->expects(self::never())->method('mergeCurrentIndicator');
@@ -283,7 +279,6 @@ final class IndicatorResolverTest extends TestCase
     public function testInvalidInstanceColorIsIgnoredAndLogged(): void
     {
         $storage = $this->createMock(ConfigurationStorage::class);
-        $storage->method('hasCurrentIndicators')->willReturn(false);
         $storage->method('getConfigurations')->willReturn([]);
         $storage->method('getCurrentIndicators')->willReturn([Backend\Toolbar::class => ['color' => '#111111']]);
         $storage->expects(self::never())->method('mergeCurrentIndicator');

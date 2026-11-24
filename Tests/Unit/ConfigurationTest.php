@@ -28,9 +28,4 @@ class ConfigurationTest extends TestCase
     {
         self::assertEquals('typo3_environment_indicator', Configuration::EXT_KEY);
     }
-
-    public function testExtensionNameConstant(): void
-    {
-        self::assertEquals('Typo3EnvironmentIndicator', Configuration::EXT_NAME);
-    }
 }

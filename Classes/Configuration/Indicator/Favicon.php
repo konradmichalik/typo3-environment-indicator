@@ -32,9 +32,8 @@ class Favicon extends AbstractIndicator implements IndicatorInterface
     public function __construct(
         protected array $configuration = [],
         protected Scope $scope = Scope::Global,
-        ?ServerRequestInterface $request = null,
     ) {
-        parent::__construct($this->configuration, $request);
+        parent::__construct($this->configuration);
     }
 
     /**
