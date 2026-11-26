@@ -73,7 +73,7 @@ ddev exec vendor/bin/phpunit Tests/Unit/Path/To/TestFile.php
 ddev exec vendor/bin/phpunit --filter testMethodName
 ```
 
-CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5. The CGL workflow runs the linters on every push.
+CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5. The CGL workflow runs the linters. Both workflows run on pull requests and on pushes to `main` and `renovate/**` branches.
 
 ## Code style and static analysis
 

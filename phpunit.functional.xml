@@ -6,6 +6,8 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnSkippedTests="true"
          colors="true"
+         failOnWarning="true"
+         failOnRisky="true"
          cacheResult="false"
 >
     <extensions>
