@@ -215,6 +215,7 @@ class IpTest extends TestCase
         yield 'ipv4 fractional mask' => ['10.0.0.0/8.5'];
         yield 'ipv4 signed mask' => ['10.0.0.0/+8'];
         yield 'ipv4 mask with whitespace' => ['10.0.0.0/ 8'];
+        yield 'ipv4 mask with trailing newline' => ["10.0.0.0/8\n"];
         yield 'ipv6 non-numeric mask' => ['::1/x'];
         yield 'ipv6 empty mask' => ['2001:db8::/'];
         yield 'ipv6 negative mask' => ['2001:db8::/-1'];

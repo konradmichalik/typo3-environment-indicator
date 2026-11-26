@@ -136,7 +136,7 @@ class Ip implements TriggerInterface
 
         [$address, $mask] = $parts;
 
-        if (!ctype_digit($mask)) {
+        if (1 !== preg_match('/^[0-9]+$/D', $mask)) {
             return false;
         }
 
