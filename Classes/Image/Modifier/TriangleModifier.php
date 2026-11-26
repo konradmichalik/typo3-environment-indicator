@@ -17,7 +17,6 @@ use Intervention\Image\Geometry\Factories\PolygonFactory;
 use Intervention\Image\Interfaces\ImageInterface;
 
 use function in_array;
-use function is_string;
 
 /**
  * TriangleModifier.
@@ -68,24 +67,23 @@ class TriangleModifier extends AbstractModifier implements ModifierInterface
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array{valid: bool, errors: array<int, string>}
      */
-    public function validateConfiguration(array $configuration): bool
+    public function validateConfigurationWithErrors(array $configuration): array
     {
-        if (!isset($configuration['color']) || !is_string($configuration['color'])) {
-            return false;
-        }
+        $errors = $this->requireString($configuration, 'color');
 
         if (isset($configuration['size'])
             && (!is_numeric($configuration['size']) || $configuration['size'] < 0 || $configuration['size'] > 1)) {
-            return false;
-        }
-
-        if (isset($configuration['position']) && !is_string($configuration['position'])) {
-            return false;
+            $errors[] = 'Configuration key "size" must be a number between 0 and 1';
         }
 
         $validPositions = ['top left', 'top right', 'bottom left', 'bottom right'];
+        if (isset($configuration['position']) && !in_array($configuration['position'], $validPositions, true)) {
+            $errors[] = 'Configuration key "position" must be one of: '.implode(', ', $validPositions);
+        }
 
-        return !(isset($configuration['position']) && !in_array($configuration['position'], $validPositions, true));
+        return self::validationResult($errors);
     }
 }
