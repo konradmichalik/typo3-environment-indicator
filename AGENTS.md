@@ -10,7 +10,7 @@ TYPO3 extension (`typo3_environment_indicator`) that shows visual environment in
 ## Structure
 
 - `Classes/Configuration/` central API `Handler::addIndicator()`, plus `Trigger/` and `Indicator/` (`Backend/`, `Frontend/`, `General/`, `Cli/`, `Mail/`)
-- `Classes/Image/` image `Factory/` and `Modifier/` classes (text, triangle, circle, frame, colorize, overlay, replace)
+- `Classes/Image/` image handlers and `Modifier/` classes (text, triangle, circle, frame, colorize, overlay, replace)
 - `Classes/Middleware/` PSR-15 middlewares for backend and frontend favicon and backend logo
 - `Classes/Backend/`, `Classes/Widgets/`, `Classes/EventListener/`, `Classes/ExpressionLanguage/`, `Classes/TypoScript/`, `Classes/ViewHelpers/`, `Classes/Utility/`, `Classes/Enum/`
 - `Configuration/` `RequestMiddlewares.php`, `Services.yaml`, `Icons.php`, `ExpressionLanguage.php`, `Sets/EnvironmentIndicator/` (Site Set), `TCA/`, `TypoScript/`

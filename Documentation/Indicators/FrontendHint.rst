@@ -10,7 +10,7 @@
 Frontend Hint
 =======================
 
-The frontend hint will show the current environment information and the website title as clickable note in the upper right corner.
+The frontend hint will show the current environment information and the website title as clickable note. By default it is placed in the upper left corner, see :code:`position`.
 
 ..  figure:: /Images/frontend-hint.png
     :alt: Frontend hint
@@ -41,6 +41,7 @@ You can adjust the color of the hint in your :code:`ext_localconf.php`:
 Additional optional configuration keys:
 
 - :code:`text` (string): The text of the hint. Default is the website title.
+- :code:`color` (string): The background color of the hint. Default is :code:`transparent`.
 - :code:`position` (string): The corner the hint starts in. Default is
   :code:`top left`. Possible values are :code:`top left`, :code:`top right`,
   :code:`bottom left` and :code:`bottom right`. Any other value falls back to

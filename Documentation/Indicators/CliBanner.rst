@@ -51,7 +51,7 @@ You can register the indicator in your :code:`ext_localconf.php`:
 Additional optional configuration keys:
 
 - :code:`text` (string): The banner text. Default is the current application
-  context.
+  context. The site name from :code:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']` is appended to it.
 - :code:`color` (string): The banner background color. Accepts a named ANSI
   color (e.g. :code:`cyan`, :code:`red`, :code:`yellow`) or a hex value
   (e.g. :code:`#00ACC1`, rendered on truecolor terminals) and is combined with

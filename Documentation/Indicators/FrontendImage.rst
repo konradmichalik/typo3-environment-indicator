@@ -33,7 +33,7 @@ The image path can be adjusted via the :code:`ImageViewHelper`:
         data-namespace-typo3-fluid="true">
 
     {f:uri.resource(path:'EXT:your_extension/Resources/Public/Image/Default.png') -> env:image()}
-    {env:image(path:'EXT:your_extension/Resources/Public/Image/Default.png')}
+    <env:image>{f:uri.resource(path:'EXT:your_extension/Resources/Public/Image/Default.png')}</env:image>
 
 ..  note::
     The frontend image is part of the cached page and created once per cache entry. Do not combine it with

@@ -47,7 +47,7 @@ Additional optional configuration keys:
   :code:`X-TYPO3-Environment`.
 - :code:`value` (string): The header value. Default is :code:`%context%`. The
   placeholder :code:`%context%` is replaced with the current application
-  context.
+  context. If the value is empty, no header is sent.
 
 A name or value that is not valid per :rfc:`9110` is ignored and logged as a
 warning, so a misconfiguration cannot break frontend rendering.

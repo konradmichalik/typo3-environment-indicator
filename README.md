@@ -159,7 +159,24 @@ composer require konradmichalik/typo3-environment-indicator
 Download the zip file
 from [TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/typo3_environment_indicator).
 
-## 📙 Documentation
+## 🚀 Quick start
+
+The extension works out of the box. After the installation the indicators show up in the preset
+`Development*`, `Testing*` and `Production/Staging` application contexts. To register your own indicators, disable the
+default configuration in the extension configuration and add them in your `ext_localconf.php`:
+
+```php
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Handler;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator;
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
+
+Handler::addIndicator(
+    triggers: [new Trigger\ApplicationContext('Development*')],
+    indicators: [new Indicator\Backend\Toolbar(['color' => '#bd593a'])],
+);
+```
+
+## 📚 Documentation
 
 Please have a look at the
 [official extension documentation](https://docs.typo3.org/p/konradmichalik/typo3-environment-indicator/main/en-us/Index.html).

@@ -10,7 +10,7 @@
 Backend topbar
 =======================
 
-The backend toolbar item will show the current project version and environment.
+The backend topbar indicator colors the backend header topbar according to the current application context.
 
 ..  figure:: /Images/backend-topbar.jpg
     :alt: Backend topbar

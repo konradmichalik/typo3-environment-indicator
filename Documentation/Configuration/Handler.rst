@@ -18,8 +18,13 @@ See the configuration for :ref:`triggers <triggers>` and :ref:`indicators <indic
             new \KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\FrontendUserGroup(1,2)
         ],
         indicators: [
-            new \KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Backend\Topbar([
+            new \KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Frontend\Hint([
                 'color' => '#00ACC1',
             ]),
         ]
     );
+
+..  note::
+    The whole call is ignored if one of the triggers does not implement :code:`TriggerInterface` or one of the
+    indicators does not implement :code:`IndicatorInterface`. An empty :code:`triggers` array means that the indicators
+    are always active. A trigger that throws an exception counts as :code:`false` and the exception is logged.

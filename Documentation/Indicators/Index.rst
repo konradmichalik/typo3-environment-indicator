@@ -176,7 +176,6 @@ Misc
     :hidden:
 
     Favicon
-    Console
     FrontendHint
     FrontendImage
     FrontendHttpHeader

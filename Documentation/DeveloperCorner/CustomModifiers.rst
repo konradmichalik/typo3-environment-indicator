@@ -11,13 +11,12 @@ The predefined modifiers are not enough for your use case? No problem! You can e
 Implement your own image modifier by extending the :code:`AbstractModifier` class and implementing the :code:`ModifierInterface` method.
 
 ..  code-block:: php
-    :caption: Classes/Image/CustomModifier.php
+    :caption: Classes/Image/Modifier/CustomModifier.php
 
     <?php
 
     namespace Vendor\YourExt\Image\Modifier;
 
-    use Intervention\Image\Geometry\Factories\RectangleFactory;
     use Intervention\Image\Interfaces\ImageInterface;
     use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\AbstractModifier;
     use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
@@ -54,7 +53,7 @@ Implement your own image modifier by extending the :code:`AbstractModifier` clas
 See the `Intervention Image documentation <http://image.intervention.io/v3>`_ for more information about image
 manipulation.
 
-..  note::
-    Having fun with colorful favicons? Use the :code:`ColorUtility::getColoredString()`
-    function as color entry in your modifier configuration to generate a color based on a string (default is the
-    :code:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']`).
+The :code:`AbstractModifier` merges the defaults from
+:code:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['typo3_environment_indicator']['defaults']` for your class into the
+configuration, validates it with :code:`validateConfigurationWithErrors()` and throws an
+:code:`InvalidArgumentException` if it is invalid.

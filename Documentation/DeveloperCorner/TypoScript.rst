@@ -6,7 +6,7 @@
 TypoScript reference
 ======================
 
-The extension provides TypoScript objects and a condition function that can be used in custom TypoScript configurations.
+The extension provides TypoScript objects and two condition functions that can be used in custom TypoScript configurations.
 
 .. contents:: Table of Contents
    :local:
@@ -15,7 +15,7 @@ The extension provides TypoScript objects and a condition function that can be u
 Condition: enableTechnicalContext()
 ====================================
 
-The :code:`enableTechnicalContext()` condition function evaluates whether the frontend hint indicator is active for the current environment. It returns :code:`true` when the frontend context feature is enabled in the extension configuration **and** a :code:`Frontend\Hint` indicator is configured for the current application context.
+The :code:`enableTechnicalContext()` condition function evaluates whether the frontend hint indicator is active for the current environment. It returns :code:`true` when the frontend context feature is enabled in the extension configuration **and** a :code:`Frontend\Hint` indicator is configured for the current application context. The function is provided by :code:`TechnicalContextConditionFunctionsProvider`.
 
 ..  code-block:: typoscript
 
@@ -42,13 +42,33 @@ The following :code:`lib.*` objects are registered within the :code:`[enableTech
    * - :code:`lib.applicationContextTextColor`
      - Returns the optimal text color (black or white) for the configured hint color.
    * - :code:`lib.websiteTitle`
-     - Returns the website title from the site configuration. Falls back to the :code:`text` option of the Frontend Hint if set.
-   * - :code:`lib.applicationContextPositionX`
-     - Returns the horizontal position (e.g. :code:`left:0`).
-   * - :code:`lib.applicationContextPositionY`
-     - Returns the vertical position (e.g. :code:`top:0`).
+     - Returns the :code:`text` option of the Frontend Hint if set. Otherwise it returns the website title from the site configuration, then the site identifier.
+   * - :code:`lib.applicationContextDescription`
+     - Returns the :code:`description` option of the Frontend Hint.
+   * - :code:`lib.applicationContextPositionClass`
+     - Returns the CSS class for the position of the hint (e.g. :code:`technical-context--top-left`).
    * - :code:`lib.technicalContext`
      - A :code:`FLUIDTEMPLATE` that renders the complete frontend hint element. This object is automatically added to :code:`page` output.
+
+Condition: enableEnvironmentConsole()
+======================================
+
+The :code:`enableEnvironmentConsole()` condition function returns :code:`true` when the :code:`frontend.console`
+feature is enabled in the extension configuration **and** a :code:`General\Console` indicator is configured for the
+current application context. Within this condition the following objects are registered:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Object
+     - Description
+   * - :code:`lib.environmentConsoleBadgeText`
+     - Returns the text of the console badge.
+   * - :code:`lib.environmentConsoleBadgeStyle`
+     - Returns the CSS style of the console badge.
+   * - :code:`lib.environmentConsole`
+     - A :code:`FLUIDTEMPLATE` that renders the console script. This object is automatically added to :code:`page` output.
 
 Overriding objects
 ===================
