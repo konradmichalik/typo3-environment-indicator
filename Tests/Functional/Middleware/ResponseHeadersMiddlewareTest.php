@@ -42,12 +42,6 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testHeaderIsAddedWithResolvedApplicationContext(): void
     {
         $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);

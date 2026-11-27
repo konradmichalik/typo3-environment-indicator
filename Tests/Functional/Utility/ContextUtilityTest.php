@@ -57,7 +57,6 @@ class ContextUtilityTest extends FunctionalTestCase
     {
         unset($GLOBALS['TYPO3_REQUEST']);
         parent::tearDown();
-        $this->restoreTypo3ConfVars();
     }
 
     public function testGetContextReturnsApplicationContextString(): void

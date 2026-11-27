@@ -56,12 +56,6 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testSubjectIsPrefixedWithApplicationContext(): void
     {
         $email = (new Email())->subject('Your registration');
