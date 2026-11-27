@@ -34,12 +34,6 @@ class ConsoleUtilityTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testBadgeTextResolvesTheContextPlaceholderBehindTheFormatDirective(): void
     {
         $this->configure(['text' => '%context%', 'color' => '#bd593a']);

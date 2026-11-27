@@ -40,12 +40,6 @@ class GeneralHelperTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testGetFolderReturnsAbsolutePublicPath(): void
     {
         $this->setTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [

@@ -54,12 +54,6 @@ class FrontendPageTitleMiddlewareTest extends FunctionalTestCase
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testTitleIsPrefixedWithApplicationContext(): void
     {
         $middleware = new FrontendPageTitleMiddleware(
