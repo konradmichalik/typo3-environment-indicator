@@ -73,10 +73,10 @@ class FrameModifierTest extends TestCase
         self::assertSame(64, $image->height());
     }
 
-    public function testModifyUsesDefaultColorAndBorderSize(): void
+    public function testModifyUsesDefaultBorderSize(): void
     {
         $image = $this->createImage();
-        $modifier = new FrameModifier([]);
+        $modifier = new FrameModifier(['color' => 'red']);
 
         $modifier->modify($image);
 
