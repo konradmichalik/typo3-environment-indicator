@@ -35,6 +35,10 @@ The image path can be adjusted via the :code:`ImageViewHelper`:
     {f:uri.resource(path:'EXT:your_extension/Resources/Public/Image/Default.png') -> env:image()}
     {env:image(path:'EXT:your_extension/Resources/Public/Image/Default.png')}
 
+..  note::
+    The frontend image is part of the cached page and created once per cache entry. Do not combine it with
+    triggers that vary per visitor, see :ref:`trigger-page-cache`.
+
 ..  seealso::
 
     View the sources on GitHub:

@@ -6,6 +6,8 @@
          displayDetailsOnSkippedTests="true"
          bootstrap="vendor/autoload.php"
          colors="true"
+         failOnWarning="true"
+         failOnRisky="true"
 >
     <extensions>
         <bootstrap class="KonradMichalik\Ttt\TttExtension"/>
