@@ -62,6 +62,8 @@ class AbstractModifier
      * @param array<string, mixed> $configuration The configuration to validate
      *
      * @return bool True if configuration is valid, false otherwise
+     *
+     * @api
      */
     public function validateConfiguration(array $configuration): bool
     {

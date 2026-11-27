@@ -51,6 +51,36 @@ Since version 2.x, the extension uses the new :php:`Handler::addIndicator()` met
 environment indicator configuration instead of the old :php:`ConfigurationUtility::configByContext()`
 method.
 
+..  _migration-removed-api:
+
+Removed API after version 3.5
+=============================
+
+The following public API was removed. The extension itself did not use it.
+
+..  list-table::
+    :header-rows: 1
+    :widths: 45 55
+
+    * - Removed
+      - Use instead
+    * - :php:`Image\Factory\ImageHandlerFactory`, :php:`ImageHandlerFactoryInterface`,
+        :php:`ModifierFactory` and :php:`ModifierFactoryInterface`
+      - Create handlers and modifiers directly, for example :php:`new FaviconHandler()` or
+        :php:`new TextModifier([...])`. The lookup of a modifier by type string, for example
+        :php:`createModifier('text', [...])`, has no replacement. Keep your own mapping from the type
+        to the modifier class.
+    * - :php:`Configuration::EXT_NAME`
+      - No replacement. :php:`Configuration::EXT_KEY` holds the extension key.
+    * - :php:`ConfigurationStorage::hasCurrentIndicators()`
+      - :php:`$storage->getCurrentIndicators() !== []`
+    * - The :php:`$request` parameter of :php:`AbstractIndicator::__construct()` and
+        :php:`Favicon::__construct()`, and the protected :php:`$request` property of :php:`AbstractIndicator`
+      - Remove the argument, it was not used. Read the request from :php:`$GLOBALS['TYPO3_REQUEST']` if needed.
+
+:php:`ConfigurationUtility::configByContext()` is still present, but it only throws an exception.
+Use :php:`Handler::addIndicator()` instead. See the migration above.
+
 Configuration
 =============
 

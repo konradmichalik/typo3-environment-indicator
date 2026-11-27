@@ -67,11 +67,6 @@ class ConfigurationStorageTest extends TestCase
         self::assertEmpty($indicators);
     }
 
-    public function testHasCurrentIndicatorsReturnsFalseWhenNotSet(): void
-    {
-        self::assertFalse($this->configurationStorage->hasCurrentIndicators());
-    }
-
     public function testSetCurrentIndicator(): void
     {
         $this->configurationStorage->setCurrentIndicator('TestClass', ['config' => 'value']);
@@ -79,7 +74,6 @@ class ConfigurationStorageTest extends TestCase
         $indicators = $this->configurationStorage->getCurrentIndicators();
         self::assertArrayHasKey('TestClass', $indicators);
         self::assertSame(['config' => 'value'], $indicators['TestClass']);
-        self::assertTrue($this->configurationStorage->hasCurrentIndicators());
     }
 
     public function testMergeCurrentIndicatorWithExisting(): void
@@ -121,6 +115,6 @@ class ConfigurationStorageTest extends TestCase
         $this->configurationStorage->markResolved();
 
         self::assertTrue($this->configurationStorage->isResolved());
-        self::assertFalse($this->configurationStorage->hasCurrentIndicators());
+        self::assertSame([], $this->configurationStorage->getCurrentIndicators());
     }
 }

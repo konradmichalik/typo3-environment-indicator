@@ -38,6 +38,8 @@ interface ModifierInterface
      * @param array<string, mixed> $configuration The configuration to validate
      *
      * @return bool True if configuration is valid, false otherwise
+     *
+     * @api
      */
     public function validateConfiguration(array $configuration): bool;
 
@@ -47,6 +49,8 @@ interface ModifierInterface
      * @param array<string, mixed> $configuration The configuration to validate
      *
      * @return array{valid: bool, errors: array<int, string>} Array with 'valid' (bool) and 'errors' (array) keys
+     *
+     * @api
      */
     public function validateConfigurationWithErrors(array $configuration): array;
 }

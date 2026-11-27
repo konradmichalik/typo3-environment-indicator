@@ -25,8 +25,6 @@ class Configuration
 {
     final public const EXT_KEY = 'typo3_environment_indicator';
 
-    final public const EXT_NAME = 'Typo3EnvironmentIndicator';
-
     public static function addToolbarItems(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1740392103] = ContextItem::class;
