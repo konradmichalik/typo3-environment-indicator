@@ -235,7 +235,7 @@ class IpTest extends TestCase
     {
         // @phpstan-ignore-next-line disallowed.variable
         $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
-        $normalizedParams = $this->createStub(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRemoteAddress')->willReturn('203.0.113.7');
         $request = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
 
