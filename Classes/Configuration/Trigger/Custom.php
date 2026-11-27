@@ -51,27 +51,27 @@ class Custom implements TriggerInterface
             // @codeCoverageIgnoreStart
             // Unreachable: the str_contains() check above guarantees at least
             // one '::' occurrence, so explode() with limit 2 always yields 2 parts.
-            throw new InvalidArgumentException('Invalid static method format. Expected ClassName::methodName', 1726357767);
+            throw new InvalidArgumentException('Invalid static method format. Expected ClassName::methodName', 1795697891);
             // @codeCoverageIgnoreEnd
         }
 
         [$className, $methodName] = $parts;
 
         if (1 !== preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff\\\\]*$/', $className)) {
-            throw new InvalidArgumentException('Invalid class name format', 1726357767);
+            throw new InvalidArgumentException('Invalid class name format', 1795697892);
         }
 
         if (1 !== preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $methodName)) {
-            throw new InvalidArgumentException('Invalid method name format', 1726357767);
+            throw new InvalidArgumentException('Invalid method name format', 1795697893);
         }
 
         if (!class_exists($className) || !method_exists($className, $methodName)) {
-            throw new InvalidArgumentException('Class or method does not exist', 1726357767);
+            throw new InvalidArgumentException('Class or method does not exist', 1795697894);
         }
 
         $reflection = new ReflectionMethod($className, $methodName);
         if (!$reflection->isStatic() || !$reflection->isPublic()) {
-            throw new InvalidArgumentException('Method must be public and static', 1726357767);
+            throw new InvalidArgumentException('Method must be public and static', 1795697895);
         }
 
         $this->function = $function;
