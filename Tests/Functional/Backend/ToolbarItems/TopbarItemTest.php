@@ -41,12 +41,6 @@ class TopbarItemTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testCheckAccessReturnsTrueWhenApplicableInTestingContext(): void
     {
         $this->setTypo3ConfVars([

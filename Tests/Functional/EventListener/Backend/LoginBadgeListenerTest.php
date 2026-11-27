@@ -53,12 +53,6 @@ class LoginBadgeListenerTest extends FunctionalTestCase
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testBadgeFallsBackToApplicationContext(): void
     {
         $pageRenderer = $this->createMock(PageRenderer::class);

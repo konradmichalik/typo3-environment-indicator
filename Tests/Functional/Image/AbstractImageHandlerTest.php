@@ -87,7 +87,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         }
 
         parent::tearDown();
-        $this->restoreTypo3ConfVars();
     }
 
     public function testProcessReturnsOriginalPathWhenFileDoesNotExist(): void
