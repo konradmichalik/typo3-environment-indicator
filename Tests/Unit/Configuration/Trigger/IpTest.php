@@ -17,6 +17,9 @@ use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger\Ip;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\{ApplicationContext, Environment};
+use TYPO3\CMS\Core\Http\{NormalizedParams, ServerRequest};
 
 /**
  * IpTest.
@@ -35,10 +38,13 @@ class IpTest extends TestCase
         $this->originalRemoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
         // @phpstan-ignore-next-line disallowed.variable
         $_SERVER['REMOTE_ADDR'] = '192.168.1.1';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS'] = [];
+        Environment::initialize(new ApplicationContext('Testing'), true, true, '/tmp', '/tmp', '/tmp', '/tmp', '/tmp/index.php', 'UNIX');
     }
 
     protected function tearDown(): void
     {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS'], $_SERVER['HTTP_X_FORWARDED_FOR']);
         // Restore original value
         if ('' !== $this->originalRemoteAddr) {
             // @phpstan-ignore-next-line disallowed.variable
@@ -196,6 +202,80 @@ class IpTest extends TestCase
 
         $trigger = new Ip('192.168.1.1');
         self::assertFalse($trigger->check());
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function invalidMaskProvider(): iterable
+    {
+        yield 'ipv4 empty mask' => ['10.0.0.0/'];
+        yield 'ipv4 non-numeric mask' => ['10.0.0.0/abc'];
+        yield 'ipv4 negative mask' => ['192.168.1.1/-0'];
+        yield 'ipv4 fractional mask' => ['10.0.0.0/8.5'];
+        yield 'ipv4 signed mask' => ['10.0.0.0/+8'];
+        yield 'ipv4 mask with whitespace' => ['10.0.0.0/ 8'];
+        yield 'ipv4 mask with trailing newline' => ["10.0.0.0/8\n"];
+        yield 'ipv6 non-numeric mask' => ['::1/x'];
+        yield 'ipv6 empty mask' => ['2001:db8::/'];
+        yield 'ipv6 negative mask' => ['2001:db8::/-1'];
+        yield 'ipv6 fractional mask' => ['2001:db8::/32.0'];
+    }
+
+    #[DataProvider('invalidMaskProvider')]
+    public function testConstructorThrowsForMalformedMask(string $cidr): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1726357768);
+
+        new Ip($cidr);
+    }
+
+    public function testCheckUsesRemoteAddressOfNormalizedParams(): void
+    {
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        $normalizedParams = $this->createStub(NormalizedParams::class);
+        $normalizedParams->method('getRemoteAddress')->willReturn('203.0.113.7');
+        $request = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
+
+        $trigger = new class('203.0.113.7', $request) extends Ip {
+            public function __construct(string $ip, private readonly ServerRequestInterface $request)
+            {
+                parent::__construct($ip);
+            }
+
+            protected function getRequest(): ?ServerRequestInterface
+            {
+                return $this->request;
+            }
+        };
+
+        self::assertTrue($trigger->check());
+    }
+
+    public function testCheckResolvesForwardedAddressWithoutGlobalRequest(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS'] = ['reverseProxyIP' => '10.0.0.1', 'reverseProxyHeaderMultiValue' => 'first'];
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
+        // @phpstan-ignore-next-line disallowed.variable
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.7';
+
+        self::assertTrue((new Ip('203.0.113.7'))->check());
+        self::assertFalse((new Ip('10.0.0.1'))->check());
+    }
+
+    public function testCheckFallsBackToRemoteAddrWithoutNormalizedParams(): void
+    {
+        $trigger = new class('192.168.1.1') extends Ip {
+            protected function getRequest(): ?ServerRequestInterface
+            {
+                return new ServerRequest();
+            }
+        };
+
+        self::assertTrue($trigger->check());
     }
 
     /**
