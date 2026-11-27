@@ -25,15 +25,6 @@ use ReflectionClass;
  */
 class ViewFactoryHelperTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS'] = [
-            'SYS' => [
-                'Objects' => [],
-            ],
-        ];
-    }
-
     public function testRenderViewMethodIsStatic(): void
     {
         $reflection = new ReflectionClass(ViewFactoryHelper::class);
