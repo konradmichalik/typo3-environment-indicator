@@ -15,7 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Configuration\Indi
 
 use KonradMichalik\Ttt\Traits\ConfVarsSandbox;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
-use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, Backend, Cli, Frontend, General, Mail};
+use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\{AbstractIndicator, Backend, Cli, Favicon, Frontend, General, Mail};
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -47,6 +47,7 @@ class IndicatorDefaultsTest extends TestCase
             'Backend\Topbar' => [Backend\Topbar::class],
             'Backend\Widget' => [Backend\Widget::class],
             'Cli\Banner' => [Cli\Banner::class],
+            'Favicon' => [Favicon::class],
             'Frontend\Hint' => [Frontend\Hint::class],
             'Frontend\HttpHeader' => [Frontend\HttpHeader::class],
             'Frontend\Image' => [Frontend\Image::class],
