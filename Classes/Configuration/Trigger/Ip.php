@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Configuration\Trigger;
 
 use InvalidArgumentException;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 
 use function chr;
 use function count;
@@ -43,7 +45,7 @@ class Ip implements TriggerInterface
 
     public function check(): bool
     {
-        $currentIp = $_SERVER['REMOTE_ADDR'] ?? '';
+        $currentIp = $this->getClientIp();
 
         if (false === filter_var($currentIp, \FILTER_VALIDATE_IP)) {
             return false;
@@ -113,30 +115,56 @@ class Ip implements TriggerInterface
      */
     protected function validateIpFormat(string $ip): bool
     {
-        // Check if it's a CIDR notation
         if (str_contains($ip, '/')) {
-            $parts = explode('/', $ip);
-            if (2 !== count($parts)) {
-                return false;
-            }
+            return $this->validateCidrFormat($ip);
+        }
 
-            [$address, $mask] = $parts;
+        return false !== filter_var($ip, \FILTER_VALIDATE_IP);
+    }
 
-            // Validate mask range
-            $maskInt = (int) $mask;
-            if (false !== filter_var($address, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-                return $maskInt >= 0 && $maskInt <= 32;
-            }
+    protected function getRequest(): ?ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'] ?? null;
+    }
 
-            if (false !== filter_var($address, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-                return $maskInt >= 0 && $maskInt <= 128;
-            }
-
+    private function validateCidrFormat(string $cidr): bool
+    {
+        $parts = explode('/', $cidr);
+        if (2 !== count($parts)) {
             return false;
         }
 
-        // Check if it's a valid IP address
-        return false !== filter_var($ip, \FILTER_VALIDATE_IP);
+        [$address, $mask] = $parts;
+
+        if (1 !== preg_match('/^[0-9]+$/D', $mask)) {
+            return false;
+        }
+
+        $maskInt = (int) $mask;
+        if (false !== filter_var($address, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+            return $maskInt <= 32;
+        }
+
+        if (false !== filter_var($address, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+            return $maskInt <= 128;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolves the client address through TYPO3, which honours `reverseProxyIP`.
+     * Backend middlewares run before `$GLOBALS['TYPO3_REQUEST']` is set, so
+     * without a request the same resolution is applied to `$_SERVER`.
+     */
+    private function getClientIp(): string
+    {
+        $normalizedParams = $this->getRequest()?->getAttribute('normalizedParams');
+        if (!$normalizedParams instanceof NormalizedParams) {
+            $normalizedParams = NormalizedParams::createFromServerParams($_SERVER, $GLOBALS['TYPO3_CONF_VARS']['SYS'] ?? []);
+        }
+
+        return $normalizedParams->getRemoteAddress();
     }
 
     private function ipv4CidrMatch(string $ip, string $subnet, int $maskInt): bool
