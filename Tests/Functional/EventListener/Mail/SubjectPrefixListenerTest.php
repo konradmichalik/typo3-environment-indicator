@@ -151,7 +151,7 @@ class SubjectPrefixListenerTest extends FunctionalTestCase
 
     private function dispatch(Email $email): void
     {
-        $event = new BeforeMailerSentMessageEvent($this->createStub(MailerInterface::class), $email);
+        $event = new BeforeMailerSentMessageEvent(self::createStub(MailerInterface::class), $email);
         $this->get(EventDispatcherInterface::class)->dispatch($event);
     }
 }

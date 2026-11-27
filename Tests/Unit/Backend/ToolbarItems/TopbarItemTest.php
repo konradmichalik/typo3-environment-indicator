@@ -40,49 +40,49 @@ class TopbarItemTest extends TestCase
 {
     public function testConstructorWithExtensionConfiguration(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
         self::assertInstanceOf(TopbarItem::class, $topbarItem);
     }
 
     public function testCheckAccessReturnsFalseWhenFeatureDisabled(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
         self::assertFalse($topbarItem->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
         self::assertFalse($topbarItem->hasDropDown());
     }
 
     public function testGetDropDownReturnsEmptyString(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
-        self::assertEquals('', $topbarItem->getDropDown());
+        self::assertSame('', $topbarItem->getDropDown());
     }
 
     public function testGetAdditionalAttributesReturnsEmptyArray(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
-        self::assertEquals([], $topbarItem->getAdditionalAttributes());
+        self::assertSame([], $topbarItem->getAdditionalAttributes());
     }
 
     public function testGetIndexReturnsZero(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
-        self::assertEquals(0, $topbarItem->getIndex());
+        self::assertSame(0, $topbarItem->getIndex());
     }
 
     public function testImplementsToolbarItemInterface(): void
     {
-        $pageRenderer = $this->createStub(PageRenderer::class);
+        $pageRenderer = self::createStub(PageRenderer::class);
         $topbarItem = new TopbarItem(new ExtensionConfiguration(), $pageRenderer);
         self::assertInstanceOf(ToolbarItemInterface::class, $topbarItem);
     }

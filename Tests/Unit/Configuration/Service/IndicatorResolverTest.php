@@ -37,21 +37,21 @@ final class IndicatorResolverTest extends TestCase
 {
     public function testResolveIndicatorsReturnsCachedIndicators(): void
     {
-        $storage = $this->createStub(ConfigurationStorage::class);
+        $storage = self::createStub(ConfigurationStorage::class);
         $storage->method('isResolved')->willReturn(true);
         $storage->method('getCurrentIndicators')->willReturn([Favicon::class => ['color' => 'red']]);
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
         $result = $resolver->resolveIndicators();
 
-        self::assertEquals([Favicon::class => ['color' => 'red']], $result);
+        self::assertSame([Favicon::class => ['color' => 'red']], $result);
     }
 
     public function testResolveIndicatorsProcessesConfigurationsWhenNotCached(): void
     {
-        $indicator = $this->createStub(IndicatorInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
         $indicator->method('getConfiguration')->willReturn(['test' => 'value']);
 
         $configurations = [
@@ -69,7 +69,7 @@ final class IndicatorResolverTest extends TestCase
             ->method('mergeCurrentIndicator')
             ->with($indicator::class, ['test' => 'value']);
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
         $evaluator->method('evaluateTriggers')->willReturn(true);
 
         $storage->expects(self::once())->method('markResolved');
@@ -86,7 +86,7 @@ final class IndicatorResolverTest extends TestCase
         $storage->expects(self::never())->method('getConfigurations');
         $storage->expects(self::never())->method('markResolved');
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
 
@@ -95,8 +95,8 @@ final class IndicatorResolverTest extends TestCase
 
     public function testResolveIndicatorsSkipsConfigurationWhenTriggersDoNotPass(): void
     {
-        $indicator = $this->createStub(IndicatorInterface::class);
-        $trigger = $this->createStub(TriggerInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
+        $trigger = self::createStub(TriggerInterface::class);
 
         $configurations = [
             [
@@ -112,7 +112,7 @@ final class IndicatorResolverTest extends TestCase
         $storage->expects(self::never())
             ->method('mergeCurrentIndicator');
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
         $evaluator->method('evaluateTriggers')->willReturn(false);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
@@ -135,7 +135,7 @@ final class IndicatorResolverTest extends TestCase
         $storage->expects(self::never())
             ->method('mergeCurrentIndicator');
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
         $resolver->resolveIndicators();
@@ -143,7 +143,7 @@ final class IndicatorResolverTest extends TestCase
 
     public function testResolveIndicatorsHandlesExceptionInIndicatorProcessing(): void
     {
-        $indicator = $this->createStub(IndicatorInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
         $indicator->method('getConfiguration')->willThrowException(new Exception('Test exception'));
 
         $configurations = [
@@ -153,12 +153,12 @@ final class IndicatorResolverTest extends TestCase
             ],
         ];
 
-        $storage = $this->createStub(ConfigurationStorage::class);
+        $storage = self::createStub(ConfigurationStorage::class);
         $storage->method('isResolved')->willReturn(false);
         $storage->method('getConfigurations')->willReturn($configurations);
         $storage->method('getCurrentIndicators')->willReturn([]);
 
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
         $evaluator->method('evaluateTriggers')->willReturn(true);
 
         $logger = $this->createMock(LoggerInterface::class);
@@ -172,7 +172,7 @@ final class IndicatorResolverTest extends TestCase
         $resolver = new IndicatorResolver($storage, $evaluator, $logger);
         $result = $resolver->resolveIndicators();
 
-        self::assertEquals([], $result);
+        self::assertSame([], $result);
     }
 
     public function testInstanceColorOverridesActivePlainColorIndicators(): void
@@ -193,7 +193,7 @@ final class IndicatorResolverTest extends TestCase
                 $merged[$class][] = $configuration;
             });
 
-        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['color' => '#ff0000']));
+        $resolver = new IndicatorResolver($storage, self::createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['color' => '#ff0000']));
         $resolver->resolveIndicators();
 
         self::assertSame([['color' => '#ff0000']], $merged[Backend\Toolbar::class]);
@@ -203,7 +203,7 @@ final class IndicatorResolverTest extends TestCase
     public function testInstanceLabelReplacesImageIndicatorModifiersAndDerivesColor(): void
     {
         $current = [
-            Favicon::class => [$this->createStub(IndicatorInterface::class)],
+            Favicon::class => [self::createStub(IndicatorInterface::class)],
             Backend\Toolbar::class => ['color' => '#111111'],
         ];
 
@@ -230,14 +230,14 @@ final class IndicatorResolverTest extends TestCase
                 }),
             );
 
-        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1']));
+        $resolver = new IndicatorResolver($storage, self::createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1']));
         $resolver->resolveIndicators();
     }
 
     public function testInstanceLabelWithoutColorFallsBackToDefaultColorWhenNoneCanBeDerived(): void
     {
         $current = [
-            Favicon::class => [$this->createStub(IndicatorInterface::class)],
+            Favicon::class => [self::createStub(IndicatorInterface::class)],
         ];
 
         $storage = $this->createMock(ConfigurationStorage::class);
@@ -262,7 +262,7 @@ final class IndicatorResolverTest extends TestCase
                 }),
             );
 
-        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1']));
+        $resolver = new IndicatorResolver($storage, self::createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1']));
         $resolver->resolveIndicators();
     }
 
@@ -275,7 +275,7 @@ final class IndicatorResolverTest extends TestCase
         $storage->expects(self::never())->method('mergeCurrentIndicator');
         $storage->expects(self::never())->method('setCurrentIndicator');
 
-        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1', 'color' => '#ff0000']));
+        $resolver = new IndicatorResolver($storage, self::createStub(TriggerEvaluator::class), new NullLogger(), $this->createInstanceConfiguration(['label' => 'TEST 1', 'color' => '#ff0000']));
 
         self::assertSame([], $resolver->resolveIndicators());
     }
@@ -291,14 +291,14 @@ final class IndicatorResolverTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())->method('warning');
 
-        $resolver = new IndicatorResolver($storage, $this->createStub(TriggerEvaluator::class), $logger, $this->createInstanceConfiguration(['color' => 'red; injection']));
+        $resolver = new IndicatorResolver($storage, self::createStub(TriggerEvaluator::class), $logger, $this->createInstanceConfiguration(['color' => 'red; injection']));
         $resolver->resolveIndicators();
     }
 
     public function testValidateIndicatorsReturnsTrueForValidIndicators(): void
     {
-        $storage = $this->createStub(ConfigurationStorage::class);
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $storage = self::createStub(ConfigurationStorage::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
 
@@ -308,8 +308,8 @@ final class IndicatorResolverTest extends TestCase
 
     public function testValidateIndicatorsReturnsTrueForEmptyArray(): void
     {
-        $storage = $this->createStub(ConfigurationStorage::class);
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $storage = self::createStub(ConfigurationStorage::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
 
@@ -318,8 +318,8 @@ final class IndicatorResolverTest extends TestCase
 
     public function testValidateIndicatorsReturnsFalseForInvalidIndicators(): void
     {
-        $storage = $this->createStub(ConfigurationStorage::class);
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $storage = self::createStub(ConfigurationStorage::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
 
@@ -328,8 +328,8 @@ final class IndicatorResolverTest extends TestCase
 
     public function testValidateIndicatorsReturnsFalseWhenOneIndicatorIsInvalid(): void
     {
-        $storage = $this->createStub(ConfigurationStorage::class);
-        $evaluator = $this->createStub(TriggerEvaluator::class);
+        $storage = self::createStub(ConfigurationStorage::class);
+        $evaluator = self::createStub(TriggerEvaluator::class);
 
         $resolver = new IndicatorResolver($storage, $evaluator);
 
@@ -344,7 +344,7 @@ final class IndicatorResolverTest extends TestCase
      */
     private function createInstanceConfiguration(array $instance): ExtensionConfiguration
     {
-        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfiguration = self::createStub(ExtensionConfiguration::class);
         $extensionConfiguration->method('get')
             ->willReturnCallback(static fn (string $extension) => Configuration::EXT_KEY === $extension ? ['instance' => $instance] : null);
 

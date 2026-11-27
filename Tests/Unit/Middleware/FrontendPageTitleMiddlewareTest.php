@@ -187,6 +187,6 @@ final class FrontendPageTitleMiddlewareTest extends TestCase
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->method('handle')->willReturn($response);
 
-        return $middleware->process($this->createStub(ServerRequestInterface::class), $handler);
+        return $middleware->process(self::createStub(ServerRequestInterface::class), $handler);
     }
 }

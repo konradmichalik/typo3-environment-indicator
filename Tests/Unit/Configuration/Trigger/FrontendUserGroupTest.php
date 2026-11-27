@@ -45,7 +45,7 @@ class FrontendUserGroupTest extends TestCase
 
     public function testCheckReturnsFalseWhenNoFrontendUser(): void
     {
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturn(null);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
@@ -86,10 +86,10 @@ class FrontendUserGroupTest extends TestCase
      */
     private function setRequestWithFrontendUserGroupData(array $groupData): void
     {
-        $frontendUser = $this->createStub(FrontendUserAuthentication::class);
+        $frontendUser = self::createStub(FrontendUserAuthentication::class);
         $frontendUser->groupData = $groupData;
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturn($frontendUser);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }

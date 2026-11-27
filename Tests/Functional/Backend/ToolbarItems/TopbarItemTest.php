@@ -57,7 +57,7 @@ class TopbarItemTest extends FunctionalTestCase
             ]],
         ]);
 
-        self::assertTrue($this->createSubject($this->createStub(PageRenderer::class))->checkAccess());
+        self::assertTrue($this->createSubject(self::createStub(PageRenderer::class))->checkAccess());
     }
 
     public function testGetItemInjectsNoCssWhenNotConfigured(): void

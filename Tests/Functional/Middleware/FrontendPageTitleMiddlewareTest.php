@@ -72,7 +72,7 @@ class FrontendPageTitleMiddlewareTest extends FunctionalTestCase
             new HtmlResponse('<html><head><title>Home</title></head></html>'),
         );
 
-        $response = $middleware->process($this->createStub(ServerRequestInterface::class), $handler);
+        $response = $middleware->process(self::createStub(ServerRequestInterface::class), $handler);
 
         self::assertStringContainsString('<title>[Testing] Home</title>', (string) $response->getBody());
     }

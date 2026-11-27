@@ -48,9 +48,9 @@ class ViewFactoryHelperTest extends TestCase
         $parameters = $method->getParameters();
 
         self::assertCount(3, $parameters);
-        self::assertEquals('template', $parameters[0]->getName());
-        self::assertEquals('values', $parameters[1]->getName());
-        self::assertEquals('request', $parameters[2]->getName());
+        self::assertSame('template', $parameters[0]->getName());
+        self::assertSame('values', $parameters[1]->getName());
+        self::assertSame('request', $parameters[2]->getName());
         self::assertTrue($parameters[2]->allowsNull());
     }
 }

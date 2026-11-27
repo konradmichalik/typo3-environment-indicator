@@ -27,7 +27,7 @@ final class FaviconViewHelperTest extends TestCase
 {
     public function testRenderReturnsChildrenWhenRenderingContextIsNull(): void
     {
-        $viewHelper = new FaviconViewHelper($this->createStub(ExtensionConfiguration::class));
+        $viewHelper = new FaviconViewHelper(self::createStub(ExtensionConfiguration::class));
         $viewHelper->setRenderChildrenClosure(static fn () => 'typo3conf/ext/foo/favicon.ico');
 
         self::assertSame('typo3conf/ext/foo/favicon.ico', $viewHelper->render());

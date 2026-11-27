@@ -105,7 +105,7 @@ class ContextUtilityTest extends FunctionalTestCase
     private function writeSiteConfigurationYaml(string $identifier, int $rootPageId, ?string $websiteTitle): void
     {
         $configDir = Environment::getConfigPath().'/sites/'.$identifier;
-        @mkdir($configDir, 0777, true);
+        @mkdir($configDir, 0o777, true);
 
         $yaml = "rootPageId: {$rootPageId}\n";
         $yaml .= "base: /\n";

@@ -80,6 +80,6 @@ class EnvironmentIndicatorWidgetTest extends FunctionalTestCase
 
     private function createSubject(): EnvironmentIndicatorWidget
     {
-        return new EnvironmentIndicatorWidget($this->createStub(WidgetConfigurationInterface::class));
+        return new EnvironmentIndicatorWidget(self::createStub(WidgetConfigurationInterface::class));
     }
 }
