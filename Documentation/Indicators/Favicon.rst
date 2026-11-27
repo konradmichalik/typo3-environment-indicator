@@ -39,6 +39,10 @@ or can be handled by your own fluid template via the :code:`FaviconViewHelper`:
     {f:uri.resource(path:'EXT:your_extension/Resources/Public/Favicon/favicon.png') -> env:favicon()}
     {env:favicon(favicon:'EXT:your_extension/Resources/Public/Favicon/favicon.png')}
 
+..  note::
+    The frontend favicon is part of the cached page and created once per cache entry. Do not combine it with
+    triggers that vary per visitor, see :ref:`trigger-page-cache`.
+
 ..  seealso::
 
     View the sources on GitHub:
