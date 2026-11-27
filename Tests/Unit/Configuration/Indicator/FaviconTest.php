@@ -52,7 +52,7 @@ class FaviconTest extends TestCase
     {
         $config = ['color' => '#ff0000'];
         $favicon = new Favicon($config);
-        self::assertEquals($config, $favicon->getConfiguration());
+        self::assertSame($config, $favicon->getConfiguration());
     }
 
     public function testConstructorMergesDefaultsRegisteredForFavicon(): void
@@ -70,42 +70,42 @@ class FaviconTest extends TestCase
     {
         $config = ['color' => '#ff0000'];
         $favicon = new Favicon($config, Scope::Global);
-        self::assertEquals($config, $favicon->getConfiguration());
+        self::assertSame($config, $favicon->getConfiguration());
     }
 
     public function testGetConfigurationWithNoRequest(): void
     {
         $config = ['color' => '#ff0000'];
         $favicon = new Favicon($config, Scope::Backend);
-        self::assertEquals([], $favicon->getConfiguration());
+        self::assertSame([], $favicon->getConfiguration());
     }
 
     public function testGetConfigurationWithFrontendScope(): void
     {
         $config = ['color' => '#ff0000'];
         $favicon = new Favicon($config, Scope::Frontend);
-        self::assertEquals([], $favicon->getConfiguration());
+        self::assertSame([], $favicon->getConfiguration());
     }
 
     public function testGetConfigurationWithBackendScopeAndBackendRequest(): void
     {
         $config = ['color' => '#ff0000'];
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $favicon = new Favicon($config, Scope::Backend);
-        self::assertEquals($config, $favicon->getConfiguration());
+        self::assertSame($config, $favicon->getConfiguration());
     }
 
     public function testGetConfigurationWithFrontendScopeAndFrontendRequest(): void
     {
         $config = ['color' => '#ff0000'];
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $favicon = new Favicon($config, Scope::Frontend);
-        self::assertEquals($config, $favicon->getConfiguration());
+        self::assertSame($config, $favicon->getConfiguration());
     }
 }

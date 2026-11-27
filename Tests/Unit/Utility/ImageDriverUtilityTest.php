@@ -27,9 +27,9 @@ class ImageDriverUtilityTest extends TestCase
 {
     public function testConstantsAreCorrect(): void
     {
-        self::assertEquals('gd', ImageDriverUtility::IMAGE_DRIVER_GD);
-        self::assertEquals('imagick', ImageDriverUtility::IMAGE_DRIVER_IMAGICK);
-        self::assertEquals('vips', ImageDriverUtility::IMAGE_DRIVER_VIPS);
+        self::assertSame('gd', ImageDriverUtility::IMAGE_DRIVER_GD);
+        self::assertSame('imagick', ImageDriverUtility::IMAGE_DRIVER_IMAGICK);
+        self::assertSame('vips', ImageDriverUtility::IMAGE_DRIVER_VIPS);
     }
 
     public function testResolveDriverMethodIsStatic(): void

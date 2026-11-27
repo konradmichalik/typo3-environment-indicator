@@ -19,6 +19,9 @@ use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\Favicon;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\FaviconHandler;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\{OverlayModifier, ReplaceModifier, TriangleModifier};
+use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Throwable;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -84,7 +87,6 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         }
 
         parent::tearDown();
-        $this->restoreTypo3ConfVars();
     }
 
     public function testProcessReturnsOriginalPathWhenFileDoesNotExist(): void
@@ -103,6 +105,44 @@ class AbstractImageHandlerTest extends FunctionalTestCase
         $result = $handler->process($this->testImagePath);
 
         self::assertSame($this->testImagePath, $result);
+    }
+
+    public function testProcessReturnsOriginalPathAndLogsWarningWhenImageDriverIsUnavailable(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']['imageDriver'] = 'vips';
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())->method('warning')->with(
+            self::stringContains($this->testImagePath),
+            self::callback(static fn (array $context): bool => $context['exception'] instanceof RuntimeException),
+        );
+        $handler = new FaviconHandler();
+        $handler->setLogger($logger);
+
+        self::assertSame($this->testImagePath, $handler->process($this->testImagePath));
+    }
+
+    public function testProcessReturnsOriginalPathAndLogsWarningWhenSourceImageIsCorrupt(): void
+    {
+        $corruptPath = Environment::getPublicPath().'/typo3temp/assets/test-handler/test_corrupt.png';
+        file_put_contents($corruptPath, 'this is not a png');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::once())->method('warning')->with(
+            self::stringContains($corruptPath),
+            self::callback(static fn (array $context): bool => $context['exception'] instanceof Throwable),
+        );
+        $handler = new FaviconHandler();
+        $handler->setLogger($logger);
+
+        self::assertSame($corruptPath, $handler->process($corruptPath));
+    }
+
+    public function testProcessWorksWithoutLogger(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']['imageDriver'] = 'vips';
+
+        self::assertSame($this->testImagePath, (new FaviconHandler())->process($this->testImagePath));
     }
 
     public function testProcessReturnsOriginalPathWhenNoModifiersConfigured(): void

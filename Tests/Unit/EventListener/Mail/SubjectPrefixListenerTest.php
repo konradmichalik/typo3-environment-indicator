@@ -67,7 +67,7 @@ final class SubjectPrefixListenerTest extends TestCase
         $this->mockExtensionConfiguration(true);
         $message = new \Symfony\Component\Mime\RawMessage('raw');
 
-        $event = new BeforeMailerSentMessageEvent($this->createStub(MailerInterface::class), $message);
+        $event = new BeforeMailerSentMessageEvent(self::createStub(MailerInterface::class), $message);
 
         // Must not throw when the message is not a fully featured Email object.
         (new SubjectPrefixListener())($event);
@@ -84,6 +84,6 @@ final class SubjectPrefixListenerTest extends TestCase
 
     private function buildEvent(Email $email): BeforeMailerSentMessageEvent
     {
-        return new BeforeMailerSentMessageEvent($this->createStub(MailerInterface::class), $email);
+        return new BeforeMailerSentMessageEvent(self::createStub(MailerInterface::class), $email);
     }
 }

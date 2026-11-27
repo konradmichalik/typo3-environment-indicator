@@ -50,32 +50,31 @@ class OverlayModifier extends AbstractModifier implements ModifierInterface
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array{valid: bool, errors: array<int, string>}
      */
-    public function validateConfiguration(array $configuration): bool
+    public function validateConfigurationWithErrors(array $configuration): array
     {
-        if (!isset($configuration['path']) || !is_string($configuration['path'])) {
-            return false;
-        }
+        $errors = array_merge(
+            $this->requireString($configuration, 'path'),
+            $this->requireString($configuration, 'position'),
+        );
 
         if (!isset($configuration['size']) || !is_numeric($configuration['size'])
             || $configuration['size'] <= 0 || $configuration['size'] > 1) {
-            return false;
-        }
-
-        if (!isset($configuration['position']) || !is_string($configuration['position'])) {
-            return false;
+            $errors[] = 'Configuration key "size" is required and must be a number greater than 0 and at most 1';
         }
 
         $validPositions = ['top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'];
-        if (!in_array($configuration['position'], $validPositions, true)) {
-            return false;
+        if (isset($configuration['position']) && is_string($configuration['position']) && !in_array($configuration['position'], $validPositions, true)) {
+            $errors[] = 'Configuration key "position" must be one of: '.implode(', ', $validPositions);
         }
 
         if (!isset($configuration['padding']) || !is_numeric($configuration['padding'])
             || $configuration['padding'] < 0 || $configuration['padding'] > 1) {
-            return false;
+            $errors[] = 'Configuration key "padding" is required and must be a number between 0 and 1';
         }
 
-        return true;
+        return self::validationResult($errors);
     }
 }

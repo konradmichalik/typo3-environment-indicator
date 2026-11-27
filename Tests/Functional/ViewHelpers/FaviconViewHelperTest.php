@@ -47,12 +47,6 @@ class FaviconViewHelperTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testRenderReturnsUnmodifiedFaviconWhenFeatureDisabled(): void
     {
         self::assertSame(self::FAVICON_PATH, $this->createSubject()->render());

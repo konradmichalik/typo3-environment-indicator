@@ -8,11 +8,11 @@
 	],
 	"require-dev": {
 		"armin/editorconfig-cli": "^2.2.1",
-		"ergebnis/composer-normalize": "^2.57.0",
+		"ergebnis/composer-normalize": "^2.59.0",
 		"helmich/typo3-typoscript-lint": "^3.3",
-		"konradmichalik/php-cs-fixer-preset": "^0.3.0",
-		"konradmichalik/php-doc-block-header-fixer": "^0.4.0",
-		"konradmichalik/phpstan-typo3-preset": "^0.6.1",
+		"konradmichalik/php-cs-fixer-preset": "^0.4.0",
+		"konradmichalik/php-doc-block-header-fixer": "^0.5.0",
+		"konradmichalik/phpstan-typo3-preset": "^0.7.0",
 		"phpstan/phpstan-phpunit": "^1.0 || ^2.0",
 		"psr/http-message": "^1.0 || ^2.0",
 		"shipmonk/composer-dependency-analyser": "1.8.4",
@@ -61,6 +61,7 @@
 		"lint:composer": "@fix:composer --dry-run",
 		"lint:editorconfig": "ec --git-only",
 		"lint:php": "@fix:php --dry-run",
+		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml --fail-on-warnings",
 		"migration": [
 			"@migration:rector"
 		],

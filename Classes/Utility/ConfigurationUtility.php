@@ -55,6 +55,6 @@ class ConfigurationUtility
         ?array $backendLogoModifierConfiguration = [],
         ?array $globalImageModifierConfiguration = [],
     ): void {
-        throw new Exception(sprintf('The "%s" method is deprecated and no longer support. Use the "%s" method instead. See the documentation for the correct usage.', __METHOD__, Configuration\Handler::class.'::addIndicator'), 5404480452);
+        throw new Exception(sprintf('The "%s" method is deprecated and no longer support. Use the "%s" method instead. See the documentation for the correct usage.', __METHOD__, Configuration\Handler::class.'::addIndicator'), 1795766165);
     }
 }

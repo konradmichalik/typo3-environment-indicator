@@ -39,6 +39,10 @@ or can be handled by your own fluid template via the :code:`FaviconViewHelper`:
     {f:uri.resource(path:'EXT:your_extension/Resources/Public/Favicon/favicon.png') -> env:favicon()}
     {env:favicon(favicon:'EXT:your_extension/Resources/Public/Favicon/favicon.png')}
 
+..  note::
+    The frontend favicon is part of the cached page and created once per cache entry. Do not combine it with
+    triggers that vary per visitor, see :ref:`trigger-page-cache`.
+
 ..  seealso::
 
     View the sources on GitHub:
@@ -56,12 +60,14 @@ For the **backend**, the favicon will be fetched by the extension configuration 
 
     Favicon Examples
 
-..  warning::
-    SVG favicons (and backend logos) are rasterized to PNG before modification.
-    During rasterization, embedded :code:`<image>` references inside the SVG are
-    resolved and loaded. Only use SVG source files from trusted locations as
-    indicator base images — an untrusted SVG could reference arbitrary local or
-    remote resources.
+..  note::
+    SVG source images are rasterized to PNG before modification. This applies to favicons, backend logos and the
+    replacement image of the :code:`ReplaceModifier`. The raster size is limited to 1024 px on the longest edge,
+    keeping the aspect ratio. Raster images embedded as :code:`data:` URIs work.
+
+    An SVG is not rasterized if it cannot be parsed, if it has an :code:`<image>` that points to a file or a URL, or if
+    it embeds another SVG or a malformed data URI. The original image is used instead and no indicator is applied. For
+    the replacement image of a :code:`ReplaceModifier` the replacement is skipped, the other modifiers still apply.
 
 ..  _favicon-scope:
 

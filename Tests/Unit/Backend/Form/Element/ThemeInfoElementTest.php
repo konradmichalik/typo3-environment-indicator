@@ -54,7 +54,7 @@ final class ThemeInfoElementTest extends TestCase
         // which the Unit test bootstrap does not run.
         defined('LF') || define('LF', chr(10));
 
-        $languageService = $this->createStub(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $languageService->method('sL')->willReturn('Theme info message');
         $GLOBALS['LANG'] = $languageService;
     }
@@ -96,7 +96,7 @@ final class ThemeInfoElementTest extends TestCase
 
     private function mockTypo3Version(int $majorVersion): void
     {
-        $version = $this->createStub(Typo3Version::class);
+        $version = self::createStub(Typo3Version::class);
         $version->method('getMajorVersion')->willReturn($majorVersion);
         GeneralUtility::addInstance(Typo3Version::class, $version);
     }

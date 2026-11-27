@@ -36,15 +36,15 @@ class HandlerTest extends TestCase
 
         Handler::addIndicator([], []);
 
-        self::assertEquals([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
+        self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
     }
 
     public function testAddIndicatorWithTriggerAndIndicator(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
 
-        $trigger = $this->createStub(TriggerInterface::class);
-        $indicator = $this->createStub(IndicatorInterface::class);
+        $trigger = self::createStub(TriggerInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
 
         Handler::addIndicator([$trigger], [$indicator]);
 
@@ -64,7 +64,7 @@ class HandlerTest extends TestCase
 
         $result = Handler::resolveIndicators();
 
-        self::assertEquals([], $result);
+        self::assertSame([], $result);
     }
 
     public function testResolveIndicatorsWithExistingCurrent(): void
@@ -74,7 +74,7 @@ class HandlerTest extends TestCase
 
         $result = Handler::resolveIndicators();
 
-        self::assertEquals($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     public function testResolveIndicatorsWithFailingTrigger(): void
@@ -94,7 +94,7 @@ class HandlerTest extends TestCase
 
         $result = Handler::resolveIndicators();
 
-        self::assertEquals([], $result);
+        self::assertSame([], $result);
     }
 
     public function testResolveIndicatorsWithPassingTrigger(): void
@@ -114,7 +114,7 @@ class HandlerTest extends TestCase
 
         $result = Handler::resolveIndicators();
 
-        self::assertEquals([$indicator::class => ['test' => 'value']], $result);
+        self::assertSame([$indicator::class => ['test' => 'value']], $result);
     }
 
     public function testAddIndicatorWithInvalidTriggers(): void
@@ -122,32 +122,32 @@ class HandlerTest extends TestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
 
         $invalidTrigger = new stdClass();
-        $indicator = $this->createStub(IndicatorInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
 
         /* @phpstan-ignore argument.type */
         Handler::addIndicator([$invalidTrigger], [$indicator]);
 
-        self::assertEquals([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
+        self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
     }
 
     public function testAddIndicatorWithInvalidIndicators(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
 
-        $trigger = $this->createStub(TriggerInterface::class);
+        $trigger = self::createStub(TriggerInterface::class);
         $invalidIndicator = new stdClass();
 
         /* @phpstan-ignore argument.type */
         Handler::addIndicator([$trigger], [$invalidIndicator]);
 
-        self::assertEquals([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
+        self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration']);
     }
 
     public function testAddIndicatorWithOnlyTriggers(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
 
-        $trigger = $this->createStub(TriggerInterface::class);
+        $trigger = self::createStub(TriggerInterface::class);
 
         Handler::addIndicator([$trigger], []);
 
@@ -158,7 +158,7 @@ class HandlerTest extends TestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['configuration'] = [];
 
-        $indicator = $this->createStub(IndicatorInterface::class);
+        $indicator = self::createStub(IndicatorInterface::class);
 
         Handler::addIndicator([], [$indicator]);
 

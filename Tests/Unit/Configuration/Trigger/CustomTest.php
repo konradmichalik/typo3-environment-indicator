@@ -76,6 +76,7 @@ class CustomTest extends TestCase
     public function testConstructorThrowsForInvalidClassName(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1795697892);
         $this->expectExceptionMessage('Invalid class name format');
 
         new Custom('123InvalidClass::method');
@@ -84,6 +85,7 @@ class CustomTest extends TestCase
     public function testConstructorThrowsForInvalidMethodName(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1795697893);
         $this->expectExceptionMessage('Invalid method name format');
 
         new Custom('ValidClass::123invalidMethod');
@@ -92,6 +94,7 @@ class CustomTest extends TestCase
     public function testConstructorThrowsForNonExistentClass(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1795697894);
         $this->expectExceptionMessage('Class or method does not exist');
 
         new Custom('NonExistentClassXyz123::someMethod');
@@ -100,6 +103,7 @@ class CustomTest extends TestCase
     public function testConstructorThrowsForNonStaticMethod(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1795697895);
         $this->expectExceptionMessage('Method must be public and static');
 
         new Custom(self::class.'::nonStaticTestMethod');

@@ -29,11 +29,6 @@ class IndicatorDefaultsTest extends TestCase
 {
     use ConfVarsSandbox;
 
-    protected function tearDown(): void
-    {
-        $this->restoreTypo3ConfVars();
-    }
-
     /**
      * @return array<string, array{class-string<AbstractIndicator>}>
      */

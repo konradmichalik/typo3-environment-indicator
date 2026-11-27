@@ -46,12 +46,6 @@ class ImageDriverUtilityTest extends FunctionalTestCase
         $this->setTypo3ConfVars(['EXTENSIONS' => [Configuration::EXT_KEY => []]]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testGetImageDriverConfigurationReturnsGdWhenNotConfigured(): void
     {
         self::assertSame(ImageDriverUtility::IMAGE_DRIVER_GD, ImageDriverUtility::getImageDriverConfiguration());

@@ -42,12 +42,6 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testHeaderIsAddedWithResolvedApplicationContext(): void
     {
         $this->configureHttpHeader(true, ['name' => 'X-TYPO3-Environment', 'value' => '%context%']);
@@ -259,6 +253,6 @@ class ResponseHeadersMiddlewareTest extends FunctionalTestCase
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->method('handle')->willReturn($response ?? new HtmlResponse('<html lang="en"></html>', 200, []));
 
-        return (new ResponseHeadersMiddleware())->process($this->createStub(ServerRequestInterface::class), $handler);
+        return (new ResponseHeadersMiddleware())->process(self::createStub(ServerRequestInterface::class), $handler);
     }
 }

@@ -48,6 +48,6 @@ class TechnicalContextTypoScriptConditionProviderTest extends TestCase
 
         self::assertIsArray($providers);
         self::assertCount(1, $providers);
-        self::assertEquals(TechnicalContextConditionFunctionsProvider::class, $providers[0]);
+        self::assertSame(TechnicalContextConditionFunctionsProvider::class, $providers[0]);
     }
 }
