@@ -30,14 +30,14 @@ class GeneralHelperTest extends TestCase
 {
     public function testSupportFormatWithIco(): void
     {
-        $manager = $this->createStub(ImageManagerInterface::class);
+        $manager = self::createStub(ImageManagerInterface::class);
         $result = GeneralHelper::supportFormat($manager, 'ico');
         self::assertTrue($result);
     }
 
     public function testSupportFormatWithSvg(): void
     {
-        $manager = $this->createStub(ImageManagerInterface::class);
+        $manager = self::createStub(ImageManagerInterface::class);
         $result = GeneralHelper::supportFormat($manager, 'svg');
         self::assertTrue($result);
     }
@@ -46,7 +46,7 @@ class GeneralHelperTest extends TestCase
     {
         if (!method_exists(ImageManagerInterface::class, 'driver')) {
             // intervention/image v4 removed driver() from interface — supportFormat() returns true as fallback
-            $manager = $this->createStub(ImageManagerInterface::class);
+            $manager = self::createStub(ImageManagerInterface::class);
             self::assertTrue(GeneralHelper::supportFormat($manager, 'jpg'));
 
             return;
@@ -71,7 +71,7 @@ class GeneralHelperTest extends TestCase
     {
         if (!method_exists(ImageManagerInterface::class, 'driver')) {
             // intervention/image v4 removed driver() from interface — supportFormat() returns true as fallback
-            $manager = $this->createStub(ImageManagerInterface::class);
+            $manager = self::createStub(ImageManagerInterface::class);
             self::assertTrue(GeneralHelper::supportFormat($manager, 'unknown'));
 
             return;
@@ -113,6 +113,6 @@ class GeneralHelperTest extends TestCase
         $expected = ['test' => 'value'];
 
         $result = GeneralHelper::getIndicatorConfiguration();
-        self::assertEquals($expected, $result);
+        self::assertSame($expected, $result);
     }
 }

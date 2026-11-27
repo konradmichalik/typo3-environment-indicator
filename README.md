@@ -137,7 +137,7 @@ Indicators marked **(opt-in)** are not part of the default configuration presets
 
 | Version | TYPO3       | PHP          |
 |---------|-------------|--------------|
-| 3.x     | 13.4 - 14.x | 8.2 - 8.5    |
+| 3.x     | 13.4 - 14.x | 8.2 - 8.6    |
 | 2.x     | 11.5 - 13.4 | 8.1 - 8.4    |
 
 ### Composer

@@ -41,12 +41,6 @@ class TopbarItemTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testCheckAccessReturnsTrueWhenApplicableInTestingContext(): void
     {
         $this->setTypo3ConfVars([
@@ -57,7 +51,7 @@ class TopbarItemTest extends FunctionalTestCase
             ]],
         ]);
 
-        self::assertTrue($this->createSubject($this->createStub(PageRenderer::class))->checkAccess());
+        self::assertTrue($this->createSubject(self::createStub(PageRenderer::class))->checkAccess());
     }
 
     public function testGetItemInjectsNoCssWhenNotConfigured(): void

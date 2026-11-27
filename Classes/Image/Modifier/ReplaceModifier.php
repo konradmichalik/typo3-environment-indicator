@@ -18,8 +18,6 @@ use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\{ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use function is_string;
-
 /**
  * ReplaceModifier.
  *
@@ -50,14 +48,12 @@ class ReplaceModifier extends AbstractModifier implements ModifierInterface
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array{valid: bool, errors: array<int, string>}
      */
-    public function validateConfiguration(array $configuration): bool
+    public function validateConfigurationWithErrors(array $configuration): array
     {
-        if (!isset($configuration['path']) || !is_string($configuration['path'])) {
-            return false;
-        }
-
-        return true;
+        return self::validationResult($this->requireString($configuration, 'path'));
     }
 
     /**

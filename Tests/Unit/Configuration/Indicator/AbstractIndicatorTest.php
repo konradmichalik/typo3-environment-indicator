@@ -32,7 +32,7 @@ class AbstractIndicatorTest extends TestCase
     {
         $config = ['key' => 'value'];
         $indicator = new ConcreteIndicator($config);
-        self::assertEquals($config, $indicator->getConfiguration());
+        self::assertSame($config, $indicator->getConfiguration());
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => [
@@ -45,10 +45,10 @@ class AbstractIndicatorTest extends TestCase
 
         $expected = [
             'global' => 'value',
-            'local' => 'value',
             'override' => 'local',
+            'local' => 'value',
         ];
-        self::assertEquals($expected, $indicator->getConfiguration());
+        self::assertSame($expected, $indicator->getConfiguration());
     }
 
     #[WithTypo3ConfVars(['EXTCONF' => [Configuration::EXT_KEY => ['defaults' => 'not an array']]])]
@@ -56,7 +56,7 @@ class AbstractIndicatorTest extends TestCase
     {
         $config = ['key' => 'value'];
         $indicator = new ConcreteIndicator($config);
-        self::assertEquals($config, $indicator->getConfiguration());
+        self::assertSame($config, $indicator->getConfiguration());
     }
 }
 

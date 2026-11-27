@@ -41,9 +41,9 @@ final class BackendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new BackendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -59,9 +59,9 @@ final class BackendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new BackendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -90,9 +90,9 @@ final class BackendFaviconMiddlewareTest extends TestCase
 
         $middleware = new BackendFaviconMiddleware($extConfigMock);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())->method('handle')->willReturn($response);
 
@@ -126,9 +126,9 @@ final class BackendFaviconMiddlewareTest extends TestCase
 
         $middleware = new BackendFaviconMiddleware($extConfigMock);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())->method('handle')->willReturn($response);
 

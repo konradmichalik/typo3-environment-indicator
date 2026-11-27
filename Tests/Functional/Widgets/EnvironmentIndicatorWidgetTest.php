@@ -40,12 +40,6 @@ class EnvironmentIndicatorWidgetTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testRenderWidgetContentUsesDefaultsWhenNotConfigured(): void
     {
         $result = $this->createSubject()->renderWidgetContent();
@@ -80,6 +74,6 @@ class EnvironmentIndicatorWidgetTest extends FunctionalTestCase
 
     private function createSubject(): EnvironmentIndicatorWidget
     {
-        return new EnvironmentIndicatorWidget($this->createStub(WidgetConfigurationInterface::class));
+        return new EnvironmentIndicatorWidget(self::createStub(WidgetConfigurationInterface::class));
     }
 }

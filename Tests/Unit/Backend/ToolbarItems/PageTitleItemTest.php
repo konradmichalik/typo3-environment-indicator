@@ -115,6 +115,6 @@ class PageTitleItemTest extends TestCase
 
     private function buildItem(?PageRenderer $pageRenderer = null): PageTitleItem
     {
-        return new PageTitleItem(new ExtensionConfiguration(), $pageRenderer ?? $this->createStub(PageRenderer::class));
+        return new PageTitleItem(new ExtensionConfiguration(), $pageRenderer ?? self::createStub(PageRenderer::class));
     }
 }

@@ -16,6 +16,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 use InvalidArgumentException;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration;
 
+use function is_string;
 use function sprintf;
 
 /**
@@ -83,6 +84,33 @@ class AbstractModifier
             'valid' => true,
             'errors' => [],
         ];
+    }
+
+    /**
+     * @param array<int, string> $errors
+     *
+     * @return array{valid: bool, errors: array<int, string>}
+     */
+    protected static function validationResult(array $errors): array
+    {
+        return [
+            'valid' => [] === $errors,
+            'errors' => $errors,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $configuration
+     *
+     * @return array<int, string>
+     */
+    protected function requireString(array $configuration, string $key): array
+    {
+        if (!isset($configuration[$key])) {
+            return [sprintf('Missing required configuration key: %s', $key)];
+        }
+
+        return is_string($configuration[$key]) ? [] : [sprintf('Configuration key "%s" must be a string', $key)];
     }
 
     /**

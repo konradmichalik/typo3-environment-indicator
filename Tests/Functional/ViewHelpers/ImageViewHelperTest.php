@@ -42,12 +42,6 @@ class ImageViewHelperTest extends FunctionalTestCase
         'typo3_environment_indicator',
     ];
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testRenderReturnsUnmodifiedImageWhenFeatureDisabled(): void
     {
         self::assertSame(self::IMAGE_PATH, $this->createSubject()->render());

@@ -53,12 +53,6 @@ class BannerListenerTest extends FunctionalTestCase
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->restoreTypo3ConfVars();
-    }
-
     public function testBannerFallsBackToApplicationContext(): void
     {
         $output = new BufferedOutput();
