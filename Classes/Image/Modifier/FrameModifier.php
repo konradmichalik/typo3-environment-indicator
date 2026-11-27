@@ -16,8 +16,6 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier;
 use Intervention\Image\Interfaces\ImageInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\ImageManagerHelper;
 
-use function is_string;
-
 /**
  * FrameModifier.
  *
@@ -32,25 +30,25 @@ class FrameModifier extends AbstractModifier implements ModifierInterface
         $height = $image->height();
 
         $borderSize = $this->configuration['borderSize'] ?? 5;
-        $borderColor = $this->configuration['color'] ?? 'black';
+        $borderColor = $this->configuration['color'];
 
         ImageManagerHelper::drawRectangle($image, 0, 0, $width, $height, $borderColor, $borderSize);
     }
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array{valid: bool, errors: array<int, string>}
      */
-    public function validateConfiguration(array $configuration): bool
+    public function validateConfigurationWithErrors(array $configuration): array
     {
-        if (!isset($configuration['color']) || !is_string($configuration['color'])) {
-            return false;
-        }
+        $errors = $this->requireString($configuration, 'color');
 
         if (isset($configuration['borderSize'])
             && (!is_numeric($configuration['borderSize']) || $configuration['borderSize'] < 0)) {
-            return false;
+            $errors[] = 'Configuration key "borderSize" must be a number of at least 0';
         }
 
-        return true;
+        return self::validationResult($errors);
     }
 }

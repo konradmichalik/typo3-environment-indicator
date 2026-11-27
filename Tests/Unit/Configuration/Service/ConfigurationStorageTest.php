@@ -41,7 +41,7 @@ class ConfigurationStorageTest extends TestCase
 
         $configurations = $this->configurationStorage->getConfigurations();
         self::assertCount(1, $configurations);
-        self::assertEquals($configuration, $configurations[0]);
+        self::assertSame($configuration, $configurations[0]);
     }
 
     public function testGetConfigurationsReturnsEmptyArrayWhenNotSet(): void
@@ -78,7 +78,7 @@ class ConfigurationStorageTest extends TestCase
 
         $indicators = $this->configurationStorage->getCurrentIndicators();
         self::assertArrayHasKey('TestClass', $indicators);
-        self::assertEquals(['config' => 'value'], $indicators['TestClass']);
+        self::assertSame(['config' => 'value'], $indicators['TestClass']);
         self::assertTrue($this->configurationStorage->hasCurrentIndicators());
     }
 
@@ -89,7 +89,7 @@ class ConfigurationStorageTest extends TestCase
 
         $indicators = $this->configurationStorage->getCurrentIndicators();
         self::assertArrayHasKey('TestClass', $indicators);
-        self::assertEquals([
+        self::assertSame([
             'config1' => 'value1',
             'config2' => 'value2',
         ], $indicators['TestClass']);
@@ -101,7 +101,7 @@ class ConfigurationStorageTest extends TestCase
 
         $indicators = $this->configurationStorage->getCurrentIndicators();
         self::assertArrayHasKey('TestClass', $indicators);
-        self::assertEquals(['config' => 'value'], $indicators['TestClass']);
+        self::assertSame(['config' => 'value'], $indicators['TestClass']);
     }
 
     public function testIsResolvedReturnsFalseWhenNotSet(): void

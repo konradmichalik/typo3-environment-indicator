@@ -22,7 +22,6 @@ use RuntimeException;
 
 use function array_key_exists;
 use function assert;
-use function is_string;
 use function sprintf;
 
 /**
@@ -61,26 +60,24 @@ class ColorizeModifier extends AbstractModifier implements ModifierInterface
 
     /**
      * @param array<string, mixed> $configuration
+     *
+     * @return array{valid: bool, errors: array<int, string>}
      */
-    public function validateConfiguration(array $configuration): bool
+    public function validateConfigurationWithErrors(array $configuration): array
     {
-        if (!isset($configuration['color']) || !is_string($configuration['color'])) {
-            return false;
-        }
+        $errors = $this->requireString($configuration, 'color');
 
         if (isset($configuration['opacity'])
             && (!is_numeric($configuration['opacity']) || $configuration['opacity'] < 0 || $configuration['opacity'] > 1)) {
-            return false;
+            $errors[] = 'Configuration key "opacity" must be a number between 0 and 1';
         }
 
-        if (isset($configuration['brightness']) && !is_numeric($configuration['brightness'])) {
-            return false;
+        foreach (['brightness', 'contrast'] as $key) {
+            if (isset($configuration[$key]) && !is_numeric($configuration[$key])) {
+                $errors[] = sprintf('Configuration key "%s" must be numeric', $key);
+            }
         }
 
-        if (isset($configuration['contrast']) && !is_numeric($configuration['contrast'])) {
-            return false;
-        }
-
-        return true;
+        return self::validationResult($errors);
     }
 }
