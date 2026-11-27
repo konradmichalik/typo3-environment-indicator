@@ -6,7 +6,9 @@
 Example
 =======================
 
-The following configuration is also the default configuration. This shall show the usage of the extension.
+The following configuration is a simplified version of the default configuration. It shows the usage of the extension.
+The default configuration additionally registers the console, page title, backend login, backend theme, CLI banner and
+mail subject prefix indicators, depending on the context.
 
 ..  code-block:: php
     :caption: ext_localconf.php

@@ -10,7 +10,7 @@
 Backend toolbar item
 =======================
 
-The backend toolbar item will show the current project version and environment.
+The backend toolbar item will show the current application context.
 
 ..  figure:: /Images/backend-toolbar-item.png
     :alt: Backend toolbar item

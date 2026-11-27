@@ -37,7 +37,7 @@ or can be handled by your own fluid template via the :code:`FaviconViewHelper`:
         data-namespace-typo3-fluid="true">
 
     {f:uri.resource(path:'EXT:your_extension/Resources/Public/Favicon/favicon.png') -> env:favicon()}
-    {env:favicon(favicon:'EXT:your_extension/Resources/Public/Favicon/favicon.png')}
+    <env:favicon>{f:uri.resource(path:'EXT:your_extension/Resources/Public/Favicon/favicon.png')}</env:favicon>
 
 ..  note::
     The frontend favicon is part of the cached page and created once per cache entry. Do not combine it with
@@ -68,6 +68,13 @@ For the **backend**, the favicon will be fetched by the extension configuration 
     An SVG is not rasterized if it cannot be parsed, if it has an :code:`<image>` that points to a file or a URL, or if
     it embeds another SVG or a malformed data URI. The original image is used instead and no indicator is applied. For
     the replacement image of a :code:`ReplaceModifier` the replacement is skipped, the other modifiers still apply.
+
+Processed images are written to :code:`typo3temp/assets/favicons/`. Set the :code:`_path` key in the defaults of
+:code:`Indicator\Favicon` to use another folder. The backend logo and the frontend image use
+:code:`typo3temp/assets/images/`.
+
+..  note::
+    The GD driver cannot read :code:`.ico` files. They are converted to PNG before they are modified.
 
 ..  _favicon-scope:
 
@@ -114,8 +121,10 @@ Available scope values:
 Modifiers
 **********
 
-The favicon modification configuration can be found in
-:code:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['typo3_environment_indicator']`.
+The default configuration of the modifiers is stored in
+:code:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['typo3_environment_indicator']['defaults']`, keyed by the modifier class.
+The configuration you pass to a modifier is merged with these defaults. Keys without a default are required, a missing
+or invalid key throws an :code:`InvalidArgumentException`.
 
 Add a configured favicon modifier to the desired environment (e.g. :code:`Testing`) in your :code:`ext_localconf.php`:
 
@@ -276,7 +285,8 @@ Adds a circle indicator to the favicon.
 Additional optional configuration keys:
 
 - :code:`size` (float): The percentage size of the circle. Default is :code:`0.4`.
-- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top center`, :code:`top right`, :code:`center left`, :code:`center`, :code:`center right`, :code:`bottom left`, :code:`bottom center`, :code:`bottom right`.
+- :code:`position` (string): The position of the circle. Default is :code:`bottom right`. Possible values are :code:`top left`, :code:`top right`, :code:`bottom left` and :code:`bottom right`. The other
+  positions known from the :code:`OverlayModifier` pass the validation, but are drawn at :code:`bottom right`.
 - :code:`padding` (float): The percentage padding of the circle. Default is :code:`0.1`.
 
 ..  seealso::
@@ -438,8 +448,8 @@ Colorize the original favicon with a specific color regarding the environment.
 Additional optional configuration keys:
 
 - :code:`opacity` (float): Controls the opacity of the colorization. Default is :code:`1`.
-- :code:`brightness` (integer): Controls the brightness of the colorization. Possible values are from :code:`-100` to :code:`100`.
-- :code:`contrast` (integer): Controls the contrast of the colorization. Possible values are from :code:`-100` to :code:`100`.
+- :code:`brightness` (integer): Controls the brightness of the colorization. Passed to Intervention Image, which expects values from :code:`-100` to :code:`100`.
+- :code:`contrast` (integer): Controls the contrast of the colorization. Passed to Intervention Image, which expects values from :code:`-100` to :code:`100`.
 
 ..  seealso::
 

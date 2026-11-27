@@ -53,11 +53,12 @@ Additional optional configuration keys:
   current application context.
 - :code:`header` (string): If set, an additional mail header with this name and
   the application context as value is added (e.g. :code:`X-Environment: Testing`)
-  for filtering/tooling. Default is empty (no header is added).
+  for filtering/tooling. Default is empty (no header is added). An existing header
+  with the same name is not overwritten. Only :code:`Email` messages are handled.
 
 ..  note::
     The prefix is only applied once. When a message is processed multiple times
-    (e.g. queued or retried), a subject that already starts with the resolved
+    (e.g. queued or retried), a subject that already contains the resolved
     prefix is left untouched.
 
 ..  note::

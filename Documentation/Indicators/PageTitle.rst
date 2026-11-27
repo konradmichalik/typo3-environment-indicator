@@ -66,8 +66,8 @@ Additional optional configuration keys:
 ..  note::
     SEO extensions that also manipulate the title are unaffected: the frontend
     decoration runs on the final rendered title, after the PageTitle API. If
-    you deliberately enable the indicator in production (see above), this
-    still applies there.
+    you deliberately enable the indicator in production, this still applies
+    there.
 
 The page title indicator can be disabled per context via the
 :ref:`extension configuration <extconf-frontend.pageTitle>`
