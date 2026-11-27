@@ -81,6 +81,7 @@ CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to
 - PHP CS Fixer with `konradmichalik/php-cs-fixer-preset`, config in `Tests/CGL/.php-cs-fixer.php`. The fixer generates the license header, run `ddev cgl fix:php`
 - `declare(strict_types=1);` in every PHP file
 - PHPStan level 8 with the TYPO3 preset, config and baseline in `Tests/CGL/`
+- Dead code detection through `shipmonk/dead-code-detector` and `konradmichalik/phpstan-typo3-dead-code`, part of `ddev cgl sca`. Mark public API with `@api` in the PHPDoc, the detector honours it
 - Rector config in `Tests/CGL/rector.php`
 - EditorConfig is enforced via `.editorconfig`
 - `Tests/CGL/composer-dependency-analyser.php` configures the dependency check, run it with `ddev cgl analyze`

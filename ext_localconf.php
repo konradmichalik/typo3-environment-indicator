@@ -99,7 +99,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][Configuration::EXT_KEY]['defaults'] = [
 ];
 
 // Presets
-if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']['defaultConfiguration'] ?? false) {
+if ((bool) ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][Configuration::EXT_KEY]['general']['defaultConfiguration'] ?? false)) {
     Configuration\Handler::addIndicator(
         triggers: [
             new Trigger\ApplicationContext('Development*'),
