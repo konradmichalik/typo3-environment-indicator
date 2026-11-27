@@ -33,12 +33,12 @@ lib.technicalContext = FLUIDTEMPLATE
 lib.technicalContext {
     file = EXT:typo3_environment_indicator/Resources/Private/Templates/TechnicalContextHint.html
     variables {
-    context < lib.applicationContextTitle
-    color < lib.applicationContextColor
-    title < lib.websiteTitle
-    description < lib.applicationContextDescription
-    textColor < lib.applicationContextTextColor
-    positionClass < lib.applicationContextPositionClass
+        context < lib.applicationContextTitle
+        color < lib.applicationContextColor
+        title < lib.websiteTitle
+        description < lib.applicationContextDescription
+        textColor < lib.applicationContextTextColor
+        positionClass < lib.applicationContextPositionClass
     }
 }
 
