@@ -61,6 +61,7 @@
 		"lint:composer": "@fix:composer --dry-run",
 		"lint:editorconfig": "ec --git-only",
 		"lint:php": "@fix:php --dry-run",
+		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml --fail-on-warnings",
 		"migration": [
 			"@migration:rector"
 		],

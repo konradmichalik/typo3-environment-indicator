@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace KonradMichalik\Typo3EnvironmentIndicator\Utility;
 
 use GdImage;
+use SVG\Nodes\Embedded\SVGImage;
+use SVG\Nodes\Structures\SVGDocumentFragment;
 use SVG\SVG;
 use TypeError;
 
@@ -30,6 +32,8 @@ use TypeError;
  */
 class SvgRasterizer
 {
+    private const MAX_EDGE = 1024;
+
     /**
      * @see https://github.com/meyfa/php-svg?tab=readme-ov-file#rasterizing
      * Notes from the author:
@@ -44,6 +48,11 @@ class SvgRasterizer
         }
 
         $document = $loader->getDocument();
+
+        if (self::referencesExternalImage($document)) {
+            return null;
+        }
+
         $width = (int) $document->getWidth();
         $height = (int) $document->getHeight();
 
@@ -62,9 +71,68 @@ class SvgRasterizer
             $height = 64;
         }
 
+        [$width, $height] = self::clampDimensions($width, $height);
+
         // meyfa/php-svg's docblock still says "resource", but GD functions
         // return GdImage objects since PHP 8.1.
         return $loader->toRasterImage($width, $height);
+    }
+
+    /**
+     * php-svg resolves an <image> reference with file_get_contents(), which
+     * reads local files and requests remote URLs. Only embedded raster images
+     * are safe to render. A data URI that holds an SVG is rejected as well:
+     * php-svg rasterizes it recursively and then resolves the <image>
+     * references inside it without any check.
+     */
+    private static function referencesExternalImage(SVGDocumentFragment $document): bool
+    {
+        foreach ($document->getElementsByTagName('image') as $image) {
+            $href = $image instanceof SVGImage ? $image->getHref() : null;
+
+            if (null !== $href && '' !== $href && !self::isEmbeddedRasterImage($href)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Mirrors the data URI handling of php-svg's ImageRenderer, so both agree
+     * on what is embedded and what is loaded from outside.
+     */
+    private static function isEmbeddedRasterImage(string $href): bool
+    {
+        $commaPosition = strpos($href, ',');
+        if (!str_starts_with($href, 'data:') || false === $commaPosition) {
+            return false;
+        }
+
+        $content = substr($href, $commaPosition + 1);
+        if (str_contains(substr($href, 0, $commaPosition), ';base64')) {
+            $content = base64_decode($content, true);
+            if (false === $content) {
+                return false;
+            }
+        }
+
+        return !str_contains($content, '<svg') || !str_contains($content, '</svg>');
+    }
+
+    /**
+     * @return array{int, int}
+     */
+    private static function clampDimensions(int $width, int $height): array
+    {
+        $longestEdge = max($width, $height);
+        if ($longestEdge <= self::MAX_EDGE) {
+            return [$width, $height];
+        }
+
+        $scale = self::MAX_EDGE / $longestEdge;
+
+        return [max(1, (int) round($width * $scale)), max(1, (int) round($height * $scale))];
     }
 
     /**
