@@ -61,10 +61,10 @@ You can adjust the theme in your :code:`ext_localconf.php`:
 
 Configuration keys:
 
-- :code:`color` (string): The primary accent color as hex value. **Required.**
+- :code:`color` (string): The primary accent color as hex value with 3 or 6 digits. **Required.**
 - :code:`scaffoldHeader` (bool): Whether to color the backend header. Default is :code:`true`.
 - :code:`scaffoldSidebar` (bool): Whether to color the backend sidebar. Default is :code:`true`.
-- :code:`neutralMix` (string): The neutral tinting strength as CSS percentage value. Default is :code:`'15%'`.
+- :code:`neutralMix` (string): The neutral tinting strength as CSS percentage value. Default is :code:`'15%'`, which is also used if the value is not a percentage such as :code:`'20%'` or :code:`'12.5%'`.
 
 ..  code-block:: php
     :caption: ext_localconf.php - Full configuration example

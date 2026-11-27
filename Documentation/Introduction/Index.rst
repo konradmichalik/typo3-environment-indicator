@@ -53,6 +53,12 @@ Frontend + Backend
         -   ..  image:: /Images/preview-page-title-prefix.jpg
                 :alt: Page Title Preview
         -   :ref:`Page title <page-title>`: Prefix or suffix the page title in frontend and backend with the current application context.
+    *   -   ..  image:: /Images/Extension-EI-BrowserConsole.png
+                :alt: Console Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-console.png
+                :alt: Console Preview
+        -   :ref:`Browser console badge <console>`: Prints a styled environment badge to the browser console in frontend and backend.
 
 Frontend
 --------
@@ -77,6 +83,18 @@ Frontend
         -   ..  image:: /Images/preview-frontend-image.jpg
                 :alt: Frontend Image Preview
         -   :ref:`Modified frontend image <frontend-image>`: Modifies the frontend image based on the original image, current environment and your configuration.
+    *   -   ..  image:: /Images/Extension-EI-HTTPHeader.png
+                :alt: Frontend HTTP Header Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-header-environment.png
+                :alt: Frontend HTTP Header Preview
+        -   :ref:`HTTP response header <frontend-http-header>`: Adds a configurable HTTP response header with the current application context to frontend responses.
+    *   -   ..  image:: /Images/Extension-EI-XRobots.png
+                :alt: Frontend Robots Icon
+                :width: 80px
+        -   ..  image:: /Images/preview-header-x-robots.png
+                :alt: Frontend Robots Preview
+        -   :ref:`Robots header <frontend-robots>`: Sends an :code:`X-Robots-Tag` header to keep non-production environments out of search engines.
 
 Backend
 -------

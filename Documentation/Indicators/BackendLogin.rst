@@ -52,10 +52,11 @@ You can register the indicator in your :code:`ext_localconf.php`:
 Additional optional configuration keys:
 
 - :code:`text` (string): The badge text. Default is the current application
-  context.
+  context. If the text is empty, no badge is shown.
 - :code:`color` (string): The badge background color as a hex value. Default is
-  :code:`#bd593a`. The text color is calculated automatically for optimal
-  contrast.
+  :code:`#bd593a`, which is also used if the value is not a valid hex color
+  with 3, 4, 6 or 8 digits. The text color is calculated automatically for
+  optimal contrast.
 - :code:`position` (string): The badge position, :code:`top` or :code:`bottom`.
   Default is :code:`top`.
 - :code:`description` (string): An optional descriptive line shown below the
