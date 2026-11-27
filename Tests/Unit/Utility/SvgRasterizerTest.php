@@ -15,6 +15,7 @@ namespace KonradMichalik\Typo3EnvironmentIndicator\Tests\Unit\Utility;
 
 use GdImage;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\SvgRasterizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function imagesx;
@@ -67,5 +68,50 @@ class SvgRasterizerTest extends TestCase
         self::assertInstanceOf(GdImage::class, $result);
         self::assertSame(64, imagesx($result));
         self::assertSame(64, imagesy($result));
+    }
+
+    public function testRasterizeClampsOversizedSvgKeepingTheAspectRatio(): void
+    {
+        $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/test-oversized.svg');
+
+        self::assertInstanceOf(GdImage::class, $result);
+        self::assertSame(1024, imagesx($result));
+        self::assertSame(512, imagesy($result));
+    }
+
+    public function testRasterizeClampsTallSvgKeepingTheAspectRatio(): void
+    {
+        $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/test-oversized-tall.svg');
+
+        self::assertInstanceOf(GdImage::class, $result);
+        self::assertSame(10, imagesx($result));
+        self::assertSame(1024, imagesy($result));
+    }
+
+    #[DataProvider('externalImageReferenceProvider')]
+    public function testRasterizeReturnsNullForImageWithExternalReference(string $fixture): void
+    {
+        self::assertNull(SvgRasterizer::rasterize(__DIR__.'/Fixtures/'.$fixture));
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function externalImageReferenceProvider(): iterable
+    {
+        yield 'local path via xlink:href' => ['test-image-local-path.svg'];
+        yield 'remote url via xlink:href' => ['test-image-remote-url.svg'];
+        yield 'nested image via plain href' => ['test-image-nested-plain-href.svg'];
+        yield 'svg embedded as data uri' => ['test-image-nested-svg-data-uri.svg'];
+        yield 'svg in data uri with a stray base64 character' => ['test-image-nested-svg-invalid-base64.svg'];
+        yield 'uppercase data scheme' => ['test-image-uppercase-data-scheme.svg'];
+    }
+
+    public function testRasterizeKeepsImageWithEmbeddedDataUri(): void
+    {
+        $result = SvgRasterizer::rasterize(__DIR__.'/Fixtures/test-image-data-uri.svg');
+
+        self::assertInstanceOf(GdImage::class, $result);
+        self::assertSame(16, imagesx($result));
     }
 }

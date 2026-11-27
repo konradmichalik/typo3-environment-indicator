@@ -36,13 +36,13 @@ return [
         'konradmichalik/typo3-environment-indicator/backend-favicon' => [
             'target' => KonradMichalik\Typo3EnvironmentIndicator\Middleware\BackendFaviconMiddleware::class,
             'after' => [
-                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-backend/authentication',
             ],
         ],
         'konradmichalik/typo3-environment-indicator/backend-logo' => [
             'target' => KonradMichalik\Typo3EnvironmentIndicator\Middleware\BackendLogoMiddleware::class,
             'after' => [
-                'typo3/cms-core/normalized-params-attribute',
+                'typo3/cms-backend/authentication',
             ],
         ],
     ],
