@@ -41,9 +41,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -59,9 +59,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -80,9 +80,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -98,9 +98,9 @@ final class FrontendFaviconMiddlewareTest extends TestCase
     {
         $middleware = new FrontendFaviconMiddleware(new ExtensionConfiguration());
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())
             ->method('handle')
@@ -147,7 +147,7 @@ final class FrontendFaviconMiddlewareTest extends TestCase
             ->willReturn($typoScript);
 
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $response = $this->createStub(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $handler->expects(self::once())->method('handle')->willReturn($response);
 

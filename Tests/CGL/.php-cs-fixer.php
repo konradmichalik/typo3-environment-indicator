@@ -32,6 +32,11 @@ return Config::create()
             DocBlockHeader::fromComposer($rootPath.'/composer.json')->__toArray(),
         ),
     )
+    // AbstractIndicator::getConfiguration() is overridden by Favicon and AbstractImageHandler::process()
+    // is mocked on FaviconHandler and BackendLogoHandler in the middleware tests, so neither can be final.
+    ->withRule(
+        RuleSet::fromArray(['final_public_method_for_abstract_class' => false]),
+    )
     ->withFinder(
         static fn (Finder $finder) => $finder
             ->in($rootPath)

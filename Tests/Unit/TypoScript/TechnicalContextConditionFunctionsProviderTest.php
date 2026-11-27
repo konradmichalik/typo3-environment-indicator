@@ -70,7 +70,7 @@ class TechnicalContextConditionFunctionsProviderTest extends TestCase
         $provider = new TechnicalContextConditionFunctionsProvider(new ExtensionConfiguration());
         $functions = $provider->getFunctions();
         $function = $functions[0];
-        self::assertEquals('enableTechnicalContext', $function->getName());
+        self::assertSame('enableTechnicalContext', $function->getName());
     }
 
     public function testImplementsExpressionFunctionProviderInterface(): void

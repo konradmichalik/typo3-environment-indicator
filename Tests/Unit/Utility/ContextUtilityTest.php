@@ -39,7 +39,7 @@ class ContextUtilityTest extends TestCase
     {
         $contextUtility = new ContextUtility();
         $color = $contextUtility->getColor();
-        self::assertEquals('transparent', $color);
+        self::assertSame('transparent', $color);
     }
 
     public function testGetDescriptionReturnsEmptyStringWhenNoConfiguration(): void

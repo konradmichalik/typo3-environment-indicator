@@ -41,7 +41,7 @@ final class ThemeItemTest extends TestCase
     public function testCheckAccessReturnsFalseWhenNotApplicable(): void
     {
         $this->mockTypo3Version(13);
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertFalse($item->checkAccess());
     }
@@ -56,42 +56,42 @@ final class ThemeItemTest extends TestCase
     public function testCheckAccessReturnsTrueWhenApplicable(): void
     {
         $this->mockTypo3Version(14);
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertTrue($item->checkAccess());
     }
 
     public function testHasDropDownReturnsFalse(): void
     {
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertFalse($item->hasDropDown());
     }
 
     public function testGetDropDownReturnsEmptyString(): void
     {
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertSame('', $item->getDropDown());
     }
 
     public function testGetAdditionalAttributesReturnsEmptyArray(): void
     {
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertSame([], $item->getAdditionalAttributes());
     }
 
     public function testGetIndexReturnsZero(): void
     {
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertSame(0, $item->getIndex());
     }
 
     public function testImplementsToolbarItemInterface(): void
     {
-        $item = new ThemeItem($this->createStub(PageRenderer::class));
+        $item = new ThemeItem(self::createStub(PageRenderer::class));
 
         self::assertInstanceOf(ToolbarItemInterface::class, $item);
     }
@@ -219,7 +219,7 @@ final class ThemeItemTest extends TestCase
 
     private function mockTypo3Version(int $majorVersion): void
     {
-        $version = $this->createStub(Typo3Version::class);
+        $version = self::createStub(Typo3Version::class);
         $version->method('getMajorVersion')->willReturn($majorVersion);
         GeneralUtility::addInstance(Typo3Version::class, $version);
     }

@@ -139,7 +139,7 @@ class ConsoleItemTest extends TestCase
     {
         return new ConsoleItem(
             new ExtensionConfiguration(),
-            $pageRenderer ?? $this->createStub(PageRenderer::class),
+            $pageRenderer ?? self::createStub(PageRenderer::class),
             new ConsoleUtility(),
         );
     }
