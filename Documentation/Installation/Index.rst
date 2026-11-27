@@ -53,10 +53,11 @@ method.
 
 ..  _migration-removed-api:
 
-Removed API after version 3.5
-=============================
+Migration from version 3.x to 4.0
+=================================
 
-The following public API was removed. The extension itself did not use it.
+The following public API is removed in version 4.0. It is still available in the 3.x releases. The extension itself does
+not use it.
 
 ..  list-table::
     :header-rows: 1
@@ -79,7 +80,7 @@ The following public API was removed. The extension itself did not use it.
       - Remove the argument, it was not used. Read the request from :php:`$GLOBALS['TYPO3_REQUEST']` if needed.
 
 :php:`ConfigurationUtility::configByContext()` is still present, but it only throws an exception.
-Use :php:`Handler::addIndicator()` instead. See the migration above.
+Use :php:`Handler::addIndicator()` instead. See :ref:`migration`.
 
 Configuration
 =============
