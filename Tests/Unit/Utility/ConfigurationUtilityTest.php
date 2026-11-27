@@ -28,7 +28,7 @@ class ConfigurationUtilityTest extends TestCase
     public function testConfigByContextThrowsException(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionCode(5404480452);
+        $this->expectExceptionCode(1795766165);
         $this->expectExceptionMessage('deprecated and no longer support');
 
         ConfigurationUtility::configByContext('Development');

@@ -60,12 +60,14 @@ For the **backend**, the favicon will be fetched by the extension configuration 
 
     Favicon Examples
 
-..  warning::
-    SVG favicons (and backend logos) are rasterized to PNG before modification.
-    During rasterization, embedded :code:`<image>` references inside the SVG are
-    resolved and loaded. Only use SVG source files from trusted locations as
-    indicator base images — an untrusted SVG could reference arbitrary local or
-    remote resources.
+..  note::
+    SVG source images are rasterized to PNG before modification. This applies to favicons, backend logos and the
+    replacement image of the :code:`ReplaceModifier`. The raster size is limited to 1024 px on the longest edge,
+    keeping the aspect ratio. Raster images embedded as :code:`data:` URIs work.
+
+    An SVG is not rasterized if it cannot be parsed, if it has an :code:`<image>` that points to a file or a URL, or if
+    it embeds another SVG or a malformed data URI. The original image is used instead and no indicator is applied. For
+    the replacement image of a :code:`ReplaceModifier` the replacement is skipped, the other modifiers still apply.
 
 ..  _favicon-scope:
 

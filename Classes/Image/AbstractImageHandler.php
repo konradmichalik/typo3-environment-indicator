@@ -19,11 +19,14 @@ use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 use KonradMichalik\Typo3EnvironmentIndicator\Configuration\Indicator\IndicatorInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Image\Modifier\ModifierInterface;
 use KonradMichalik\Typo3EnvironmentIndicator\Utility\{GeneralHelper, ImageDriverUtility, ImageManagerHelper, SvgRasterizer};
+use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait};
+use Throwable;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\{GeneralUtility, PathUtility};
 
 use function is_object;
 use function is_string;
+use function sprintf;
 
 /**
  * AbstractImageHandler.
@@ -31,8 +34,10 @@ use function is_string;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license GPL-2.0-or-later
  */
-abstract class AbstractImageHandler
+abstract class AbstractImageHandler implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array<string|int, mixed>
      */
@@ -44,38 +49,19 @@ abstract class AbstractImageHandler
         $this->imageModifiers = $this->getImageModifiers();
     }
 
+    /**
+     * The indicator must never be the reason a page breaks, so any failure
+     * falls back to the original image.
+     */
     public function process(string $path): string
     {
-        if (!$this->shouldProcessImage($path)) {
+        try {
+            return $this->processImage($path);
+        } catch (Throwable $exception) {
+            $this->logger?->warning(sprintf('Image processing failed for "%s", using the original image', $path), ['exception' => $exception]);
+
             return $path;
         }
-
-        if ([] === $this->imageModifiers) {
-            return $path;
-        }
-
-        $newImageFilename = $this->generateFilename($path).'.png';
-        $newImagePath = GeneralHelper::getFolder($this->indicator, false).$newImageFilename;
-
-        // @codeCoverageIgnoreStart
-        // Unreachable in practice: $newImagePath is a SHA-256 hash of (among other
-        // things) $path itself, so this guards against a hash fixed point that
-        // cannot occur.
-        if ($path === $newImagePath) {
-            return $newImagePath;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $absoluteNewImagePath = GeneralHelper::getFolder($this->indicator).$newImageFilename;
-        if (file_exists($absoluteNewImagePath)) {
-            return $newImagePath;
-        }
-
-        if (!$this->processAndSaveImage($path, $newImageFilename)) {
-            return $path;
-        }
-
-        return $newImagePath;
     }
 
     final protected function generateFilename(string $originalPath): string
@@ -169,6 +155,40 @@ abstract class AbstractImageHandler
         }
 
         return $targetPath;
+    }
+
+    private function processImage(string $path): string
+    {
+        if (!$this->shouldProcessImage($path)) {
+            return $path;
+        }
+
+        if ([] === $this->imageModifiers) {
+            return $path;
+        }
+
+        $newImageFilename = $this->generateFilename($path).'.png';
+        $newImagePath = GeneralHelper::getFolder($this->indicator, false).$newImageFilename;
+
+        // @codeCoverageIgnoreStart
+        // Unreachable in practice: $newImagePath is a SHA-256 hash of (among other
+        // things) $path itself, so this guards against a hash fixed point that
+        // cannot occur.
+        if ($path === $newImagePath) {
+            return $newImagePath;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $absoluteNewImagePath = GeneralHelper::getFolder($this->indicator).$newImageFilename;
+        if (file_exists($absoluteNewImagePath)) {
+            return $newImagePath;
+        }
+
+        if (!$this->processAndSaveImage($path, $newImageFilename)) {
+            return $path;
+        }
+
+        return $newImagePath;
     }
 
     /**

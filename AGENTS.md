@@ -55,6 +55,7 @@ Lint, fix, static analysis and migration run through `ddev cgl`, which executes 
 ddev cgl lint       # composer, editorconfig, php, typoscript
 ddev cgl fix        # composer, editorconfig, php
 ddev cgl sca        # PHPStan
+ddev cgl analyze    # dependency analyser
 ddev cgl migration  # Rector
 ```
 
@@ -73,7 +74,7 @@ ddev exec vendor/bin/phpunit Tests/Unit/Path/To/TestFile.php
 ddev exec vendor/bin/phpunit --filter testMethodName
 ```
 
-CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5. The CGL workflow runs the linters on every push.
+CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5. The CGL workflow runs the linters. Both workflows run on pull requests and on pushes to `main` and `renovate/**` branches.
 
 ## Code style and static analysis
 
@@ -82,7 +83,7 @@ CI runs the shared `tests-typo3` workflow on TYPO3 13.4 and 14.3 with PHP 8.2 to
 - PHPStan level 8 with the TYPO3 preset, config and baseline in `Tests/CGL/`
 - Rector config in `Tests/CGL/rector.php`
 - EditorConfig is enforced via `.editorconfig`
-- `composer-require-checker.json` configures the dependency check
+- `Tests/CGL/composer-dependency-analyser.php` configures the dependency check, run it with `ddev cgl analyze`
 
 ## Git workflow
 
