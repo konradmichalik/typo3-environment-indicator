@@ -12,6 +12,6 @@ permissions:
 
 jobs:
   mutation:
-    uses: konradmichalik/reusable-github-actions/.github/workflows/mutation-php.yml@b207c7a6eb8db6c385156a57cdacaaa1c7d3cd0b # 0.2.0
+    uses: konradmichalik/reusable-github-actions/.github/workflows/mutation-php.yml@48fcbd0657c3818eac74b9d91dc26c29ad76c5ab # 1.0.0
     with:
       min-covered-msi: '65'
